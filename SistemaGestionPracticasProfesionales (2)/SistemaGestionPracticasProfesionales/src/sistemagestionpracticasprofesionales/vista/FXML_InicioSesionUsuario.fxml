@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="751.0" prefWidth="620.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_InicioSesionUsuarioController">
+   <children>
+      <Label layoutX="199.0" layoutY="160.0" text="Bienvenido(a)" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="142.0" layoutY="292.0" text="Ingresa tu usuario y contraseña para iniciar sesión">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font></Label>
+      <TextField fx:id="tfUsuario" layoutX="165.0" layoutY="376.0" prefHeight="39.0" prefWidth="291.0" promptText="Usuario" />
+      <Label layoutX="165.0" layoutY="354.0" text="Usuario:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="165.0" layoutY="457.0" text="Contraseña:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font></Label>
+      <Button defaultButton="true" layoutX="165.0" layoutY="572.0" mnemonicParsing="false" onAction="#clickIniciarSesion" prefHeight="39.0" prefWidth="291.0" style="-fx-background-color: #1156ba;" text="Iniciar Sesión" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="23.0" />
+         </font></Button>
+      <PasswordField fx:id="pfContrasenia" layoutX="164.0" layoutY="479.0" prefHeight="39.0" prefWidth="291.0" promptText="Contraseña" />
+      <Label fx:id="lblErrorUsuario" layoutX="165.0" layoutY="421.0" prefHeight="17.0" prefWidth="291.0" textFill="RED" />
+      <Label fx:id="lblErrorContrasenia" layoutX="165.0" layoutY="518.0" prefHeight="17.0" prefWidth="291.0" textFill="RED" />
+      <ImageView fitHeight="136.0" fitWidth="132.0" layoutX="257.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="164.0" layoutY="640.0" mnemonicParsing="false" onAction="#clickSoyEstudiante" prefHeight="37.0" prefWidth="291.0" style="-fx-background-color: #ffffff; -fx-border-color: #1156ba;" text="Soy Estudiante" textFill="#1156ba">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="23.0" />
+         </font></Button>
+      <Label layoutX="77.0" layoutY="207.0" text="UNIVERSIDAD VERACRUZANA" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="31.0" />
+         </font>
+      </Label>
+      <Label layoutX="69.0" layoutY="250.0" text="SISTEMA DE PRÁCTICAS PROFESIONALES" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="23.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

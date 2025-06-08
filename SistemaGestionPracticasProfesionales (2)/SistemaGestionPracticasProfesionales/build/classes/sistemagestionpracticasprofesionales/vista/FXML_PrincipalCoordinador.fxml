@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="999.0" prefWidth="1019.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_PrincipalCoordinadorController">
+   <children>
+      <ImageView fitHeight="575.0" fitWidth="462.0" layoutX="287.0" layoutY="149.0" opacity="0.57" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="248.0" layoutY="107.0" text="BIENVENIDO(A) DE NUEVO" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button layoutX="843.0" layoutY="29.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="59.0" prefWidth="162.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar sesión" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cerrar-sesion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="34.0" layoutY="199.0" mnemonicParsing="false" onAction="#clickAsignarProyecto" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Asignar Proyecto" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/asignar%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="32.0" layoutY="851.0" mnemonicParsing="false" onAction="#clickGenerarDocAsignacion" prefHeight="110.0" prefWidth="357.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Generar Documento de Asignación" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="64.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/formulario-de-inscripcion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="34.0" layoutY="457.0" mnemonicParsing="false" onAction="#clickRegistrarOV" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Registrar Organización Vinculada" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="64.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/registrarOV.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="36.0" layoutY="326.0" mnemonicParsing="false" onAction="#clickRegistrarProyecto" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Registrar Proyecto" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="59.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/carpeta.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="36.0" layoutY="588.0" mnemonicParsing="false" onAction="#clickRegistrarResponsable" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Registrar responsable de proyecto" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="54.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/registrarResponsable.png" />
+               </image></ImageView>
+         </graphic></Button>
+      <Label fx:id="lbSaludoUsuario" alignment="CENTER" layoutX="248.0" layoutY="49.0" prefHeight="54.0" prefWidth="524.0" textAlignment="CENTER" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="14.0" layoutY="29.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="137.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="34.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="32.0" layoutY="716.0" mnemonicParsing="false" onAction="#clickActualizarResponsable" prefHeight="110.0" prefWidth="357.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Actualizar responsable de proyecto" textFill="WHITE" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="57.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/actualizarResponsable.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="983.0" fitWidth="680.0" layoutX="363.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/coordinadorPrincipal.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

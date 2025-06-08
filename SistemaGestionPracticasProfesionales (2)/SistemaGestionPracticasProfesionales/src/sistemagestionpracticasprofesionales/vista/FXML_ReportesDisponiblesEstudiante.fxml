@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_ReportesDisponiblesEstudianteController">
+   <children>
+      <Label layoutX="365.0" layoutY="62.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="107.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="313.0" layoutY="153.0" text="Reportes disponibles" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="52.0" layoutY="44.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="615.0" fitWidth="464.0" layoutX="282.0" layoutY="243.0" opacity="0.36" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="163.0" layoutY="204.0" text="Seleccione el reporte que desea visualizar(Solo se muestran los reportes entregados)">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox layoutX="52.0" layoutY="250.0" prefHeight="28.0" prefWidth="298.0" promptText="Reportes entregados" style="-fx-background-color: #ffffff;" />
+      <Button contentDisplay="TOP" layoutX="187.0" layoutY="727.0" mnemonicParsing="false" onAction="#clickValidar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Validar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="651.0" layoutY="727.0" mnemonicParsing="false" onAction="#clickRetroalimentar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Retroalimentar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/retroalimentar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

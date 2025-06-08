@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_SeleccionOrganizacionController">
+   <children>
+      <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="290.0" layoutY="181.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="396.0" layoutY="50.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="323.0" layoutY="94.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="228.0" layoutY="136.0" text="Registrar Responsable de Proyecto" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="43.0" layoutY="33.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="106.0" layoutY="231.0" text="Buscar organización vinculada:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfBuscarOV" layoutX="486.0" layoutY="230.0" prefHeight="31.0" prefWidth="417.0" promptText="Ingrese el nombre de la organización vinculada" />
+      <TableView fx:id="tvOrganizacionesVinculadas" layoutX="106.0" layoutY="310.0" prefHeight="343.0" prefWidth="816.0">
+         <columns>
+            <TableColumn fx:id="nombreOV" prefWidth="186.0" text="Nombre" />
+            <TableColumn fx:id="direccionOV" prefWidth="232.0" text="Dirección" />
+            <TableColumn fx:id="correoOV" prefWidth="201.0" text="Correo" />
+            <TableColumn fx:id="telefonoOV" prefWidth="196.0" text="Teléfono" />
+         </columns>
+      </TableView>
+      <Button contentDisplay="TOP" layoutX="228.0" layoutY="702.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="634.0" layoutY="704.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

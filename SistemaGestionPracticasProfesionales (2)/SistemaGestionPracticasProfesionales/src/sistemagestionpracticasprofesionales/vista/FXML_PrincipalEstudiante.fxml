@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="999.0" prefWidth="1019.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_PrincipalEstudianteController">
+   <children>
+      <ImageView fitHeight="606.0" fitWidth="518.0" layoutX="275.0" layoutY="313.0" opacity="0.64" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="243.0" layoutY="196.0" text="BIENVENIDO(A) DE NUEVO" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button layoutX="820.0" layoutY="30.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="62.0" prefWidth="177.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar Sesión" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cerrar-sesion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="656.0" layoutY="336.0" mnemonicParsing="false" onAction="#clickSubirDocIniciales" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Subir documentos iniciales" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="52.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/carga-de-documentos.png" />
+               </image></ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="656.0" layoutY="462.0" mnemonicParsing="false" onAction="#clickConsultarAvance" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Consultar Avance" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/consulta.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button contentDisplay="TOP" layoutX="656.0" layoutY="592.0" mnemonicParsing="false" onAction="#clickEvaluarOV" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Evaluar Organización Vinculada" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="49.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/clasificacion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label fx:id="lblSaludoEstudiante" alignment="CENTER" layoutX="243.0" layoutY="111.0" prefHeight="64.0" prefWidth="524.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="177.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="1020.0" fitWidth="711.0" layoutY="-21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/img_PrincipalEstudiante.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

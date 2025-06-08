@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="785.0" prefWidth="871.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_PrincipalEvaluadorController">
+   <children>
+      <ImageView fitHeight="575.0" fitWidth="462.0" layoutX="60.0" layoutY="179.0" opacity="0.57" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbSaludoUsuario" alignment="CENTER" layoutX="174.0" layoutY="94.0" prefHeight="45.0" prefWidth="524.0" textAlignment="CENTER" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="14.0" layoutY="27.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="45.0" prefWidth="137.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="34.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="695.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="59.0" prefWidth="162.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar sesión" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cerrar-sesion.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="174.0" layoutY="150.0" text="BIENVENIDO(A) DE NUEVO" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="38.0" layoutY="283.0" mnemonicParsing="false" onAction="#clickEvaluarEstudiante" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Evaluar estudiante" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/evaluar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="575.0" fitWidth="580.0" layoutX="296.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/evaluador.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="127.0" fitWidth="116.0" layoutX="330.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/hacer-clic.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

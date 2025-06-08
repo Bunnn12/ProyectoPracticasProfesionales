@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_ActualizarResponsableController">
+   <children>
+      <Label layoutX="365.0" layoutY="60.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="97.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="176.0" layoutY="139.0" text="Actualizar responsable de proyecto" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="62.0" layoutY="42.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="269.0" layoutY="191.0" opacity="0.36" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Button contentDisplay="TOP" layoutX="187.0" layoutY="753.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="671.0" layoutY="754.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="90.0" layoutY="221.0" text="Proyecto seleccionado:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbProyectoSeleccionado" layoutX="377.0" layoutY="221.0" prefHeight="28.0" prefWidth="430.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="90.0" layoutY="264.0" text="Responsable actual:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbResponsableActual" layoutX="336.0" layoutY="264.0" prefHeight="28.0" prefWidth="430.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="80.0" layoutY="385.0" text="Seleccione un nuevo responsable de proyecto:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView layoutX="87.0" layoutY="423.0" prefHeight="287.0" prefWidth="873.0">
+        <columns>
+          <TableColumn prefWidth="319.0" text="Nombre" />
+          <TableColumn prefWidth="326.0" text="Correo" />
+            <TableColumn prefWidth="226.0" text="Teléfono" />
+        </columns>
+      </TableView>
+      <Label layoutX="88.0" layoutY="308.0" text="Buscar responsable:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfBuscarResponsable" layoutX="331.0" layoutY="303.0" prefHeight="38.0" prefWidth="609.0" promptText="Nombre del responsable de proyecto" />
+   </children>
+</AnchorPane>

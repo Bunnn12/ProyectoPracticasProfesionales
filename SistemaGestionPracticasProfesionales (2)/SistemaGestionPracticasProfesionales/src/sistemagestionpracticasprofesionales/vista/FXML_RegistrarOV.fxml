@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_RegistrarOVController">
+   <children>
+      <Label layoutX="365.0" layoutY="37.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="80.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="194.0" layoutY="123.0" text="Registrar Organización Vinculada" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="259.0" layoutY="189.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfNombreOV" layoutX="312.0" layoutY="229.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el nombre" />
+      <Label layoutX="180.0" layoutY="231.0" text="Nombre:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="180.0" layoutY="301.0" text="Correo:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfCorreoOV" layoutX="312.0" layoutY="299.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el correo" />
+      <Label layoutX="176.0" layoutY="381.0" text="Teléfono:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfTelefonoOV" layoutX="312.0" layoutY="379.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el teléfono" />
+      <TextField fx:id="tfDireccionOV" layoutX="312.0" layoutY="454.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese la dirección" />
+      <Label layoutX="180.0" layoutY="456.0" text="Dirección">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="187.0" layoutY="699.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="663.0" layoutY="701.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="34.0" layoutY="34.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="lbErrorNombre" layoutX="312.0" layoutY="269.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorCorreo" layoutX="312.0" layoutY="337.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorTelefono" layoutX="312.0" layoutY="422.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorDireccion" layoutX="312.0" layoutY="495.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
