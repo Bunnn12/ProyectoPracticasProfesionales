@@ -37,47 +37,23 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="TOP" layoutX="187.0" layoutY="732.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="21.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/aceptar.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button contentDisplay="TOP" layoutX="663.0" layoutY="734.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="21.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/cancelar.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="259.0" layoutY="181.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
          </image>
       </ImageView>
-      <TableView layoutX="36.0" layoutY="328.0" prefHeight="365.0" prefWidth="955.0">
+      <TableView fx:id="tvProyectos" layoutX="36.0" layoutY="328.0" prefHeight="365.0" prefWidth="955.0">
         <columns>
-          <TableColumn prefWidth="107.0" text="Nombre" />
-          <TableColumn prefWidth="162.0" text="Descripción" />
-            <TableColumn prefWidth="114.0" text="Fecha de inicio" />
-            <TableColumn prefWidth="131.0" text="Fecha de termino" />
-            <TableColumn prefWidth="176.0" text="Organización Vinculada" />
-            <TableColumn prefWidth="124.0" text="Responsable" />
-            <TableColumn prefWidth="140.0" text="Cant. Estudiantes" />
+          <TableColumn fx:id="colNombre" prefWidth="107.0" text="Nombre" />
+          <TableColumn fx:id="colDescripcion" prefWidth="162.0" text="Descripción" />
+            <TableColumn fx:id="colFechaInicio" prefWidth="114.0" text="Fecha de inicio" />
+            <TableColumn fx:id="colFechaTermino" prefWidth="131.0" text="Fecha de termino" />
+            <TableColumn fx:id="colOV" prefWidth="176.0" text="Organización Vinculada" />
+            <TableColumn fx:id="colResponsable" prefWidth="124.0" text="Responsable" />
+            <TableColumn fx:id="colCantEstudiantes" prefWidth="140.0" text="Cant. Estudiantes" />
         </columns>
       </TableView>
-      <TextField fx:id="tfBusquedaProyecto" layoutX="391.0" layoutY="207.0" prefHeight="45.0" prefWidth="529.0" promptText="Nombre del proyecto" />
+      <TextField fx:id="tfBusquedaProyecto" layoutX="391.0" layoutY="207.0" onKeyReleased="#buscarProyectoPorNombre" prefHeight="45.0" prefWidth="529.0" promptText="Nombre del proyecto" />
       <Label layoutX="185.0" layoutY="216.0" text="Buscar proyecto:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />
@@ -93,5 +69,29 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
+      <Button contentDisplay="TOP" layoutX="673.0" layoutY="734.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="199.0" layoutY="733.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

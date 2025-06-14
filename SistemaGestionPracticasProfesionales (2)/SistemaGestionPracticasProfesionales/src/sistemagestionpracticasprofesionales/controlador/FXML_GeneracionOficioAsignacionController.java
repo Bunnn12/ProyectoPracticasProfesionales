@@ -20,7 +20,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sistemagestionpracticasprofesionales.modelo.dao.EstudianteDAO;
+import sistemagestionpracticasprofesionales.modelo.pojo.DatosDocumentoAsignacion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
+import sistemagestionpracticasprofesionales.utilidades.DocumentoGenerador;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -57,17 +59,17 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
     }    
     
         private void configurarTablaEstudiantes() {
-        colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colApellidoPaterno.setCellValueFactory(new PropertyValueFactory<>("apellidoPaterno"));
-        colApellidoMaterno.setCellValueFactory(new PropertyValueFactory<>("apellidoMaterno"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
-        colGrupo.setCellValueFactory(new PropertyValueFactory<>("grupo"));
+        colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
+        colApellidoMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
+        colGrupo.setCellValueFactory(new PropertyValueFactory("grupo"));
     }
         private void cargarEstudiantes() {
         try {
             estudiantes.clear();
-            ArrayList<Estudiante> estudiantesDAO = EstudianteDAO.obtenerEstudiantesPeriodoActual();
+            ArrayList<Estudiante> estudiantesDAO = EstudianteDAO.obtenerEstudiantesPeriodoActualConProyecto();
             if (estudiantesDAO != null) {
                 estudiantes.addAll(estudiantesDAO);
             }
@@ -79,14 +81,45 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
     }
     @FXML
     private void clickRegresar(ActionEvent event) {
+        Utilidad.cerrarVentanaActual(tvEstudiantes);
     }
 
     @FXML
     private void clickAceptar(ActionEvent event) {
+        try {
+            ArrayList<DatosDocumentoAsignacion> listaDatos = EstudianteDAO.obtenerDatosDocumentosAsignacion();
+            System.out.println("Registros únicos a generar: " + listaDatos.size());
+
+            if (listaDatos.isEmpty()) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin datos", "No hay estudiantes con proyecto asignado en el periodo actual");
+                return;
+            }
+
+            int generados = 0;
+            for (DatosDocumentoAsignacion datos : listaDatos) {
+                System.out.println("Generando documento para: " + datos.getNombreCompleto() + " (" + datos.getMatricula() + ")");
+                boolean exito = DocumentoGenerador.generarOficioAsignacion(datos);
+                if (exito) generados++;
+            }
+
+            if (generados > 0) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "Se generaron " + generados + " documentos correctamente");
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo generar ningún documento.");
+            }
+
+        } catch (SQLException ex) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de conexión", "No hay conexión con la base de datos");
+            ex.printStackTrace();
+        }
     }
 
     @FXML
     private void clickCancelar(ActionEvent event) {
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
+        Utilidad.cerrarVentanaActual(tvEstudiantes);
+        } 
     }
     
 }

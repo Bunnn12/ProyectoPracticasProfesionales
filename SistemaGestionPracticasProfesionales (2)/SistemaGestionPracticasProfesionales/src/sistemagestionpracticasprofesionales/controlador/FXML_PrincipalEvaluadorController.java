@@ -46,13 +46,10 @@ Usuario usuarioSesion;
         }
     }
 
-    @FXML
-    private void clickRegresar(ActionEvent event) {
-    }
 
     @FXML
     private void btnCerrarSesion(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cancelar", "¿Estás seguro de que quieres cancelar?");
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?");
         
         if (confirmado) {
         Utilidad.cerrarVentanaActual(lbSaludoUsuario);

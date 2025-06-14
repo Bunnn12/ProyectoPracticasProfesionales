@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_SeleccionOrganizacionController">
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_SeleccionOrganizacionController">
    <children>
       <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="290.0" layoutY="181.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -43,12 +42,12 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label layoutX="106.0" layoutY="231.0" text="Buscar organización vinculada:">
+      <Label layoutX="106.0" layoutY="247.0" text="Buscar organización vinculada:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="tfBuscarOV" layoutX="486.0" layoutY="230.0" prefHeight="31.0" prefWidth="417.0" promptText="Ingrese el nombre de la organización vinculada" />
+      <TextField fx:id="tfBuscarOV" layoutX="486.0" layoutY="246.0" prefHeight="31.0" prefWidth="417.0" promptText="Ingrese el nombre de la organización vinculada" />
       <TableView fx:id="tvOrganizacionesVinculadas" layoutX="106.0" layoutY="310.0" prefHeight="343.0" prefWidth="816.0">
          <columns>
             <TableColumn fx:id="nombreOV" prefWidth="186.0" text="Nombre" />

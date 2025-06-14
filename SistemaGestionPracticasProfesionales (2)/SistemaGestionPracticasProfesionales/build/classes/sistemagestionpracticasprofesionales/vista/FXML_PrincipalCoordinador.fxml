@@ -88,18 +88,6 @@
             <Font name="Arial Rounded MT Bold" size="30.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="14.0" layoutY="29.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="137.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="34.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button contentDisplay="TOP" layoutX="32.0" layoutY="716.0" mnemonicParsing="false" onAction="#clickActualizarResponsable" prefHeight="110.0" prefWidth="357.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Actualizar responsable de proyecto" textFill="WHITE" textOverrun="CLIP">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />

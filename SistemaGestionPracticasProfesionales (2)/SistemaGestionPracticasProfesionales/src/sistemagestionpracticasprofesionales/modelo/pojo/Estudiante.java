@@ -15,10 +15,10 @@ public class Estudiante {
     private String correo;
     private String telefono;
     private int idGrupo;
-
+    private String grupo;
     public Estudiante() {}
 
-    public Estudiante(int idEstudiante, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String matricula, String contrasenia, String correo, String telefono, int idGrupo) {
+    public Estudiante(int idEstudiante, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String matricula, String contrasenia, String correo, String telefono, int idGrupo, String grupo) {
         this.idEstudiante = idEstudiante;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -29,6 +29,15 @@ public class Estudiante {
         this.correo = correo;
         this.telefono = telefono;
         this.idGrupo = idGrupo;
+        this.grupo = grupo;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
     }
 
     public int getIdEstudiante() {

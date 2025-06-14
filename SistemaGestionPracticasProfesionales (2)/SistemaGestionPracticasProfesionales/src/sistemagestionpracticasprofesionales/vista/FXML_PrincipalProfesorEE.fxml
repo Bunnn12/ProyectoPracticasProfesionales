@@ -63,17 +63,6 @@
             <Font name="Arial Rounded MT Bold" size="30.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="25.0" layoutY="57.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image></ImageView>
-         </graphic>
-      </Button>
       <Button layoutX="838.0" layoutY="57.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="63.0" prefWidth="157.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar sesión" textFill="#0c2f61">
          <font>
             <Font name="Arial Rounded MT Bold" size="15.0" />

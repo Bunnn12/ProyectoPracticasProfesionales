@@ -48,7 +48,7 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
     
     @FXML
     private void btnCerrarSesion(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cancelar", "¿Estás seguro de que quieres cancelar?");
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?");
         
         if (confirmado) {
         Utilidad.cerrarVentanaActual(lbSaludoUsuario);
@@ -123,11 +123,33 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
 
     @FXML
     private void clickRegistrarResponsable(ActionEvent event) {
+        try{
+        Stage escenario = new Stage();
+        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_RegistrarResponsable.fxml"));
+        Scene escena= new Scene(vista);
+        escenario.setScene(escena);
+        escenario.setTitle("Registrar responsable");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
      
     }
 
     @FXML
     private void clickActualizarResponsable(ActionEvent event) {
+         try{
+        Stage escenario = new Stage();
+        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaProyecto.fxml"));
+        Scene escena= new Scene(vista);
+        escenario.setScene(escena);
+        escenario.setTitle("Busqueda proyecto");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     
 }

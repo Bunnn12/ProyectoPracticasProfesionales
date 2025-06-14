@@ -46,14 +46,14 @@ public class ResponsableProyectoDAO {
         return resultado;
     }
      
-     private static ArrayList<ResponsableProyecto> obtenerResponsablesProyecto() throws SQLException{
+    private static ArrayList<ResponsableProyecto> obtenerResponsablesProyecto() throws SQLException{
         ArrayList<ResponsableProyecto> responsablesProyecto= new ArrayList<>();
         Connection conexionBD= Conexion.abrirConexion();
         if (conexionBD!= null){
             String consulta= "SELECT rp.idResponsableProyecto, rp.idOrganizacionVinculada, rp.nombre, rp.correo, rp.telefono, "
-                + "ov.nombre AS 'organizacionVinculada' "
-                + "FROM responsableProyecto rp "
-                + "JOIN organizacionVinculada ov ON rp.idOrganizacionVinculada = ov.idOrganizacionVinculada;";
+                            + "ov.nombre AS 'organizacionVinculada' "
+                            + "FROM responsableProyecto rp "
+                            + "JOIN organizacionVinculada ov ON rp.idOrganizacionVinculada = ov.idOrganizacionVinculada;";
             PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
             ResultSet resultado = sentencia.executeQuery();
             while(resultado.next()){
@@ -67,6 +67,36 @@ public class ResponsableProyectoDAO {
         }
         return responsablesProyecto;
     }
+    public static ArrayList<ResponsableProyecto> obtenerResponsablesSinProyecto() throws SQLException {
+        ArrayList<ResponsableProyecto> responsablesProyecto = new ArrayList<>();
+        Connection conexionBD = Conexion.abrirConexion();
+        if (conexionBD != null) {
+            String consulta = "SELECT rp.idResponsableProyecto, rp.idOrganizacionVinculada, " +
+                              "rp.nombre, rp.correo, rp.telefono, " +
+                              "ov.nombre AS 'organizacionVinculada' " +
+                              "FROM responsableProyecto rp " +
+                              "JOIN organizacionVinculada ov ON rp.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                              "WHERE rp.idResponsableProyecto NOT IN ( " +
+                              "    SELECT DISTINCT idResponsableProyecto FROM proyecto" +
+                              ");";
+
+            PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+            ResultSet resultado = sentencia.executeQuery();
+
+            while (resultado.next()) {
+                responsablesProyecto.add(convertirRegistroResponsable(resultado));
+            }
+
+            sentencia.close();
+            resultado.close();
+            conexionBD.close();
+        } else {
+            throw new SQLException("Sin conexion con la base de datos");
+        }
+
+        return responsablesProyecto;
+    }
+
         
     private static ResponsableProyecto convertirRegistroResponsable(ResultSet resultado) throws SQLException{
         ResponsableProyecto responsableProyecto= new ResponsableProyecto();
@@ -75,7 +105,7 @@ public class ResponsableProyectoDAO {
         responsableProyecto.setNombre(resultado.getString("nombre"));
         responsableProyecto.setCorreo(resultado.getString("correo"));
         responsableProyecto.setTelefono(resultado.getString("telefono"));
-        responsableProyecto.setNombreOrganizacionVinculada("organizacionVinculada");
+        responsableProyecto.setNombreOrganizacionVinculada(resultado.getString("organizacionVinculada"));
         return responsableProyecto;
     }
 }

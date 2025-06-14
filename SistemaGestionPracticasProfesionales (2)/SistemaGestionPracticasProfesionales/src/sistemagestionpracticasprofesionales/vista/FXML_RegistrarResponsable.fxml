@@ -30,32 +30,24 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="tfNombreResponsable" layoutX="302.0" layoutY="197.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el nombre del responsable de proyecto" />
-      <TextField fx:id="tfCorreoResponsable" layoutX="302.0" layoutY="261.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el correo del responsable de proyecto" />
-      <TextField fx:id="tfTelefonoResponsable" layoutX="302.0" layoutY="332.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el teléfono del responsable de proyecto" />
-      <Label layoutX="163.0" layoutY="198.0" text="Nombre:">
+      <TextField fx:id="tfNombreResponsable" layoutX="269.0" layoutY="246.0" prefHeight="51.0" prefWidth="509.0" promptText="Ingrese el nombre del responsable de proyecto" />
+      <TextField fx:id="tfCorreoResponsable" layoutX="269.0" layoutY="356.0" prefHeight="51.0" prefWidth="509.0" promptText="Ingrese el correo del responsable de proyecto" />
+      <TextField fx:id="tfTelefonoResponsable" layoutX="269.0" layoutY="474.0" prefHeight="51.0" prefWidth="509.0" promptText="Ingrese el teléfono del responsable de proyecto" />
+      <Label layoutX="147.0" layoutY="257.0" text="Nombre:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="261.0" text="Correo:">
+      <Label layoutX="153.0" layoutY="373.0" text="Correo:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="159.0" layoutY="333.0" text="Teléfono:">
+      <Label layoutX="159.0" layoutY="485.0" text="Teléfono:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="tvOrganizacionesVinculadas" layoutX="126.0" layoutY="441.0" prefHeight="281.0" prefWidth="816.0">
-        <columns>
-          <TableColumn fx:id="nombreOV" prefWidth="186.0" text="Nombre" />
-          <TableColumn fx:id="direccionOV" prefWidth="232.0" text="Dirección" />
-            <TableColumn fx:id="correoOV" prefWidth="201.0" text="Correo" />
-            <TableColumn fx:id="telefonoOV" prefWidth="196.0" text="Teléfono" />
-        </columns>
-      </TableView>
       <Button contentDisplay="TOP" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
          <font>
             <Font name="Arial Rounded MT Bold" size="15.0" />
@@ -92,12 +84,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label layoutX="136.0" layoutY="393.0" text="Buscar organización vinculada:">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="24.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfBuscarOV" layoutX="514.0" layoutY="391.0" prefHeight="31.0" prefWidth="417.0" promptText="Ingrese el nombre de la organización vinculada" />
       <Label fx:id="lbErrorNombre" layoutX="303.0" layoutY="229.0" textFill="#d31414">
          <font>
             <Font name="Arial Rounded MT Bold" size="15.0" />

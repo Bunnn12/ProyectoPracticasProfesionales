@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
+import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 
 /**
@@ -56,20 +57,6 @@ public class ProyectoDAO {
         return proyectos;
     }
 
-    private static Proyecto convertirRegistroProyecto(ResultSet resultado) throws SQLException {
-        Proyecto proyecto = new Proyecto();
-        proyecto.setIdProyecto(resultado.getInt("idProyecto"));
-        proyecto.setNombre(resultado.getString("nombre"));
-        proyecto.setDescripcion(resultado.getString("descripcion"));
-        proyecto.setFechaInicio(resultado.getString("fechaInicio"));
-        proyecto.setFechaFin(resultado.getString("fechaFin"));
-        proyecto.setIdOrganizacionVinculada(resultado.getInt("idOrganizacionVinculada"));
-        proyecto.setIdResponsableProyecto(resultado.getInt("idResponsableProyecto"));
-        proyecto.setCantidadEstudiantesParticipantes(resultado.getInt("cantidadEstudiantesParticipantes"));
-        proyecto.setNombreResponsable(resultado.getString("nombreResponsable"));
-        proyecto.setNombreOrganizacion(resultado.getString("nombreOrganizacion"));
-        return proyecto;
-    }
     public static boolean asignarProyectoAEstudiante(String matriculaEstudiante, int idProyecto) throws SQLException {
     Connection conexion = Conexion.abrirConexion();
 
@@ -127,6 +114,66 @@ public class ProyectoDAO {
         throw new SQLException("Sin conexión con la base de datos");
     }
 }
+        
+    public static ArrayList<Proyecto> obtenerProyectos() throws SQLException{
+        ArrayList<Proyecto> proyectos= new ArrayList<>();
+        Connection conexionBD= Conexion.abrirConexion();
+        if (conexionBD!= null){
+            String consulta= "SELECT p.idProyecto, p.nombre, p.descripcion, " +
+                                "p.fechaInicio, p.fechaFin, p.horaEntrada, " +
+                                "p.horaSalida, p.cantidadEstudiantesParticipantes, " +
+                                "p.idOrganizacionVinculada, p.idResponsableProyecto, " +
+                                "ov.nombre AS 'nombreOrganizacion', " +
+                                "rp.nombre AS 'nombreResponsable' " +
+                                "FROM proyecto p " +
+                                "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                                "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto";
+            PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
+            ResultSet resultado = sentencia.executeQuery();
+            while(resultado.next()){
+                proyectos.add(convertirRegistroProyecto(resultado));
+            }
+            sentencia.close();
+            resultado.close();
+            conexionBD.close();
+        }else{
+            throw new SQLException("Sin conexion con la base de datos");
+        }
+        return proyectos;
+    }
+     private static Proyecto convertirRegistroProyecto(ResultSet resultado) throws SQLException{
+        Proyecto proyecto= new Proyecto();
+        proyecto.setIdProyecto(resultado.getInt("idProyecto"));
+        proyecto.setNombre(resultado.getString("nombre"));
+        proyecto.setDescripcion(resultado.getString("descripcion"));
+        proyecto.setFechaInicio(resultado.getString("fechaInicio"));
+        proyecto.setFechaFin(resultado.getString("fechaFin"));
+        proyecto.setCantidadEstudiantesParticipantes(resultado.getInt("cantidadEstudiantesParticipantes"));
+        proyecto.setHoraEntrada(resultado.getString("horaEntrada"));
+        proyecto.setHoraSalida(resultado.getString("horaSalida"));
+        proyecto.setIdOrganizacionVinculada(resultado.getInt("idOrganizacionVinculada"));
+        proyecto.setIdResponsableProyecto(resultado.getInt("idResponsableProyecto"));
+        proyecto.setNombreOrganizacion(resultado.getString("nombreOrganizacion"));
+        proyecto.setNombreResponsable(resultado.getString("nombreResponsable"));
+        return proyecto;
+    }
+     public static boolean actualizarResponsableDeProyecto(int idProyecto, int idNuevoResponsable) throws SQLException {
+        Connection conexionBD = Conexion.abrirConexion();
+        if (conexionBD != null) {
+            String consulta = "UPDATE proyecto SET idResponsableProyecto = ? WHERE idProyecto = ?";
+            PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+            sentencia.setInt(1, idNuevoResponsable);
+            sentencia.setInt(2, idProyecto);
+
+            int filasModificadas = sentencia.executeUpdate();
+            sentencia.close();
+            conexionBD.close();
+
+            return filasModificadas > 0;
+        } else {
+            throw new SQLException("No hay conexión con la base de datos");
+        }
+    }
 
 }
 
