@@ -58,6 +58,10 @@ public class FXML_RegistrarOVController implements Initializable {
 
     @FXML
     private void clickCancelar(ActionEvent event) {
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
+        Utilidad.cerrarVentanaActual(lbErrorCorreo);
+        } 
     }
 
     @FXML
@@ -96,32 +100,46 @@ public class FXML_RegistrarOVController implements Initializable {
 }
 
     
-    private boolean validarCampos(){
-        String nombre= tfNombreOV.getText();
-        String direccion= tfDireccionOV.getText();
-        String telefono= tfTelefonoOV.getText();
-        String correo= tfCorreoOV.getText();
-        lbErrorCorreo.setText(""); 
-        lbErrorNombre.setText("");
-        lbErrorTelefono.setText("");
-        lbErrorDireccion.setText("");
-        boolean camposValidos = true;
-        if(nombre.isEmpty()){
-            lbErrorNombre.setText("Nombre obligatorio");
-            camposValidos= false;
-        }
-        if(direccion.isEmpty()){
-           lbErrorDireccion.setText("Direccion obligatoria");
-           camposValidos= false;
-        }
-        if(telefono.isEmpty()){
-            lbErrorTelefono.setText("Telefono obligatorio");
-            camposValidos= false;
-        }
-        if(correo.isEmpty()){
-            lbErrorCorreo.setText("Correo obligatorio");
-            camposValidos= false;
-        }
-        return camposValidos;
+    private boolean validarCampos() {
+    String nombre = tfNombreOV.getText().trim();
+    String direccion = tfDireccionOV.getText().trim();
+    String telefono = tfTelefonoOV.getText().trim();
+    String correo = tfCorreoOV.getText().trim();
+
+    lbErrorCorreo.setText("");
+    lbErrorNombre.setText("");
+    lbErrorTelefono.setText("");
+    lbErrorDireccion.setText("");
+
+    boolean camposValidos = true;
+
+    if (nombre.isEmpty()) {
+        lbErrorNombre.setText("Nombre obligatorio");
+        camposValidos = false;
     }
+
+    if (direccion.isEmpty()) {
+        lbErrorDireccion.setText("Dirección obligatoria");
+        camposValidos = false;
+    }
+
+    if (telefono.isEmpty()) {
+        lbErrorTelefono.setText("Teléfono obligatorio");
+        camposValidos = false;
+    } else if (!telefono.matches("\\d{10}")) { // solo 10 dígitos numéricos para el cel
+        lbErrorTelefono.setText("Debe contener 10 números");
+        camposValidos = false;
+    }
+
+    if (correo.isEmpty()) {
+        lbErrorCorreo.setText("Correo obligatorio");
+        camposValidos = false;
+    } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        lbErrorCorreo.setText("Formato de correo inválido");
+        camposValidos = false;
+    }
+
+    return camposValidos;
+}
+
 }

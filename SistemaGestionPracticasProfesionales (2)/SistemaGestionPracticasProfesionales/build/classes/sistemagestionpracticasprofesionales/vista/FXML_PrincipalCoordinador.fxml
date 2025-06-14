@@ -13,22 +13,16 @@
             <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="983.0" fitWidth="680.0" layoutX="357.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/coordinadorPrincipal.png" />
+         </image>
+      </ImageView>
       <Label layoutX="248.0" layoutY="107.0" text="BIENVENIDO(A) DE NUEVO" textFill="#0c2f61">
          <font>
             <Font name="Arial Rounded MT Bold" size="39.0" />
          </font>
       </Label>
-      <Button layoutX="843.0" layoutY="29.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="59.0" prefWidth="162.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar sesión" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/cerrar-sesion.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
       <Button contentDisplay="TOP" layoutX="34.0" layoutY="199.0" mnemonicParsing="false" onAction="#clickAsignarProyecto" prefHeight="110.0" prefWidth="350.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Asignar Proyecto" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
@@ -100,10 +94,16 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="983.0" fitWidth="680.0" layoutX="363.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../recursos/coordinadorPrincipal.png" />
-         </image>
-      </ImageView>
+      <Button layoutX="814.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnCerrarSesion" prefHeight="59.0" prefWidth="162.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Cerrar sesión" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cerrar-sesion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>
