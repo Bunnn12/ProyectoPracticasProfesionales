@@ -121,14 +121,19 @@ public class ProyectoDAO {
         Connection conexionBD= Conexion.abrirConexion();
         if (conexionBD!= null){
             String consulta= "SELECT p.idProyecto, p.nombre, p.descripcion, " +
-                                "p.fechaInicio, p.fechaFin, p.horaEntrada, " +
-                                "p.horaSalida, p.cantidadEstudiantesParticipantes, " +
-                                "p.idOrganizacionVinculada, p.idResponsableProyecto, " +
-                                "ov.nombre AS 'nombreOrganizacion', " +
-                                "rp.nombre AS 'nombreResponsable' " +
-                                "FROM proyecto p " +
-                                "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
-                                "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto";
+                            "p.fechaInicio, p.fechaFin, p.horaEntrada, p.horaSalida, " +
+                            "p.cantidadEstudiantesParticipantes, p.idOrganizacionVinculada, " +
+                            "p.idResponsableProyecto, ov.nombre AS nombreOrganizacion, " +
+                            "rp.nombre AS nombreResponsable, " +
+                            "IFNULL(a.estudiantesAsignados, 0) AS estudiantesAsignados " +
+                            "FROM proyecto p " +
+                            "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                            "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto " +
+                            "LEFT JOIN ( " +
+                            "    SELECT idProyecto, COUNT(*) AS estudiantesAsignados " +
+                            "    FROM asignacion " +
+                            "    GROUP BY idProyecto " +
+                            ") a ON p.idProyecto = a.idProyecto";
             PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
             ResultSet resultado = sentencia.executeQuery();
             while(resultado.next()){

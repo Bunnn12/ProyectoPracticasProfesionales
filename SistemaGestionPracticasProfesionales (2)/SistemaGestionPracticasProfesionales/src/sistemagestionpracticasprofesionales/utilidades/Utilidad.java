@@ -25,9 +25,13 @@ public class Utilidad {
         alerta.setContentText(contenido);
         alerta.showAndWait();
     }
-    public static void cerrarVentanaActual(Node etiquetaStage){
-        Stage stageActual = (Stage) etiquetaStage.getScene().getWindow();
-        stageActual.close();
+    public static void cerrarVentanaActual(Node componente) {
+        if (componente != null && componente.getScene() != null && componente.getScene().getWindow() != null) {
+            Stage escenario = (Stage) componente.getScene().getWindow();
+            escenario.close();
+        } else {
+            System.out.println("No se pudo cerrar la ventana: el componente o la ventana no están inicializados.");
+        }
     }
     public static Stage obtenerEscenarioComponente(Control componente){
         return (Stage) componente.getScene().getWindow();
