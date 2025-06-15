@@ -27,6 +27,44 @@ public class DatosDocumentoAsignacion {
     private String nombreResponsable;
     private String correoResponsable;
     private String telefonoResponsable;
+    
+    private int idEstudiante;
+    private int idProyecto;
+
+    public DatosDocumentoAsignacion(String nombreCompleto, String matricula, String nombreProyecto, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, String nombreOrganizacion, String nombreResponsable, String correoResponsable, String telefonoResponsable, int idEstudiante, int idProyecto) {
+        this.nombreCompleto = nombreCompleto;
+        this.matricula = matricula;
+        this.nombreProyecto = nombreProyecto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+        this.nombreOrganizacion = nombreOrganizacion;
+        this.nombreResponsable = nombreResponsable;
+        this.correoResponsable = correoResponsable;
+        this.telefonoResponsable = telefonoResponsable;
+        this.idEstudiante = idEstudiante;
+        this.idProyecto = idProyecto;
+    }
+
+    public DatosDocumentoAsignacion() {
+    }
+    
+    public int getIdEstudiante() {
+        return idEstudiante;
+    }
+
+    public void setIdEstudiante(int idEstudiante) {
+        this.idEstudiante = idEstudiante;
+    }
+
+    public int getIdProyecto() {
+        return idProyecto;
+    }
+
+    public void setIdProyecto(int idProyecto) {
+        this.idProyecto = idProyecto;
+    }
 
     public String getNombreCompleto() {
         return nombreCompleto;

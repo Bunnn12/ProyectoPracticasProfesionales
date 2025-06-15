@@ -24,7 +24,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.DatosDocumentoAsignacion
  * @author reino
  */
 public class DocumentoGenerador {
-    public static boolean generarOficioAsignacion(DatosDocumentoAsignacion datos) {
+    public static File generarOficioAsignacion(DatosDocumentoAsignacion datos) {
         try {
             InputStream is = DocumentoGenerador.class.getResourceAsStream("/sistemagestionpracticasprofesionales/recursos/plantilla/oficio_asignacion.docx");
             if (is == null) {
@@ -33,10 +33,10 @@ public class DocumentoGenerador {
 
             XWPFDocument doc = new XWPFDocument(is);
 
+            // Reemplazo de marcadores
             for (XWPFParagraph p : doc.getParagraphs()) {
                 reemplazarMarcadores(p, datos);
             }
-
             for (XWPFTable tabla : doc.getTables()) {
                 for (XWPFTableRow fila : tabla.getRows()) {
                     for (XWPFTableCell celda : fila.getTableCells()) {
@@ -50,20 +50,23 @@ public class DocumentoGenerador {
             File carpeta = new File("oficios/");
             if (!carpeta.exists()) carpeta.mkdirs();
 
-            String nombreArchivo = "oficios/Oficio_" + datos.getMatricula() + ".docx";
-            FileOutputStream fos = new FileOutputStream(nombreArchivo);
+            String nombreArchivo = "Oficio_" + datos.getMatricula() + ".docx";
+            File archivo = new File(carpeta, nombreArchivo);
+
+            FileOutputStream fos = new FileOutputStream(archivo);
             doc.write(fos);
             fos.close();
             doc.close();
             is.close();
 
-            return true;
+            return archivo; 
+
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
-         }
-
+            return null;
+        }
     }
+
 
    private static void reemplazarMarcadores(XWPFParagraph parrafo, DatosDocumentoAsignacion datos) {
     String textoCompleto = parrafo.getText();

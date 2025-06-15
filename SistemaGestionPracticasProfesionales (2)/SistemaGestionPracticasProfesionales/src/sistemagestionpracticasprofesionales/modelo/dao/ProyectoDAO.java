@@ -26,18 +26,19 @@ public class ProyectoDAO {
 
         if (conexionBD != null) {
             String consulta = "SELECT p.idProyecto, p.nombre, p.descripcion, p.fechaInicio, p.fechaFin, "
-                    + "p.idOrganizacionVinculada, p.idResponsableProyecto, p.cantidadEstudiantesParticipantes, "
-                    + "rp.nombre AS nombreResponsable, ov.nombre AS nombreOrganizacion "
-                    + "FROM proyecto p "
-                    + "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto "
-                    + "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada "
-                    + "LEFT JOIN ( "
-                    + "    SELECT idProyecto, COUNT(*) AS estudiantesAsignados "
-                    + "    FROM asignacion "
-                    + "    GROUP BY idProyecto "
-                    + ") a ON p.idProyecto = a.idProyecto "
-                    + "WHERE IFNULL(a.estudiantesAsignados, 0) < p.cantidadEstudiantesParticipantes "
-                    + "AND p.nombre LIKE ?";
+                            + "p.horaEntrada, p.horaSalida, p.idOrganizacionVinculada, p.idResponsableProyecto, "
+                            + "p.cantidadEstudiantesParticipantes, "
+                            + "rp.nombre AS nombreResponsable, ov.nombre AS nombreOrganizacion, "
+                            + "IFNULL(a.estudiantesAsignados, 0) AS estudiantesAsignados "
+                            + "FROM proyecto p "
+                            + "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto "
+                            + "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada "
+                            + "LEFT JOIN ( "
+                            + "    SELECT idProyecto, COUNT(*) AS estudiantesAsignados "
+                            + "    FROM asignacion "
+                            + "    GROUP BY idProyecto "
+                            + ") a ON p.idProyecto = a.idProyecto "
+                            + "WHERE p.nombre LIKE ?";
 
             PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
             sentencia.setString(1, "%" + filtroNombre + "%");
@@ -155,6 +156,7 @@ public class ProyectoDAO {
         proyecto.setIdResponsableProyecto(resultado.getInt("idResponsableProyecto"));
         proyecto.setNombreOrganizacion(resultado.getString("nombreOrganizacion"));
         proyecto.setNombreResponsable(resultado.getString("nombreResponsable"));
+        proyecto.setEstudiantesAsignados(resultado.getInt("estudiantesAsignados"));
         return proyecto;
     }
      public static boolean actualizarResponsableDeProyecto(int idProyecto, int idNuevoResponsable) throws SQLException {

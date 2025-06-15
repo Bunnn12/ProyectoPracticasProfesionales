@@ -31,29 +31,39 @@ public class EstudianteDAO {
             estudiante.setGrupo(resultado.getString("grupo"));
             return estudiante;
         }
-        
-        public static ArrayList<Estudiante> buscarEstudiantesSinProyectoPorMatricula(String matriculaBusqueda) throws SQLException {
+        public static ArrayList<Estudiante> buscarEstudiantesSinProyectoPorMatricula(String textoBusqueda) throws SQLException {
             ArrayList<Estudiante> estudiantes = new ArrayList<>();
             Connection conexion = Conexion.abrirConexion();
-            if (conexion != null) {
-                String consulta = "SELECT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.correo, e.matricula "
-                        + "FROM estudiante e "
-                        + "WHERE e.idEstudiante NOT IN (SELECT a.idEstudiante FROM asignacion a) "
-                        + "AND e.matricula LIKE ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
-                sentencia.setString(1, "%" + matriculaBusqueda + "%");
-                ResultSet resultado = sentencia.executeQuery();
-                while (resultado.next()) {
-                    estudiantes.add(convertirRegistroEstudiante(resultado));
-                }
-                resultado.close();
-                sentencia.close();
-                conexion.close();
-            } else {
-                throw new SQLException("Sin conexión con la base de datos");
+
+            String consulta = "SELECT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.correo, e.matricula "
+                            + "FROM estudiante e "
+                            + "JOIN grupo g ON e.idGrupo = g.idGrupo "
+                            + "JOIN periodo p ON g.idPeriodo = p.idPeriodo "
+                            + "WHERE CURDATE() BETWEEN p.fechaInicio AND p.fechaFin "
+                            + "AND e.idEstudiante NOT IN (SELECT idEstudiante FROM asignacion) "
+                            + "AND (? = '' OR e.matricula LIKE ?)";
+
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+            sentencia.setString(1, textoBusqueda);
+            sentencia.setString(2, "%" + textoBusqueda + "%");
+
+            ResultSet resultado = sentencia.executeQuery();
+
+            while (resultado.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                estudiante.setNombre(resultado.getString("nombre"));
+                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                estudiante.setCorreo(resultado.getString("correo"));
+                estudiante.setMatricula(resultado.getString("matricula"));
+                estudiantes.add(estudiante);
             }
+
+            conexion.close();
             return estudiantes;
-    }
+        }
+
         public static ArrayList<Estudiante> obtenerEstudiantesPeriodoActualConProyecto() throws SQLException{
             ArrayList<Estudiante> estudiantes= new ArrayList<>();
             Connection conexionBD= Conexion.abrirConexion();
@@ -85,6 +95,8 @@ public class EstudianteDAO {
 
             if (conexion != null) {
                 String consulta = "SELECT " +
+                        "e.idEstudiante, " +
+                        "p.idProyecto, " +
                         "CONCAT(e.nombre, ' ', e.apellidoPaterno, ' ', IFNULL(e.apellidoMaterno, '')) AS nombreCompleto, " +
                         "e.matricula, " +
                         "p.nombre AS nombreProyecto, " +
@@ -116,6 +128,8 @@ public class EstudianteDAO {
                     }
 
                     DatosDocumentoAsignacion datos = new DatosDocumentoAsignacion();
+                    datos.setIdEstudiante(resultado.getInt("idEstudiante"));
+                    datos.setIdProyecto(resultado.getInt("idProyecto"));
                     datos.setNombreCompleto(resultado.getString("nombreCompleto"));
                     datos.setMatricula(matricula);
                     datos.setNombreProyecto(resultado.getString("nombreProyecto"));
@@ -142,6 +156,18 @@ public class EstudianteDAO {
             return listaDatos;
         }
 
+            public static boolean existeEstudiante(int idEstudiante) throws SQLException {
+                Connection conexion = Conexion.abrirConexion();
+                String sql = "SELECT 1 FROM estudiante WHERE idEstudiante = ?";
+                PreparedStatement ps = conexion.prepareStatement(sql);
+                ps.setInt(1, idEstudiante);
+                ResultSet rs = ps.executeQuery();
+                boolean existe = rs.next();
+                rs.close();
+                ps.close();
+                conexion.close();
+                return existe;
+            }
 
 }
 

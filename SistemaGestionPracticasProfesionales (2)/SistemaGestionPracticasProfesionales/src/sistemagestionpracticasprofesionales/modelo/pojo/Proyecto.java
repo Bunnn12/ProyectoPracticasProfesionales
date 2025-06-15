@@ -22,10 +22,12 @@ public class Proyecto {
     private Integer idEstudiante; 
     private String nombreResponsable;
     private String nombreOrganizacion;
+    private int estudiantesAsignados;
+
 
     public Proyecto() {}
 
-    public Proyecto(int idProyecto, String nombre, String descripcion, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, int idOrganizacionVinculada, int idResponsableProyecto, Integer idEstudiante, String nombreResponsable, String nombreOrganizacion) {
+    public Proyecto(int idProyecto, String nombre, String descripcion, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, int idOrganizacionVinculada, int idResponsableProyecto, Integer idEstudiante, String nombreResponsable, String nombreOrganizacion, int estudiantesAsignados) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -39,6 +41,15 @@ public class Proyecto {
         this.idEstudiante = idEstudiante;
         this.nombreResponsable = nombreResponsable;
         this.nombreOrganizacion = nombreOrganizacion;
+        this.estudiantesAsignados = estudiantesAsignados;
+    }
+
+    public int getEstudiantesAsignados() {
+        return estudiantesAsignados;
+    }
+
+    public void setEstudiantesAsignados(int estudiantesAsignados) {
+        this.estudiantesAsignados = estudiantesAsignados;
     }
     
     public String getNombreResponsable() {

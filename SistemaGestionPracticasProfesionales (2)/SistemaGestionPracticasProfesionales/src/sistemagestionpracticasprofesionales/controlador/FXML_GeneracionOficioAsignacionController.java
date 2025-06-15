@@ -4,7 +4,10 @@
  */
 package sistemagestionpracticasprofesionales.controlador;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -20,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sistemagestionpracticasprofesionales.modelo.dao.EstudianteDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.OficioAsignacionDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.DatosDocumentoAsignacion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.utilidades.DocumentoGenerador;
@@ -86,32 +90,50 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
 
     @FXML
     private void clickAceptar(ActionEvent event) {
-        try {
-            ArrayList<DatosDocumentoAsignacion> listaDatos = EstudianteDAO.obtenerDatosDocumentosAsignacion();
-            System.out.println("Registros únicos a generar: " + listaDatos.size());
+            try {
+        ArrayList<DatosDocumentoAsignacion> listaDatos = EstudianteDAO.obtenerDatosDocumentosAsignacion();
+        System.out.println("Registros únicos a generar: " + listaDatos.size());
 
-            if (listaDatos.isEmpty()) {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin datos", "No hay estudiantes con proyecto asignado en el periodo actual");
-                return;
-            }
-
-            int generados = 0;
-            for (DatosDocumentoAsignacion datos : listaDatos) {
-                System.out.println("Generando documento para: " + datos.getNombreCompleto() + " (" + datos.getMatricula() + ")");
-                boolean exito = DocumentoGenerador.generarOficioAsignacion(datos);
-                if (exito) generados++;
-            }
-
-            if (generados > 0) {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "Se generaron " + generados + " documentos correctamente");
-            } else {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo generar ningún documento.");
-            }
-
-        } catch (SQLException ex) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de conexión", "No hay conexión con la base de datos");
-            ex.printStackTrace();
+        if (listaDatos.isEmpty()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin datos", "No hay estudiantes con proyecto asignado en el periodo actual");
+            return;
         }
+
+        int generados = 0;
+        for (DatosDocumentoAsignacion datos : listaDatos) {
+            System.out.println("Generando documento para: " + datos.getNombreCompleto() + " (" + datos.getMatricula() + ")");
+
+            // Generar archivo docx
+            File archivoDoc = DocumentoGenerador.generarOficioAsignacion(datos);
+            if (archivoDoc != null && archivoDoc.exists()) {
+                byte[] contenidoDoc = Files.readAllBytes(archivoDoc.toPath());
+
+                // Validar existencia del estudiante antes de guardar
+                if (EstudianteDAO.existeEstudiante(datos.getIdEstudiante())) {
+                    boolean guardado = OficioAsignacionDAO.guardarOficio(datos.getIdEstudiante(), datos.getIdProyecto(), contenidoDoc);
+                    if (guardado) {
+                        generados++;
+                    } else {
+                        System.out.println("No se pudo guardar oficio para estudiante con id: " + datos.getIdEstudiante());
+                    }
+                } else {
+                    System.out.println("Estudiante con id " + datos.getIdEstudiante() + " no existe.");
+                }
+            } else {
+                System.out.println("No se pudo generar archivo para: " + datos.getNombreCompleto());
+            }
+        }
+
+        if (generados > 0) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "Se generaron y guardaron " + generados + " documentos correctamente");
+        } else {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo generar o guardar ningún documento.");
+        }
+
+    } catch (Exception ex) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Ocurrió un error al generar los documentos");
+        ex.printStackTrace();
+    }
     }
 
     @FXML
@@ -121,5 +143,8 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
         Utilidad.cerrarVentanaActual(tvEstudiantes);
         } 
     }
-    
+    public static byte[] leerArchivoBytes(File archivo) throws IOException {
+        return Files.readAllBytes(archivo.toPath());
+    }
+
 }

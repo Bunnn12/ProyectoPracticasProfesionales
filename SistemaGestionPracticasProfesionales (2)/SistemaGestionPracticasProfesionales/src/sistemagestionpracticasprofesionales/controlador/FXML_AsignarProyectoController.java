@@ -147,7 +147,7 @@ public class FXML_AsignarProyectoController implements Initializable {
         return;
     }
 
-    if (proyectoSeleccionado.getCantidadEstudiantesParticipantes() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
+    if (proyectoSeleccionado.getEstudiantesAsignados() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
         Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado",
                 "El proyecto '" + proyectoSeleccionado.getNombre() + "' ya tiene el máximo de estudiantes asignados.");
         return;
