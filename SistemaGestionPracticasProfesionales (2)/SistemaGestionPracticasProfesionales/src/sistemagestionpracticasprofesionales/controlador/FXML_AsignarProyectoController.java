@@ -187,7 +187,10 @@ public class FXML_AsignarProyectoController implements Initializable {
     
     @FXML
     private void clickCancelar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tvEstudiantes);
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
+        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
+        } 
     }
 
 

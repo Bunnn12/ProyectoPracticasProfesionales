@@ -120,4 +120,11 @@ public class Estudiante {
         this.idGrupo = idGrupo;
     }
     
+    public String getNombreCompleto() {
+        String nombreCompuesto = nombre;
+        if (apellidoPaterno != null) nombreCompuesto += " " + apellidoPaterno;
+        if (apellidoMaterno != null) nombreCompuesto += " " + apellidoMaterno;
+        return nombreCompuesto;
+    }
+
 }

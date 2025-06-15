@@ -14,7 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
 import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
@@ -47,6 +49,17 @@ public void inicializarInformacion(Usuario usuarioSesion){
 
     @FXML
     private void clickValidarDocumentos(ActionEvent event) {
+        try{
+        Stage escenario = new Stage();
+        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaEstudianteValidarDocumento.fxml"));
+        Scene escena= new Scene(vista);
+        escenario.setScene(escena);
+        escenario.setTitle("Validar documentos");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     @FXML

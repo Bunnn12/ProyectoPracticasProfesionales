@@ -9,6 +9,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
+import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
+import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
  * FXML Controller class
@@ -17,20 +21,33 @@ import javafx.fxml.Initializable;
  */
 public class FXML_EleccionTipoDocumentoController implements Initializable {
 
+    @FXML
+    private Label lbEstudianteSeleccionado;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Estudiante estudiante = Sesion.getEstudianteSeleccionado();
+        if (estudiante != null) {
+            lbEstudianteSeleccionado.setText(estudiante.getNombreCompleto());
+        } else {
+            lbEstudianteSeleccionado.setText("Ningún estudiante seleccionado");
+        }
     }    
 
     @FXML
     private void clickRegresar(ActionEvent event) {
+        Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
     }
 
     @FXML
     private void clickCancelar(ActionEvent event) {
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
+        Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
+        } 
     }
 
     @FXML

@@ -156,18 +156,55 @@ public class EstudianteDAO {
             return listaDatos;
         }
 
-            public static boolean existeEstudiante(int idEstudiante) throws SQLException {
-                Connection conexion = Conexion.abrirConexion();
-                String sql = "SELECT 1 FROM estudiante WHERE idEstudiante = ?";
-                PreparedStatement ps = conexion.prepareStatement(sql);
-                ps.setInt(1, idEstudiante);
-                ResultSet rs = ps.executeQuery();
-                boolean existe = rs.next();
-                rs.close();
-                ps.close();
+        public static boolean existeEstudiante(int idEstudiante) throws SQLException {
+            Connection conexion = Conexion.abrirConexion();
+            String sql = "SELECT 1 FROM estudiante WHERE idEstudiante = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idEstudiante);
+            ResultSet rs = ps.executeQuery();
+            boolean existe = rs.next();
+            rs.close();
+            ps.close();
+            conexion.close();
+            return existe;
+        }
+        public static ArrayList<Estudiante> buscarEstudiantesConDocumentosEntregadosPorTipoYMatricula(String textoBusqueda, String tipoDocumento) throws SQLException {
+            ArrayList<Estudiante> estudiantes = new ArrayList<>();
+            Connection conexion = Conexion.abrirConexion();
+
+            if (conexion != null) {
+                String consulta = 
+                    "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
+                    "e.correo, e.matricula, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
+                    "FROM estudiante e " +
+                    "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                    "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
+                    "JOIN expediente ex ON e.idEstudiante = ex.idEstudiante " +
+                    "JOIN documento d ON ex.idExpediente = d.idExpediente " +
+                    "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin " +
+                    "AND d.tipo = ? " +
+                    "AND (? = '' OR e.matricula LIKE ?)";
+
+                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                sentencia.setString(1, tipoDocumento);                  
+                sentencia.setString(2, textoBusqueda);                  // textoBusqueda para filtro vacío o no
+                sentencia.setString(3, "%" + textoBusqueda + "%");      
+
+                ResultSet resultado = sentencia.executeQuery();
+
+                while (resultado.next()) {
+                    estudiantes.add(convertirRegistroEstudiante(resultado));
+                }
+
+                resultado.close();
+                sentencia.close();
                 conexion.close();
-                return existe;
+            } else {
+                throw new SQLException("Sin conexión con la base de datos");
             }
+
+            return estudiantes;
+        }
 
 }
 

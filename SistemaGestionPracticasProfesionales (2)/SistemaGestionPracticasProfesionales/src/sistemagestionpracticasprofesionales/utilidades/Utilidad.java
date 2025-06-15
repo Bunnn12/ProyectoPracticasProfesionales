@@ -40,5 +40,6 @@ public class Utilidad {
         Optional<ButtonType> seleccion= alertaConfirmacion.showAndWait();
         return seleccion.get() == ButtonType.OK;
     }
+
 }
 
