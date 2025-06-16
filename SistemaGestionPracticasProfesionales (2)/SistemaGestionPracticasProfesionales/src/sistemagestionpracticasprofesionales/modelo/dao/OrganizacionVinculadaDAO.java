@@ -45,7 +45,7 @@ public class OrganizacionVinculadaDAO {
         return resultado;
     }
     
-    private static ArrayList<OrganizacionVinculada> obtenerOrganizacionesVinculadas() throws SQLException{
+    public static ArrayList<OrganizacionVinculada> obtenerOrganizacionesVinculadas() throws SQLException{
         ArrayList<OrganizacionVinculada> organizacionesVinculadas= new ArrayList<>();
         Connection conexionBD= Conexion.abrirConexion();
         if (conexionBD!= null){
