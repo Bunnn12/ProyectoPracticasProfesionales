@@ -97,6 +97,37 @@ public class ResponsableProyectoDAO {
         return responsablesProyecto;
     }
 
+     public static ArrayList<ResponsableProyecto> obtenerResponsableSinProyectoDeUnaOV(int idOrganizacionVinculada) throws SQLException {
+        ArrayList<ResponsableProyecto> responsablesProyecto = new ArrayList<>();
+        Connection conexionBD = Conexion.abrirConexion();
+        if (conexionBD != null) {
+            String consulta = "SELECT rp.idResponsableProyecto, rp.idOrganizacionVinculada, " +
+                              "rp.nombre, rp.correo, rp.telefono, " +
+                              "ov.nombre AS 'organizacionVinculada' " +
+                              "FROM responsableProyecto rp " +
+                              "JOIN organizacionVinculada ov ON rp.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                              "WHERE rp.idResponsableProyecto NOT IN ( " +
+                              "    SELECT DISTINCT idResponsableProyecto FROM proyecto" +
+                              ")" +
+                              "AND rp.idOrganizacionVinculada = ?;";
+            
+            PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+            sentencia.setInt(1, idOrganizacionVinculada);
+            ResultSet resultado = sentencia.executeQuery();
+
+            while (resultado.next()) {
+                responsablesProyecto.add(convertirRegistroResponsable(resultado));
+            }
+
+            sentencia.close();
+            resultado.close();
+            conexionBD.close();
+        } else {
+            throw new SQLException("Sin conexion con la base de datos");
+        }
+
+        return responsablesProyecto;
+    }
         
     private static ResponsableProyecto convertirRegistroResponsable(ResultSet resultado) throws SQLException{
         ResponsableProyecto responsableProyecto= new ResponsableProyecto();
