@@ -44,6 +44,19 @@ public class Proyecto {
         this.estudiantesAsignados = estudiantesAsignados;
     }
 
+    public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, String descripcion) {
+        this.idProyecto = idProyecto;
+        this.nombre = nombre;
+        this.idOrganizacionVinculada = idOrganizacionVinculada;
+        this.idResponsableProyecto = idResponsableProyecto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+        this.cantidadEstudiantesParticipantes = cantidadEstudiantesParticipantes;
+        this.descripcion = descripcion;
+    }
+
     public int getEstudiantesAsignados() {
         return estudiantesAsignados;
     }
