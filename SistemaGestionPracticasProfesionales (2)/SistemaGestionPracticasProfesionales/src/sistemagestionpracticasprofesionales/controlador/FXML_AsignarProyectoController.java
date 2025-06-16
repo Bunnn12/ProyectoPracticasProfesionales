@@ -1,6 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_AsignarProyectoController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 13/06/2025
+ * Descripción: Controlador para asignar estudiantes a proyectos dentro del sistema de gestión de prácticas profesionales.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -16,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,9 +30,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_AsignarProyecto, permite asignar estudiantes a proyectos disponibles
  */
 public class FXML_AsignarProyectoController implements Initializable {
 
@@ -57,37 +56,43 @@ public class FXML_AsignarProyectoController implements Initializable {
     private TableColumn colFechaInicio;
     @FXML
     private TableColumn colFechaTermino;
-    @FXML
     private TableColumn colNombreOV;
     @FXML
     private TableColumn colNombreResponsable;
     @FXML
     private TableColumn colCantEstudiantes;
-    private ObservableList<Proyecto> proyectos;
-    private ObservableList<Estudiante> estudiantes;
     @FXML
     private TextField tfBusquedaEstudiante;
     @FXML
     private TextField tfBusquedaProyecto;
+    
+    private ObservableList<Proyecto> proyectos= FXCollections.observableArrayList();
+    private ObservableList<Estudiante> estudiantes= FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<?, ?> colOrganizacionVinculada;
+    
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador y carga los datos iniciales en las tablas de estudiantes y proyectos
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        estudiantes = FXCollections.observableArrayList();
-        proyectos = FXCollections.observableArrayList();
         configurarTablaEstudiantes();
         configurarTablaProyectos();
         cargarEstudiantes();
         cargarProyectos();
     }    
-
+    
+    /**
+     * Cierra la ventana actual
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvEstudiantes);
     }
 
-    
+    /**
+     * Configura las columnas de la tabla de estudiantes
+     */
     private void configurarTablaEstudiantes() {
         colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         colNombreEstudiante.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -95,7 +100,10 @@ public class FXML_AsignarProyectoController implements Initializable {
         colApellidoMaterno.setCellValueFactory(new PropertyValueFactory<>("apellidoMaterno"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
     }
-
+    
+     /**
+     * Configura las columnas de la tabla de proyectos
+     */
     private void configurarTablaProyectos() {
         colNombreProyecto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -106,8 +114,10 @@ public class FXML_AsignarProyectoController implements Initializable {
         colCantEstudiantes.setCellValueFactory(new PropertyValueFactory<>("cantidadEstudiantesParticipantes"));
     }
     
-    
- private void cargarEstudiantes() {
+    /**
+     * Carga los estudiantes sin proyecto en la tabla
+     */
+    private void cargarEstudiantes() {
         try {
             estudiantes.clear();
             ArrayList<Estudiante> estudiantesDAO = EstudianteDAO.buscarEstudiantesSinProyectoPorMatricula(tfBusquedaEstudiante.getText());
@@ -119,7 +129,10 @@ public class FXML_AsignarProyectoController implements Initializable {
             Logger.getLogger(FXML_AsignarProyectoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Carga los proyectos disponibles en la tabla
+     */
     private void cargarProyectos() {
         try {
             proyectos.clear(); 
@@ -134,57 +147,70 @@ public class FXML_AsignarProyectoController implements Initializable {
         }
     }
     
+    /**
+     * Valida las selecciones y realiza la asignación del estudiante al proyecto.
+     */
     private void validarSeleccion() {
-    Estudiante estudianteSeleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
-    Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
+        Estudiante estudianteSeleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
+        Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
 
-    if (estudianteSeleccionado == null) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar estudiante", "Por favor selecciona un estudiante.");
-        return;
-    }
-    if (proyectoSeleccionado == null) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar proyecto", "Por favor selecciona un proyecto.");
-        return;
-    }
-
-    if (proyectoSeleccionado.getEstudiantesAsignados() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado",
-                "El proyecto '" + proyectoSeleccionado.getNombre() + "' ya tiene el máximo de estudiantes asignados.");
-        return;
-    }
-
-    try {
-        boolean asignacionExitosa = ProyectoDAO.asignarProyectoAEstudiante(estudianteSeleccionado.getMatricula(), proyectoSeleccionado.getIdProyecto());
-        if (asignacionExitosa) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Asignación exitosa", "Proyecto asignado correctamente.");
-            cargarEstudiantes(); 
-            cargarProyectos();  // actualizar la lista de proyectos para reflejar el cambio en cantidad
-        } else {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al asignar", "No se pudo asignar el proyecto. Intenta de nuevo.");
+        if (estudianteSeleccionado == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar estudiante", "Por favor selecciona un estudiante.");
+            return;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "Ocurrió un error al asignar el proyecto.");
+        if (proyectoSeleccionado == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar proyecto", "Por favor selecciona un proyecto.");
+            return;
+        }
+
+        if (proyectoSeleccionado.getEstudiantesAsignados() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado","El proyecto '" + proyectoSeleccionado.getNombre() + "' ya tiene el máximo de estudiantes asignados");
+            return;
+        }
+        
+        try {
+            boolean asignacionExitosa = ProyectoDAO.asignarProyectoAEstudiante(estudianteSeleccionado.getMatricula(), proyectoSeleccionado.getIdProyecto());
+            if (asignacionExitosa) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Asignación exitosa", "Proyecto asignado correctamente.");
+                cargarEstudiantes(); 
+                cargarProyectos();  // actualizar la lista de proyectos para reflejar el cambio en cantidad
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al asignar", "No se pudo asignar el proyecto. Intenta de nuevo.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "Ocurrió un error al asignar el proyecto.");
+        }
     }
-}
 
-
+    
+    /**
+     * Ejecuta búsqueda al escribir en el textField tfBusquedaEstudiante
+     */
     @FXML
     private void buscarEstudiante(KeyEvent event){
         cargarEstudiantes();
     }
-
+    
+    /**
+     * Ejecuta búsqueda al escribir en el textField tfBusquedaProyectos
+     */
     @FXML
     private void buscarProyecto(KeyEvent event) {
         cargarProyectos();
     }
 
-
+    /**
+     * Ejecuta la validación y asignación de proyecto
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         validarSeleccion();
     }
     
+    /**
+     * Cierra la ventana si el usuario lo confirma
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
@@ -192,6 +218,4 @@ public class FXML_AsignarProyectoController implements Initializable {
         Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
         } 
     }
-
-
 }
