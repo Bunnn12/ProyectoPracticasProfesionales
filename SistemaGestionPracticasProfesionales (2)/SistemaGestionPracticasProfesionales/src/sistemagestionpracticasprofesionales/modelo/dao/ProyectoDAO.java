@@ -13,14 +13,48 @@ import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
+import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 
 /**
  *
  * @author reino
  */
 public class ProyectoDAO {
+
+    public static ResultadoOperacion registrarProyecto(Proyecto proyecto) throws SQLException {
+        ResultadoOperacion resultado = new ResultadoOperacion();
+        Connection conexionBD = Conexion.abrirConexion();
+        if (conexionBD != null) {
+            String consulta = "INSERT INTO proyecto (nombre, idOrganizacionVinculada, idResponsableProyecto, fechaInicio, fechaFin, horaEntrada, horaSalida, cantidadEstudiantesParticipantes, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement prepararSentencia= conexionBD.prepareStatement(consulta);
+            prepararSentencia.setString(1, proyecto.getNombre());
+            prepararSentencia.setInt(2, proyecto.getIdOrganizacionVinculada());
+            prepararSentencia.setInt(3, proyecto.getIdResponsableProyecto());
+            prepararSentencia.setString(4, proyecto.getFechaInicio());
+            prepararSentencia.setString(5, proyecto.getFechaFin());
+            prepararSentencia.setString(6, proyecto.getHoraEntrada());
+            prepararSentencia.setString(7, proyecto.getHoraSalida());
+            prepararSentencia.setInt(8, proyecto.getCantidadEstudiantesParticipantes());
+            prepararSentencia.setString(9, proyecto.getDescripcion());
+            
+            int filasAfectadas = prepararSentencia.executeUpdate();
+            if (filasAfectadas == 1){
+                resultado.setError(false);
+                resultado.setMensaje("Proyecto, registrado correctamente");
+            }
+            else{
+                resultado.setError(true);
+                resultado.setMensaje("Lo sentimos :( por el momento no se puede registrar la información del proyecto");
+            }
+            prepararSentencia.close();
+            conexionBD.close();
+        } else{
+            throw new SQLException("Sin conexion con la base de datos");
+        }
+        return resultado;
+    }
     
-        public static ArrayList<Proyecto> buscarProyectoPorNombre(String filtroNombre) throws SQLException {
+    public static ArrayList<Proyecto> buscarProyectoPorNombre(String filtroNombre) throws SQLException {
         ArrayList<Proyecto> proyectos = new ArrayList<>();
         Connection conexionBD = Conexion.abrirConexion();
 
