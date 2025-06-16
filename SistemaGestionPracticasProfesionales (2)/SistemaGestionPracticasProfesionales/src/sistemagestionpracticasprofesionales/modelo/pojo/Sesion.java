@@ -10,6 +10,7 @@ package sistemagestionpracticasprofesionales.modelo.pojo;
  */
 public class Sesion {
      private static Estudiante estudianteSeleccionado;
+     private static Usuario usuarioSeleccionado;
 
     public static void setEstudianteSeleccionado(Estudiante estudiante) {
         estudianteSeleccionado = estudiante;
@@ -18,8 +19,24 @@ public class Sesion {
     public static Estudiante getEstudianteSeleccionado() {
         return estudianteSeleccionado;
     }
+    public static void setUsuarioSeleccionado(Usuario usuario) {
+        usuarioSeleccionado = usuario;
+    }
+
+    public static Usuario getUsuarioSeleccionado() {
+        return usuarioSeleccionado;
+    }
 
     public static void limpiarSesion() {
         estudianteSeleccionado = null;
+        usuarioSeleccionado = null;
     }
+    public static boolean esSesionEstudiante() {
+        return estudianteSeleccionado != null;
+    }
+
+    public static boolean esSesionUsuario() {
+        return usuarioSeleccionado != null;
+    }
+
 }

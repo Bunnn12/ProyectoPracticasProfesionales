@@ -205,20 +205,21 @@ public class EstudianteDAO {
 
             return estudiantes;
         }
+
         public static String obtenerNombreEstudiantePorId(int idEstudiante) {
-            String nombre = "";
-            String consulta = "SELECT nombre FROM estudiante WHERE idEstudiante = ?";
-            try (Connection conexion = Conexion.abrirConexion();
-                 PreparedStatement ps = conexion.prepareStatement(consulta)) {
+            String nombreCompleto = "";
+            String consulta = "SELECT nombre, apellidoPaterno, apellidoMaterno FROM estudiante WHERE idEstudiante = ?";
+            try (Connection conn = Conexion.abrirConexion();
+                 PreparedStatement ps = conn.prepareStatement(consulta)) {
                 ps.setInt(1, idEstudiante);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    nombre = rs.getString("nombre");
+                    nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidoPaterno") + " " + rs.getString("apellidoMaterno");
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-            return nombre;
+            return nombreCompleto;
         }
 
 }

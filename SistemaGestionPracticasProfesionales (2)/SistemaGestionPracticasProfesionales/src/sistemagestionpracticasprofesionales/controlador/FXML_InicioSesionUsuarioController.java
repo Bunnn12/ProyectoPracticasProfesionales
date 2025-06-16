@@ -20,6 +20,7 @@
     import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
     import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
+import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
     /**
      * FXML Controller class
@@ -79,7 +80,7 @@ import java.lang.reflect.InvocationTargetException;
             mostrarError("Error interno", "El usuario no ha sido encontrado en el sistema");
             return;
         }
-
+        Sesion.setUsuarioSeleccionado(usuarioSesion);
         String rol = usuarioSesion.getRol();
         if (rol == null || rol.trim().isEmpty()) {
             mostrarError("Rol desconocido", "El rol del usuario no está definido correctamente.");

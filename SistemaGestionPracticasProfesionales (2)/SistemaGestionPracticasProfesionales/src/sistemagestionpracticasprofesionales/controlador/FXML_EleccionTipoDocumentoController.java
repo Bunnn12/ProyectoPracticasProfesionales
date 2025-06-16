@@ -4,6 +4,7 @@
  */
 package sistemagestionpracticasprofesionales.controlador;
 
+import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.modelo.pojo.Expediente;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
+import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -111,10 +113,56 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
 
     @FXML
     private void clickCancelar(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
-        if (confirmado) {
-        Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
-        } 
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Cancelar", "¿Estás seguro que quieres cancelar y volver a la pantalla principal?");
+        if (!confirmado) return;
+
+        Usuario usuarioSesion = Sesion.getUsuarioSeleccionado();
+        if (usuarioSesion == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de sesión", "No se pudo recuperar la sesión del usuario.");
+            return;
+        }
+
+        String rol = usuarioSesion.getRol();
+        String fxmlDestino = null;
+        String tituloVentana = null;
+
+        switch (rol.toLowerCase().trim()) {
+            case "coordinador":
+                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalCoordinador.fxml";
+                tituloVentana = "Principal Coordinador";
+                break;
+            case "evaluador":
+                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalEvaluador.fxml";
+                tituloVentana = "Principal Evaluador";
+                break;
+            case "profesor ee":
+                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalProfesorEE.fxml";
+                tituloVentana = "Principal Profesor EE";
+                break;
+            default:
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Rol desconocido", "No se puede determinar a qué pantalla volver.");
+                return;
+        }
+
+        try {
+            FXMLLoader cargador = new FXMLLoader(getClass().getResource(fxmlDestino));
+            Parent vista = cargador.load();
+
+            Object controlador = cargador.getController();
+            controlador.getClass().getMethod("inicializarInformacion", Usuario.class).invoke(controlador, usuarioSesion);
+
+            Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
+            Stage nuevaVentana = new Stage();
+            nuevaVentana.setScene(new Scene(vista));
+            nuevaVentana.setTitle(tituloVentana);
+            nuevaVentana.centerOnScreen();
+            nuevaVentana.show();
+
+
+        } catch (IOException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | java.lang.reflect.InvocationTargetException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al regresar", "No se pudo regresar a la pantalla principal: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void abrirVisualizacionDocumentos(String tipoDocumento) {

@@ -19,6 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import java.io.IOException;
 import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
+import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
 /**
  * FXML Controller class
@@ -78,18 +79,18 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error interno", "El usuario no ha sido encontrado en el sistema");
             return;
         }
-        
-         try{
-        Stage escenarioBase = (Stage) tfMatricula.getScene().getWindow(); 
-        FXMLLoader cargador= new FXMLLoader(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_PrincipalEstudiante.fxml"));
-        Parent vista= cargador.load();
-        FXML_PrincipalEstudianteController controlador= cargador.getController();
-        controlador.inicializarInformacion(estudianteSesion);
-        Scene escenaPrincipal= new Scene(vista);
-        escenarioBase.setScene(escenaPrincipal);
-        escenarioBase.setTitle("Principal Estudiante");
-        escenarioBase.centerOnScreen();
-        escenarioBase.showAndWait();
+        Sesion.setEstudianteSeleccionado(estudianteSesion);
+        try{
+            Stage escenarioBase = (Stage) tfMatricula.getScene().getWindow(); 
+            FXMLLoader cargador= new FXMLLoader(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_PrincipalEstudiante.fxml"));
+            Parent vista= cargador.load();
+            FXML_PrincipalEstudianteController controlador= cargador.getController();
+            controlador.inicializarInformacion(estudianteSesion);
+            Scene escenaPrincipal= new Scene(vista);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Principal Estudiante");
+            escenarioBase.centerOnScreen();
+            escenarioBase.showAndWait();
         }catch(Exception e){
             e.printStackTrace();
         }

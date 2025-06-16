@@ -25,7 +25,7 @@ public class ExpedienteDAO {
         Connection conexionBD = Conexion.abrirConexion();
 
         if (conexionBD != null) {
-            String consulta = "SELECT r.idReporte, r.fechaEntrega, r.numeroHorasTrabajadas, r.idExpediente, r.nombre, r.archivo " +
+            String consulta = "SELECT r.idReporte, r.fechaEntrega, r.numeroHorasTrabajadas, r.idExpediente, r.nombre, r.archivo, r.estado " +
                               "FROM reporte r " +
                               "JOIN expediente e ON r.idExpediente = e.idExpediente " +
                               "WHERE e.idEstudiante = ?";
@@ -58,6 +58,7 @@ public class ExpedienteDAO {
         reporte.setIdExpediente(rs.getInt("idExpediente"));
         reporte.setNombre(rs.getString("nombre"));
         reporte.setArchivo(rs.getBytes("archivo"));
+        reporte.setEstado(rs.getString("estado"));
         return reporte;
     }
     public static ArrayList<DocumentoAnexo> obtenerDocumentosPorTipo(int idExpediente, String tipo) throws SQLException {

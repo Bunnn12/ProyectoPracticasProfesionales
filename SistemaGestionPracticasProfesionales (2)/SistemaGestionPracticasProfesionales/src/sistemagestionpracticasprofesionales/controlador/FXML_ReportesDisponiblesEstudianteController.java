@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,6 +44,8 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
     private ObservableList<Reporte> reportes = FXCollections.observableArrayList();
     private int idEstudiante;
     private String nombreEstudiante;
+    @FXML
+    private TableColumn colEstado;
     /**
      * Initializes the controller class.
      */
@@ -60,9 +63,10 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
     private void configurarTablaReportes() {
         colNombreReporte.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFechaEntrega.setCellValueFactory(new PropertyValueFactory<>("fechaEntrega"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
     }
      
-    private void cargarReportes() {
+    public void cargarReportes() {
         try {
             reportes.clear();
             ArrayList<Reporte> reportesDAO = ExpedienteDAO.obtenerReportesPorEstudiante(idEstudiante);
@@ -101,12 +105,14 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
             FXML_VisualizacionReporteController controller = loader.getController();
             controller.cargarReporte(reporteSeleccionado, nombreEstudiante);
 
+            controller.setControladorPrincipal(this);
+
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Visualización de reporte");
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
             Utilidad.mostrarAlertaSimple(
@@ -124,5 +130,5 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
         Utilidad.cerrarVentanaActual(tvReportes);
         } 
     }
-    
+
 }

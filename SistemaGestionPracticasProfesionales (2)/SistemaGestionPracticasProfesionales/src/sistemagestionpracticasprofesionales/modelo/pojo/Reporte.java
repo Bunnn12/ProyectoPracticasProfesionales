@@ -17,17 +17,28 @@ public class Reporte {
     private int idExpediente;
     private String nombre;
     private byte[] archivo;
+    private String estado;
 
-    public Reporte(int idReporte, Date fechaEntrega, int numeroHorasTrabajadas, int idExpediente, String nombre, byte[] archivo) {
+    public Reporte(int idReporte, Date fechaEntrega, int numeroHorasTrabajadas, int idExpediente, String nombre, byte[] archivo, String estado) {
         this.idReporte = idReporte;
         this.fechaEntrega = fechaEntrega;
         this.numeroHorasTrabajadas = numeroHorasTrabajadas;
         this.idExpediente = idExpediente;
         this.nombre = nombre;
         this.archivo = archivo;
+        this.estado = estado;
     }
 
+
     public Reporte() {
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public int getIdReporte() {

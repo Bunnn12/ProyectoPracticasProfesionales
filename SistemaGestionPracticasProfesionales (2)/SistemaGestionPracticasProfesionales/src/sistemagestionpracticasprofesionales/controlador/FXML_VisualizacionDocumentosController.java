@@ -5,6 +5,7 @@
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +14,10 @@ import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -21,6 +25,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.DocumentoAnexo;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
@@ -68,10 +74,52 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
 
     @FXML
     private void clickValidar(ActionEvent event) {
+        DocumentoAnexo documentoSeleccionado = tvDocumentos.getSelectionModel().getSelectedItem();
+        if (documentoSeleccionado == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Validación", "Debes seleccionar un documento.");
+            return;
+        }
+
+        try {
+            boolean actualizado = ExpedienteDAO.actualizarEstadoDocumento(documentoSeleccionado.getIdDocumentoAnexo(), "Validado");
+            if (actualizado) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Documento validado", "Documento validado correctamente");
+                cargarDocumentos(); // refresca la tabla
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo validar el documento");
+            }
+        } catch (Exception e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "Sin conexión con la base de datos");
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void clickRetroalimentar(ActionEvent event) {
+            DocumentoAnexo documentoSeleccionado = tvDocumentos.getSelectionModel().getSelectedItem();
+        if (documentoSeleccionado == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación", "Debes seleccionar un documento.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_RetroalimentacionDocumento.fxml"));
+            Parent vista = loader.load();
+
+            FXML_RetroalimentacionDocumentoController controlador = loader.getController();
+            controlador.setDatosDocumento(documentoSeleccionado.getNombre(), lbNombreEstudiante.getText(), documentoSeleccionado.getIdDocumentoAnexo());
+
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Retroalimentación documento");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+
+            cargarDocumentos(); // recargar en caso de cambios
+        } catch (IOException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de retroalimentación.");
+            e.printStackTrace();
+        }
     }
     
     public void setTipoDocumento(String tipoDocumento) {
