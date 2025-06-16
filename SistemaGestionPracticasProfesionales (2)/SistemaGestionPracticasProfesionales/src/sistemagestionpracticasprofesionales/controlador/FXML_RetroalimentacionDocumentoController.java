@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -16,6 +17,11 @@ import javafx.fxml.Initializable;
  * @author reino
  */
 public class FXML_RetroalimentacionDocumentoController implements Initializable {
+
+    @FXML
+    private Label lbNombreDocumento;
+    @FXML
+    private Label lbEstudianteDocumento;
 
     /**
      * Initializes the controller class.

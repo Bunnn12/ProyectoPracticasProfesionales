@@ -4,21 +4,23 @@
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
+import java.sql.Date;
+
 /**
  *
  * @author reino
  */
 public class Expediente {
     private int idExpediente;
-    private String fechaInicio;
-    private String fechaFin;
+    private Date fechaInicio;
+    private Date fechaFin;
     private int horasAcumuladas;
     private String estado; 
     private int idEstudiante;
 
     public Expediente() {}
 
-    public Expediente(int idExpediente, String fechaInicio, String fechaFin, int horasAcumuladas, String estado, int idEstudiante) {
+    public Expediente(int idExpediente, Date fechaInicio, Date fechaFin, int horasAcumuladas, String estado, int idEstudiante) {
         this.idExpediente = idExpediente;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -35,19 +37,19 @@ public class Expediente {
         this.idExpediente = idExpediente;
     }
 
-    public String getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public String getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -74,4 +76,6 @@ public class Expediente {
     public void setIdEstudiante(int idEstudiante) {
         this.idEstudiante = idEstudiante;
     }
+    
+    
 } 
