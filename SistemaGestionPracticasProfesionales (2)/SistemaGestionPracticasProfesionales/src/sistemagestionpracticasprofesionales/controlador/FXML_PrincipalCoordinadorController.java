@@ -104,6 +104,17 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
 
     @FXML
     private void clickRegistrarProyecto(ActionEvent event) {
+        try {
+            Stage escenario = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_RegistrarProyecto.fxml"));
+            Scene escena = new Scene(vista);
+            escenario.setScene(escena);
+            escenario.setTitle("Registrar proyecto");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
