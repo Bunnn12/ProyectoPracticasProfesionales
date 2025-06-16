@@ -15,10 +15,12 @@ public class Expediente {
     private Date fechaInicio;
     private Date fechaFin;
     private int horasAcumuladas;
-    private String estado; 
+    private String estado;
     private int idEstudiante;
+    private Estudiante estudiante; // ← nuevo campo
 
-    public Expediente() {}
+    public Expediente() {
+    }
 
     public Expediente(int idExpediente, Date fechaInicio, Date fechaFin, int horasAcumuladas, String estado, int idEstudiante) {
         this.idExpediente = idExpediente;
@@ -76,6 +78,12 @@ public class Expediente {
     public void setIdEstudiante(int idEstudiante) {
         this.idEstudiante = idEstudiante;
     }
-    
-    
-} 
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
+    }
+}

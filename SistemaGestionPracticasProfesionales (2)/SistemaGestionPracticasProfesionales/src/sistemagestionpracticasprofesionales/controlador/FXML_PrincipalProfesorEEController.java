@@ -67,8 +67,20 @@ public void inicializarInformacion(Usuario usuarioSesion){
     }
 
     @FXML
-    private void clickActualizarExpediente(ActionEvent event) {
+private void clickActualizarExpediente(ActionEvent event) {
+    try {
+        Stage escenario = new Stage();
+        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaExpediente.fxml"));
+        Scene escena = new Scene(vista);
+        escenario.setScene(escena);
+        escenario.setTitle("Actualizar expediente");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     @FXML
     private void btnCerrarSesion(ActionEvent event) {

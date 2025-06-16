@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Reporte;
 import sistemagestionpracticasprofesionales.modelo.pojo.DocumentoAnexo;
+import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.modelo.pojo.Expediente;
 
 
@@ -204,6 +205,74 @@ public class ExpedienteDAO {
         }
         return total;
     }
+    
+    public static Integer buscarIdExpedientePorNombreOMatricula(String texto) throws SQLException {
+    Integer idExpediente = null;
+    String sql = "SELECT e.idExpediente " +
+                 "FROM expediente e " +
+                 "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                 "WHERE es.nombre LIKE CONCAT('%', ?, '%') " +
+                 "OR es.matricula LIKE CONCAT('%', ?, '%')";
+
+    try (Connection conn = Conexion.abrirConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, texto);
+        ps.setString(2, texto);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                idExpediente = rs.getInt("idExpediente");
+            }
+        }
+    }
+    return idExpediente;
+}
+    
+    public static Expediente obtenerExpedienteConEstudiante(int idExpediente) throws SQLException {
+    Expediente expediente = null;
+    String consulta = "SELECT e.*, es.idEstudiante, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula " +
+                      "FROM expediente e " +
+                      "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                      "WHERE e.idExpediente = ?";
+
+    try (Connection conexion = Conexion.abrirConexion();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+        ps.setInt(1, idExpediente);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                expediente = new Expediente();
+                expediente.setIdExpediente(rs.getInt("idExpediente"));
+                expediente.setFechaInicio(rs.getDate("fechaInicio"));
+                expediente.setFechaFin(rs.getDate("fechaFin"));
+                expediente.setHorasAcumuladas(rs.getInt("horasAcumuladas"));
+                expediente.setEstado(rs.getString("estado"));
+                expediente.setIdEstudiante(rs.getInt("idEstudiante"));
+
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(rs.getInt("idEstudiante"));
+                estudiante.setNombre(rs.getString("nombre"));
+                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                estudiante.setMatricula(rs.getString("matricula"));
+
+                expediente.setEstudiante(estudiante);
+            }
+        }
+    }
+
+    return expediente;
+}
+
+public static boolean actualizarHorasExpediente(int idExpediente, int nuevasHoras) throws SQLException {
+    String sql = "UPDATE expediente SET horasAcumuladas = ? WHERE idExpediente = ?";
+    try (Connection conexion = Conexion.abrirConexion();
+         PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, nuevasHoras);
+        ps.setInt(2, idExpediente);
+        return ps.executeUpdate() > 0;
+    }
+}
+    
+    
 
 
 
