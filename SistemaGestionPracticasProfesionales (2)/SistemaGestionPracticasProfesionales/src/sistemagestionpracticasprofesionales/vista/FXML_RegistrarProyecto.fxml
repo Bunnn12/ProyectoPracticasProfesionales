@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_RegistrarProyectoController">
+   <children>
+      <Label layoutX="365.0" layoutY="37.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="80.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="269.0" layoutY="126.0" text="Registrar Nuevo Proyecto" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="259.0" layoutY="189.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfNombreProyecto" layoutX="356.0" layoutY="211.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el nombre" />
+      <Label layoutX="156.0" layoutY="213.0" text="Nombre:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="155.0" layoutY="283.0" text="Org. Vinculada:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="155.0" layoutY="350.0" text="Responsable:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="154.0" layoutY="420.0" text="Fecha de inicio:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="187.0" layoutY="730.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="663.0" layoutY="731.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="34.0" layoutY="34.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/flecha-hacia-atras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ComboBox fx:id="cbListaOVs" layoutX="357.0" layoutY="284.0" onMouseClicked="#clickSeleccionarOV" prefHeight="25.0" prefWidth="508.0" />
+      <DatePicker fx:id="dpFechaInicio" editable="false" layoutX="357.0" layoutY="421.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="549.0" layoutY="418.0" text="Fecha de fin:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpFechaFin" editable="false" layoutX="714.0" layoutY="420.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="154.0" layoutY="551.0" text="Participantes:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfParticipantes" layoutX="356.0" layoutY="551.0" prefHeight="32.0" prefWidth="509.0" promptText="Ingrese el número de estudiantes participantes" />
+      <Label layoutX="156.0" layoutY="618.0" text="Descripción:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfDescripcion" alignment="TOP_LEFT" layoutX="357.0" layoutY="622.0" prefHeight="70.0" prefWidth="509.0" promptText="Ingrese una descripción del proyecto" />
+      <Label fx:id="lbErrorNombre" layoutX="359.0" layoutY="246.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorDescripcion" layoutX="358.0" layoutY="694.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorParticipantes" layoutX="359.0" layoutY="585.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorFechaInicio" layoutX="360.0" layoutY="448.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorFechaFin" layoutX="717.0" layoutY="447.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorResponsable" layoutX="360.0" layoutY="382.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorOV" layoutX="361.0" layoutY="312.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbListaResponsables" layoutX="357.0" layoutY="352.0" onMouseClicked="#clickSeleccionarResponsable" prefHeight="25.0" prefWidth="508.0" />
+      <Label layoutX="152.0" layoutY="485.0" text="Hora de entrada:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfHoraEntrada" layoutX="358.0" layoutY="483.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM:SS" />
+      <Label layoutX="549.0" layoutY="484.0" text="Hora de salida:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfHoraSalida" layoutX="743.0" layoutY="482.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM:SS" />
+      <Label fx:id="lbErrorHoraEntrada" layoutX="360.0" layoutY="516.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorHoraSalida" layoutX="744.0" layoutY="516.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
