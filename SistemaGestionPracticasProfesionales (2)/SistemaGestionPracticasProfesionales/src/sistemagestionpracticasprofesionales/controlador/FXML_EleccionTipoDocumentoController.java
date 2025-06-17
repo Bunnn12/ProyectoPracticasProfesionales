@@ -1,10 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_EleccionTipoDocumentoController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 15/06/2025
+ * Descripción: Controlador que permite seleccionar el tipo de documento para validar en el sistema de gestión de prácticas profesionales.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
-import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -24,13 +25,12 @@ import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.modelo.pojo.Expediente;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
-import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_EleccionTipoDocumento.
+ * Permite seleccionar diferentes tipos de documentos entregados por un estudiante para 
+ * posteriormente validarlos o retroalimentarlos
  */
 public class FXML_EleccionTipoDocumentoController implements Initializable {
 
@@ -38,7 +38,10 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
     private Label lbEstudianteSeleccionado;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador mostrando el nombre del estudiante seleccionado.
+     *
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,23 +52,43 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
             lbEstudianteSeleccionado.setText("Ningún estudiante seleccionado");
         }
     }    
-
+    
+    /**
+     * Cierra la ventana actual.
+     * 
+     * @param event Evento del botón regresar.
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
     }
 
-
+    /**
+     * Abre la visualización de documentos iniciales entregados por el estudiante
+     *
+     * @param event Evento del botón validar documentos iniciales.
+     */
     @FXML
     private void clickValidarDocIniciales(ActionEvent event) {
         abrirVisualizacionDocumentos("inicial");
     }
+    
+    /**
+     * Abre la visualización de documentos finales.
+     *
+     * @param event Evento del botón validar documentos finales entregados por el estudiante
+     */
 
     @FXML
     private void clickValidarDocFinales(ActionEvent event) {
         abrirVisualizacionDocumentos("final");
     }
-
+    
+    /**
+     * Abre la visualización de reportes entregados por el estudiante.
+     *
+     * @param event Evento del botón validar reportes.
+     */
     @FXML
     private void clickValidarDocReportes(ActionEvent event) {
         try {
@@ -100,71 +123,41 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
 
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Ocurrió un error al abrir los reportes.");
+        } catch (IOException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de archivo", "Ocurrió un error al abrir o manejar archivos");
+        } catch (SQLException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
         }
     }
-
+    
+    /**
+     * Abre la visualización de documentos intermedios.
+     *
+     * @param event Evento del botón validar documentos intermedios entregados por el estudiante
+     */
     @FXML
     private void clickValidarDocIntermedios(ActionEvent event) {
         abrirVisualizacionDocumentos("intermedio");
     }
 
+    /**
+     * Cierra la ventana actual si el usuario lo confirma
+     *
+     * @param event Evento del botón cancelar.
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Cancelar", "¿Estás seguro que quieres cancelar y volver a la pantalla principal?");
-        if (!confirmado) return;
-
-        Usuario usuarioSesion = Sesion.getUsuarioSeleccionado();
-        if (usuarioSesion == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de sesión", "No se pudo recuperar la sesión del usuario.");
-            return;
-        }
-
-        String rol = usuarioSesion.getRol();
-        String fxmlDestino = null;
-        String tituloVentana = null;
-
-        switch (rol.toLowerCase().trim()) {
-            case "coordinador":
-                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalCoordinador.fxml";
-                tituloVentana = "Principal Coordinador";
-                break;
-            case "evaluador":
-                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalEvaluador.fxml";
-                tituloVentana = "Principal Evaluador";
-                break;
-            case "profesor ee":
-                fxmlDestino = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalProfesorEE.fxml";
-                tituloVentana = "Principal Profesor EE";
-                break;
-            default:
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Rol desconocido", "No se puede determinar a qué pantalla volver.");
-                return;
-        }
-
-        try {
-            FXMLLoader cargador = new FXMLLoader(getClass().getResource(fxmlDestino));
-            Parent vista = cargador.load();
-
-            Object controlador = cargador.getController();
-            controlador.getClass().getMethod("inicializarInformacion", Usuario.class).invoke(controlador, usuarioSesion);
-
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
             Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
-            Stage nuevaVentana = new Stage();
-            nuevaVentana.setScene(new Scene(vista));
-            nuevaVentana.setTitle(tituloVentana);
-            nuevaVentana.centerOnScreen();
-            nuevaVentana.show();
-
-
-        } catch (IOException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | java.lang.reflect.InvocationTargetException e) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al regresar", "No se pudo regresar a la pantalla principal: " + e.getMessage());
-            e.printStackTrace();
-        }
+        } 
     }
 
+    /**
+     * Abre la vista de visualización de documentos según el tipo especificado.
+     * 
+     * @param tipoDocumento Tipo de documento a visualizar (inicial, final, intermedio)
+     */
     private void abrirVisualizacionDocumentos(String tipoDocumento) {
         try {
             Estudiante estudiante = Sesion.getEstudianteSeleccionado();
@@ -204,9 +197,10 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Ocurrió un error al abrir la visualización de documentos.");
+        } catch (IOException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Ocurrió un error al abrir la visualización de documentos");
+        } catch (SQLException ex){
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
         }
     }
 

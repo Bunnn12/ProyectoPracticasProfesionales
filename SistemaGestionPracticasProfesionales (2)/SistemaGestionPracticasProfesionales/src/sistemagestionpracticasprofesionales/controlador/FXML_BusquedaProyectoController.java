@@ -1,6 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_BusquedaProyectoController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 14/06/2025
+ * Descripción: Controlador para la vista de búsqueda de proyectos que permite seleccionar un proyecto para editar su responsable.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -29,9 +31,8 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_BusquedaProyecto. 
+ * Permite listar y buscar proyectos, y seleccionar uno para modificar su responsable.
  */
 public class FXML_BusquedaProyectoController implements Initializable {
 
@@ -53,9 +54,11 @@ public class FXML_BusquedaProyectoController implements Initializable {
     private TableColumn colResponsable;
     @FXML
     private TableColumn colCantEstudiantes;
+    
     ObservableList<Proyecto> proyectos;
+    
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador, configura la tabla y carga los proyectos.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,11 +66,22 @@ public class FXML_BusquedaProyectoController implements Initializable {
         cargarProyectos();
     }    
 
-    @FXML
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
+    /**
+     * Configura las columnas de la tabla de proyectos.
+     */
+    private void configurarTablaProyectos(){
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
+        colCantEstudiantes.setCellValueFactory(new PropertyValueFactory("cantidadEstudiantesParticipantes"));
+        colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
+        colFechaTermino.setCellValueFactory(new PropertyValueFactory("fechaFin"));
+        colOV.setCellValueFactory(new PropertyValueFactory("nombreOrganizacion"));
+        colResponsable.setCellValueFactory(new PropertyValueFactory("nombreResponsable"));
     }
-    
+
+    /**
+     * Carga todos los proyectos disponibles desde la base de datos.
+     */
     private void cargarProyectos(){
         try {
            proyectos = FXCollections.observableArrayList();
@@ -80,16 +94,10 @@ public class FXML_BusquedaProyectoController implements Initializable {
         }
     }
     
-    private void configurarTablaProyectos(){
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
-        colCantEstudiantes.setCellValueFactory(new PropertyValueFactory("cantidadEstudiantesParticipantes"));
-        colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
-        colFechaTermino.setCellValueFactory(new PropertyValueFactory("fechaFin"));
-        colOV.setCellValueFactory(new PropertyValueFactory("nombreOrganizacion"));
-        colResponsable.setCellValueFactory(new PropertyValueFactory("nombreResponsable"));
-    }
-
+    /**
+     * Filtra los proyectos en la tabla conforme se escribe en el campo de búsqueda.
+     * @param event Evento de teclado al escribir
+     */
     @FXML
     private void buscarProyectoPorNombre(KeyEvent event) {
         String proyectoBuscado = tfBusquedaProyecto.getText().toLowerCase();
@@ -108,15 +116,33 @@ public class FXML_BusquedaProyectoController implements Initializable {
         tvProyectos.setItems(proyectosFiltrados);
         
     }
-
+    
+    /**
+     * Cierra la ventana actual sin necesidad de confirmación.
+     * @param event Evento del botón regresar
+     */
+    @FXML
+    private void clickRegresar(ActionEvent event) {
+        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
+    }
+    
+    
+    /**
+     * Cierra la ventana actual si el usuario confirma la cancelación.
+     * @param event Evento de acción del botón cancelar
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
-        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
+            Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
         } 
     }
 
+    /**
+     * Abre la vista para actualizar el responsable del proyecto seleccionado
+     * @param event Evento del botón aceptar
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
@@ -143,7 +169,5 @@ public class FXML_BusquedaProyectoController implements Initializable {
             ex.printStackTrace();
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana de actualizar responsable");
         }
-    }
-    
-    
+    } 
 }

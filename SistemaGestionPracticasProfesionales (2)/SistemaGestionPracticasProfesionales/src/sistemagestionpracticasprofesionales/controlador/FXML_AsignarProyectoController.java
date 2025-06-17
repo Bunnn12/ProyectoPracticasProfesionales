@@ -56,7 +56,6 @@ public class FXML_AsignarProyectoController implements Initializable {
     private TableColumn colFechaInicio;
     @FXML
     private TableColumn colFechaTermino;
-    private TableColumn colNombreOV;
     @FXML
     private TableColumn colNombreResponsable;
     @FXML
@@ -65,14 +64,16 @@ public class FXML_AsignarProyectoController implements Initializable {
     private TextField tfBusquedaEstudiante;
     @FXML
     private TextField tfBusquedaProyecto;
+    @FXML
+    private TableColumn colOrganizacionVinculada;
     
     private ObservableList<Proyecto> proyectos= FXCollections.observableArrayList();
     private ObservableList<Estudiante> estudiantes= FXCollections.observableArrayList();
-    @FXML
-    private TableColumn<?, ?> colOrganizacionVinculada;
     
     /**
-     * Inicializa el controlador y carga los datos iniciales en las tablas de estudiantes y proyectos
+     * Inicializa el controlador y carga los datos iniciales en las tablas de estudiantes y proyectos.
+     * @param url URL de inicialización.
+     * @param rb ResourceBundle con recursos localizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -84,6 +85,7 @@ public class FXML_AsignarProyectoController implements Initializable {
     
     /**
      * Cierra la ventana actual
+     * @param event Evento del botón regresar
      */
     @FXML
     private void clickRegresar(ActionEvent event) {
@@ -109,7 +111,7 @@ public class FXML_AsignarProyectoController implements Initializable {
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
         colFechaTermino.setCellValueFactory(new PropertyValueFactory<>("fechaFin"));
-        colNombreOV.setCellValueFactory(new PropertyValueFactory<>("nombreOrganizacion"));
+        colOrganizacionVinculada.setCellValueFactory(new PropertyValueFactory<>("nombreOrganizacion"));
         colNombreResponsable.setCellValueFactory(new PropertyValueFactory<>("nombreResponsable"));
         colCantEstudiantes.setCellValueFactory(new PropertyValueFactory<>("cantidadEstudiantesParticipantes"));
     }
@@ -185,7 +187,8 @@ public class FXML_AsignarProyectoController implements Initializable {
 
     
     /**
-     * Ejecuta búsqueda al escribir en el textField tfBusquedaEstudiante
+     * Ejecuta búsqueda al escribir en el campo tfBusquedaEstudiante.
+     * @param event Evento de teclado.
      */
     @FXML
     private void buscarEstudiante(KeyEvent event){
@@ -193,7 +196,8 @@ public class FXML_AsignarProyectoController implements Initializable {
     }
     
     /**
-     * Ejecuta búsqueda al escribir en el textField tfBusquedaProyectos
+     * Ejecuta búsqueda al escribir en el campo tfBusquedaProyecto
+     * @param event Evento de teclado
      */
     @FXML
     private void buscarProyecto(KeyEvent event) {
@@ -202,6 +206,7 @@ public class FXML_AsignarProyectoController implements Initializable {
 
     /**
      * Ejecuta la validación y asignación de proyecto
+     * @param event Evento del botón aceptar
      */
     @FXML
     private void clickAceptar(ActionEvent event) {
@@ -210,12 +215,13 @@ public class FXML_AsignarProyectoController implements Initializable {
     
     /**
      * Cierra la ventana si el usuario lo confirma
+     * @param event Evento del botón cancelar
      */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
-        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
+            Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
         } 
     }
 }

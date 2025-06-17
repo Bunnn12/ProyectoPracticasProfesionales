@@ -1,7 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+/**
+    * Nombre del archivo: FXML_ActualizarResponsableController.java
+    * Autor: Astrid Azucena Torres Lagunes
+    * Fecha: 13/06/2025
+    * Descripción: Controlador que permite actualizar el responsable de un proyecto en el sistema de gestión de prácticas profesionales.
+*/
+
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
@@ -28,9 +31,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.ResponsableProyecto;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_ActualizarResponsable que permite actualizar el responsable de un proyecto.
  */
 public class FXML_ActualizarResponsableController implements Initializable {
 
@@ -48,26 +49,37 @@ public class FXML_ActualizarResponsableController implements Initializable {
     private TableColumn colCorreoResponsable;
     @FXML
     private TableColumn colTelefonoResponsable;
-    ObservableList<ResponsableProyecto> responsablesDisponibles;
-    private Proyecto proyecto;
     @FXML
     private TableColumn colOrganizacionVinculada;
+    
+    ObservableList<ResponsableProyecto> responsablesDisponibles;
+    private Proyecto proyecto;
+    
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador y configura la tabla de responsables de proyecto.
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTablaResponsables();
         cargarResponsablesProyecto();
-    }    
+    } 
     
-        public void inicializarProyecto(Proyecto proyecto) {
+     /**
+      * Inicializa el proyecto seleccionado
+      * @param proyecto Proyecto seleccionado al que se le cambiará el responsable
+      */
+    public void inicializarProyecto(Proyecto proyecto) {
         this.proyecto = proyecto;
         lbProyectoSeleccionado.setText(proyecto.getNombre()); 
         lbResponsableActual.setText(proyecto.getNombreResponsable()); 
     }
-        
-        private void cargarResponsablesProyecto(){
+    
+    /**
+     * Carga la lista de responsables que no tienen proyecto asignado
+     */    
+    private void cargarResponsablesProyecto(){
         try {
            responsablesDisponibles = FXCollections.observableArrayList();
            List<ResponsableProyecto> responsablesDisponiblesDAO = ResponsableProyectoDAO.obtenerResponsablesSinProyecto(); 
@@ -79,48 +91,67 @@ public class FXML_ActualizarResponsableController implements Initializable {
         }
     }
     
+    /**
+     * Configura las columnas de la tabla de responsables
+     */
     private void configurarTablaResponsables(){
         colNombreResponsable.setCellValueFactory(new PropertyValueFactory("nombre"));
         colCorreoResponsable.setCellValueFactory(new PropertyValueFactory("correo"));
         colOrganizacionVinculada.setCellValueFactory(new PropertyValueFactory("nombreOrganizacionVinculada"));
         colTelefonoResponsable.setCellValueFactory(new PropertyValueFactory("telefono"));
     }
+    
+    /**
+     * Cierra la ventana actual sin hacer cambios
+     * @param event Evento del botón regresar.
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfBuscarResponsable);
     }
-
+    
+     /**
+      * Actualiza el responsable del proyecto seleccionado
+      * @param event Evento del botón aceptar
+      */
     @FXML
     private void clickAceptar(ActionEvent event) {
         ResponsableProyecto nuevoResponsable = tvResponsableProyecto.getSelectionModel().getSelectedItem();
 
         if (nuevoResponsable == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "SinSeleccion", "Debes seleccionar un nuevo responsable para continuar");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin Seleccion", "Debes seleccionar un nuevo responsable para continuar");
             return;
         }
 
         try {
             boolean actualizado = ProyectoDAO.actualizarResponsableDeProyecto(proyecto.getIdProyecto(), nuevoResponsable.getIdResponsable());
             if (actualizado) {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "ActualizacionExitosa", "El responsable del proyecto ha sido actualizado exitosamente");
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Actualizacion Exitosa", "El responsable del proyecto ha sido actualizado exitosamente");
                 Utilidad.cerrarVentanaActual(tfBuscarResponsable);
             } else {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al actualizar", "No se pudo actualizar el responsable, Intenta más tarde");
             }
         } catch (SQLException e) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de conexión", "No fue posible actualizar el responsable debido a un error en la base de datos.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
         }
     }
-
+    
+    /**
+     * Cierra la ventana actual si el usuario lo confirma
+     * @param event Evento del botón cancelar
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
-        Utilidad.cerrarVentanaActual(tfBuscarResponsable);
+            Utilidad.cerrarVentanaActual(tfBuscarResponsable);
         } 
     }
 
-
+    /**
+     * Filtra la lista de responsables por nombre conforme se escribe en el campo de búsqueda
+     * @param event Evento de teclado que activa el filtro de búsqueda
+     */
     @FXML
     private void buscarResponsablePorNombre(KeyEvent event) {
         String responsableBuscado = tfBuscarResponsable.getText().toLowerCase();

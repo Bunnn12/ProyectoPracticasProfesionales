@@ -1,3 +1,13 @@
+/**
+ * Nombre del archivo: FXML_InicioSesionEstudianteController.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 08/06/2025
+ * Descripción: Controlador para la pantalla de inicio de sesión del estudiante.
+ * Permite validar los campos de usuario y contraseña, verificar credenciales
+ * y navegar a la pantalla principal del estudiante o a la pantalla de inicio
+ * de sesión para otros usuarios.
+ */
+
 package sistemagestionpracticasprofesionales.controlador;
 
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
@@ -22,9 +32,8 @@ import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
 /**
- * FXML Controller class
- *
- * @author rodri
+ * Controlador para la vista FXML_InicioSesionEstudiante.
+ * Permite validar las credenciales del estudiante y acceder a la pantalla principal si la autenticación es correcta.
  */
 public class FXML_InicioSesionEstudianteController implements Initializable {
 
@@ -38,28 +47,51 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
     private Label lblErrorContrasenia;
     
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     * 
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
     
+    /**
+     * Valida que los campos matrícula y contraseña no estén vacíos.
+     * En caso de que algún campo esté vacío o la matrícula no cumpla el formato válido,
+     * se muestran los mensajes de error correspondientes en las etiquetas lblErrorMatricula y lblErrorContrasenia.
+     * 
+     * @param matricula Matrícula ingresada.
+     * @param password Contraseña ingresada.
+     * @return true si ambos campos son válidos, false en caso contrario.
+     */
     private boolean validarCampos(String matricula, String password) {
         lblErrorMatricula.setText(""); 
         lblErrorContrasenia.setText("");
         boolean camposValidos = true;
+
         if (matricula.isEmpty()) {
             lblErrorMatricula.setText("Matricula obligatoria");
             camposValidos = false;
+        } else if (!validarMatricula(matricula)) {
+            lblErrorMatricula.setText("Matricula no válida");
+            camposValidos = false;
         }
+
         if (password.isEmpty()){
             lblErrorContrasenia.setText("Contraseña obligatoria");
             camposValidos = false;
         }
+
         return camposValidos;
     }
-    
+
+    /**
+     * Valida las credenciales del estudiante con la base de datos.
+     * 
+     * @param matricula Matrícula ingresada.
+     * @param password Contraseña ingresada.
+     */
     private void validarCredenciales(String matricula, String password) {
         try {
             Estudiante estudianteSesion = InicioSesionEstudianteDAO.verificarCredenciales(matricula, password);
@@ -70,10 +102,42 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Credenciales incorrectos", "Usuario y/o contraseñas incorrectas, por favor verifica tu información");
             }
         } catch (SQLException e) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Problemas de conexión", e.getMessage());
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
         }
     }
     
+    /**
+     * Valida que la matrícula cumpla con el formato:
+     * - Comienza con 'S'
+     * - Sigue con dos dígitos para el año (por ejemplo, 20, 23)
+     * - Longitud exacta de 9 caracteres (ejemplo: S23014092)
+     * 
+     * @param matricula la matrícula a validar
+     * @return true si es válida, false en caso contrario
+     */
+   private boolean validarMatricula(String matricula) {
+        if (matricula == null || matricula.length() != 9) {
+            return false;
+        }
+        if (!matricula.startsWith("S")) {
+            return false;
+        }
+        String anioIngreso = matricula.substring(1, 3);
+        if (!anioIngreso.matches("\\d{2}")) {
+            return false;
+        }
+        int anio = Integer.parseInt(anioIngreso);
+        if (anio < 0 || anio > 25) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Cambia a la pantalla principal del estudiante.
+     * 
+     * @param estudianteSesion Estudiante que ha iniciado sesión.
+     */
     private void irPantallaPrincipal(Estudiante estudianteSesion) {
         if (estudianteSesion == null) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error interno", "El usuario no ha sido encontrado en el sistema");
@@ -91,21 +155,31 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
             escenarioBase.setTitle("Principal Estudiante");
             escenarioBase.centerOnScreen();
             escenarioBase.showAndWait();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        } catch (IOException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de carga", "No se pudo cargar la vista principal");
+        } 
     }
     
+    /**
+     * Maneja el evento del botón para iniciar sesión.
+     * 
+     * @param event Evento del botón iniciar sesión
+     */
     @FXML
     private void clickIniciarSesion(ActionEvent event) {
         String matricula = tfMatricula.getText();
         String password = pfContrasenia.getText();
-        
+
         if (validarCampos(matricula, password)) {
             validarCredenciales(matricula, password);
         }
     }
     
+    /**
+     * Maneja el evento del botón "No soy estudiante" para cambiar a la pantalla de inicio de sesión de usuario.
+     * 
+     * @param event Evento del botón Soy Estudiante
+     */
     @FXML
     private void clickNoSoyEstudiante(ActionEvent event) {
         try{
@@ -118,9 +192,6 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
             escenarioBase.centerOnScreen();
         }catch(IOException e){
             e.getMessage();
-            e.printStackTrace();
         }
     }
-
-    
 }
