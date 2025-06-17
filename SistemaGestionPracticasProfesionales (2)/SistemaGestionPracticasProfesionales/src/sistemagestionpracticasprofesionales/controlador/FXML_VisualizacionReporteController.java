@@ -63,6 +63,10 @@ public class FXML_VisualizacionReporteController implements Initializable {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Validación", "No hay reporte cargado");
             return;
         }
+         if ("Validado".equalsIgnoreCase(reporteVisualizado.getEstado())) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Ya validado", "El reporte ya ha sido validado");
+            return;
+        }
         try {
             boolean exito = ExpedienteDAO.actualizarEstadoReporte(reporteVisualizado.getIdReporte(), "Validado");
             if (exito) {

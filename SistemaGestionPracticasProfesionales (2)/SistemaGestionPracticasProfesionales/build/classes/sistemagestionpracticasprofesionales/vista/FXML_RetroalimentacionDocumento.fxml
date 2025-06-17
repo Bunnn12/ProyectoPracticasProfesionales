@@ -66,7 +66,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <TextArea fx:id="taRetroalimentacionDocumento" layoutX="199.0" layoutY="348.0" prefHeight="353.0" prefWidth="630.0" promptText="Ingrese sus comentarios" />
+      <TextArea fx:id="taRetroalimentacionDocumento" layoutX="199.0" layoutY="348.0" prefHeight="353.0" prefWidth="630.0" promptText="Ingrese sus comentarios (solo se permiten 100 palabras)" />
       <Label layoutX="142.0" layoutY="210.0" text="Ingrese los comentarios deseados, al finalizar de click en &quot;Aceptar&quot; para guardar los cambios">
          <font>
             <Font name="Arial" size="18.0" />

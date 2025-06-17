@@ -153,7 +153,7 @@ public class FXML_RegistrarOVController implements Initializable {
         if (telefono.isEmpty()) {
             lbErrorTelefono.setText("Teléfono obligatorio");
             camposValidos = false;
-        } else if (!telefono.matches("\\d{10}")) { // solo 10 dígitos numéricos para el cel
+        } else if (!telefono.matches("\\d{10}")) { 
             lbErrorTelefono.setText("Debe contener 10 números");
             camposValidos = false;
         }

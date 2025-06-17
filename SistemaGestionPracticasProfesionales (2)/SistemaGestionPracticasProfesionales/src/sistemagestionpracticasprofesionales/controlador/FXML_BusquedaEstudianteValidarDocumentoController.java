@@ -139,7 +139,6 @@ public class FXML_BusquedaEstudianteValidarDocumentoController implements Initia
                 escenario.initModality(Modality.APPLICATION_MODAL);
                 escenario.showAndWait();
             } catch (IOException e) {
-                e.printStackTrace();
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana");
             }
 

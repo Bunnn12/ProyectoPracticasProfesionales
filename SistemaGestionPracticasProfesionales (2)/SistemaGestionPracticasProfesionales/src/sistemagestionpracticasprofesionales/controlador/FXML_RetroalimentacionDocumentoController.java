@@ -62,7 +62,36 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
      */
     @FXML
     private void clickAceptar(ActionEvent event) {
-            String retroalimentacion = taRetroalimentacionDocumento.getText().trim();
+        String retroalimentacion = taRetroalimentacionDocumento.getText().trim();
+        if (retroalimentacion.isEmpty()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Campo vacío", 
+                "Por favor escribe la retroalimentación antes de guardar");
+            return;
+        }
+
+        int maxPalabras = 100; 
+        String[] palabras = retroalimentacion.trim().split("\\s+"); 
+
+        if (palabras.length > maxPalabras) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Texto demasiado largo", 
+                "La retroalimentación no debe exceder las " + maxPalabras + " palabras");
+            return;
+        }
+
+        if (retroalimentacion.replaceAll("\\s", "").isEmpty()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Contenido inválido", 
+                "No se permiten comentarios con solo espacios o saltos de línea.");
+            return;
+        }
+        String[] palabrasProhibidas = {"tonto", "inútil", "basura"}; 
+        for (String palabra : palabrasProhibidas) {
+            if (retroalimentacion.toLowerCase().contains(palabra)) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Contenido inapropiado",
+                    "La retroalimentación contiene palabras no permitidas");
+                return;
+            }
+        }
+
         try {
             boolean actualizado = ExpedienteDAO.actualizarRetroalimentacionDocumento(idDocumento, retroalimentacion);
             if (actualizado) {

@@ -93,10 +93,14 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
     private void clickValidar(ActionEvent event) {
         DocumentoAnexo documentoSeleccionado = tvDocumentos.getSelectionModel().getSelectedItem();
         if (documentoSeleccionado == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Validación", "Debes seleccionar un documento.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Validación", "Debes seleccionar un documento para validar");
             return;
         }
 
+         if ("Validado".equalsIgnoreCase(documentoSeleccionado.getEstado())) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Documento ya validado", "El documento ya ha sido validado");
+            return;
+        }
         try {
             boolean actualizado = ExpedienteDAO.actualizarEstadoDocumento(documentoSeleccionado.getIdDocumentoAnexo(), "Validado");
             if (actualizado) {

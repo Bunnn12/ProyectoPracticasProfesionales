@@ -8,6 +8,9 @@ package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -148,7 +151,7 @@ public class FXML_AsignarProyectoController implements Initializable {
     }
     
     /**
-     * Valida las selecciones y realiza la asignación del estudiante al proyecto.
+     * Valida las selecciones, que el proyecto no haya terminado y realiza la asignación del estudiante al proyecto
      */
     private void validarSeleccion() {
         Estudiante estudianteSeleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
@@ -167,6 +170,23 @@ public class FXML_AsignarProyectoController implements Initializable {
                     "Tienes que seleccionar ambos, un proyecto y un estudiante, inténtalo nuevamente");
             return;
         }
+        
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fechaHoy = LocalDate.now();
+            LocalDate fechaFin = LocalDate.parse(proyectoSeleccionado.getFechaFin(), formatter);
+
+            if (fechaHoy.isAfter(fechaFin)) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Proyecto finalizado",
+                    "El proyecto seleccionado ya ha finalizado. Por favor selecciona otro proyecto");
+                return;
+            }
+        } catch (DateTimeParseException ex) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de formato de fecha",
+                "La fecha de fin del proyecto no tiene un formato válido.");
+            return;
+        }
+
 
         if (proyectoSeleccionado.getEstudiantesAsignados() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado","El proyecto '" + proyectoSeleccionado.getNombre() + 
