@@ -97,4 +97,43 @@ public class OrganizacionVinculadaDAO {
         ov.setTelefono(resultado.getString("telefono"));
         return ov;
     }
+
+    
+    public static boolean existeOVConCorreo(String correo) throws SQLException {
+        boolean existe = false;
+        String query = "SELECT COUNT(*) FROM organizacionvinculada WHERE correo = ?";
+
+        try (Connection conexion = Conexion.abrirConexion();
+             PreparedStatement sentencia = conexion.prepareStatement(query)) {
+
+            sentencia.setString(1, correo);
+            ResultSet resultado = sentencia.executeQuery();
+
+            if (resultado.next()) {
+                existe = resultado.getInt(1) > 0;
+            }
+        }
+
+        return existe;
+    }
+
+    public static boolean existeOVConTelefono(String telefono) throws SQLException {
+        boolean existe = false;
+        String query = "SELECT COUNT(*) FROM organizacionvinculada WHERE telefono = ?";
+
+        try (Connection conexion = Conexion.abrirConexion();
+             PreparedStatement sentencia = conexion.prepareStatement(query)) {
+
+            sentencia.setString(1, telefono);
+            ResultSet resultado = sentencia.executeQuery();
+
+            if (resultado.next()) {
+                existe = resultado.getInt(1) > 0;
+            }
+        }
+
+        return existe;
+    }
+
+
 }

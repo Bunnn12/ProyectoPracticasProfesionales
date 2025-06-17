@@ -141,7 +141,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
         String fxmlPath;
         String titulo;
 
-        switch (rol.toLowerCase().trim()) {
+        switch (rol.trim().toLowerCase()) {
             case "coordinador":
                 fxmlPath = "/sistemagestionpracticasprofesionales/vista/FXML_PrincipalCoordinador.fxml";
                 titulo = "Principal coordinador";

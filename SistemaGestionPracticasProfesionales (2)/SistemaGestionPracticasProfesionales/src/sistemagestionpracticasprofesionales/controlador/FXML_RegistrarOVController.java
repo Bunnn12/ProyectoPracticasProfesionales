@@ -143,6 +143,9 @@ public class FXML_RegistrarOVController implements Initializable {
         if (nombre.isEmpty()) {
             lbErrorNombre.setText("Nombre obligatorio");
             camposValidos = false;
+        } else if (!nombre.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")) {
+            lbErrorNombre.setText("Solo letras y espacios");
+            camposValidos = false;
         }
 
         if (direccion.isEmpty()) {
@@ -153,9 +156,19 @@ public class FXML_RegistrarOVController implements Initializable {
         if (telefono.isEmpty()) {
             lbErrorTelefono.setText("Teléfono obligatorio");
             camposValidos = false;
-        } else if (!telefono.matches("\\d{10}")) { 
+        } else if (!telefono.matches("\\d{10}")) {
             lbErrorTelefono.setText("Debe contener 10 números");
             camposValidos = false;
+        } else {
+            try {
+                if (OrganizacionVinculadaDAO.existeOVConTelefono(telefono)) {
+                    lbErrorTelefono.setText("Ya hay una OV con ese teléfono");
+                    camposValidos = false;
+                }
+            } catch (SQLException e) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo verificar teléfono");
+                camposValidos = false;
+            }
         }
 
         if (correo.isEmpty()) {
@@ -164,8 +177,19 @@ public class FXML_RegistrarOVController implements Initializable {
         } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             lbErrorCorreo.setText("Formato de correo inválido");
             camposValidos = false;
+        } else {
+            try {
+                if (OrganizacionVinculadaDAO.existeOVConCorreo(correo)) {
+                    lbErrorCorreo.setText("Ya hay una OV con ese correo");
+                    camposValidos = false;
+                }
+            } catch (SQLException e) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo verificar correo");
+                camposValidos = false;
+            }
         }
 
         return camposValidos;
     }
+
 }

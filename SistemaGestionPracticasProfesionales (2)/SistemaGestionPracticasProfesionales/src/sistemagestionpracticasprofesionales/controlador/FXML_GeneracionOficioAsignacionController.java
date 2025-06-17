@@ -84,7 +84,9 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
         try {
             estudiantes.clear();
             ArrayList<Estudiante> estudiantesDAO = EstudianteDAO.obtenerEstudiantesPeriodoActualConProyecto();
-            if (estudiantesDAO != null) {
+            if (estudiantesDAO == null || estudiantesDAO.isEmpty()) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Sin datos", "No hay estudiantes con proyecto asignado en el periodo actual");
+            } else {
                 estudiantes.addAll(estudiantesDAO);
             }
             tvEstudiantes.setItems(estudiantes);
@@ -93,6 +95,7 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
             ex.printStackTrace();
         }
     }
+
     
     /**
      * Cierra la ventana actual.
