@@ -57,35 +57,6 @@ public class ResponsableProyectoDAO {
     }
      
     /**
-     * Obtiene la lista completa de responsables de proyecto registrados, incluyendo el nombre
-     * de la organización vinculada a la que pertenecen.
-     * 
-     * @return Lista de objetos ResponsableProyecto.
-     * @throws SQLException Si ocurre un error al acceder a la base de datos.
-     */
-    private static ArrayList<ResponsableProyecto> obtenerResponsablesProyecto() throws SQLException{
-        ArrayList<ResponsableProyecto> responsablesProyecto= new ArrayList<>();
-        Connection conexionBD= Conexion.abrirConexion();
-        if (conexionBD!= null){
-            String consulta= "SELECT rp.idResponsableProyecto, rp.idOrganizacionVinculada, rp.nombre, rp.correo, rp.telefono, "
-                            + "ov.nombre AS 'organizacionVinculada' "
-                            + "FROM responsableProyecto rp "
-                            + "JOIN organizacionVinculada ov ON rp.idOrganizacionVinculada = ov.idOrganizacionVinculada;";
-            PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
-            ResultSet resultado = sentencia.executeQuery();
-            while(resultado.next()){
-                responsablesProyecto.add(convertirRegistroResponsable(resultado));
-            }
-            sentencia.close();
-            resultado.close();
-            conexionBD.close();
-        }else{
-            throw new SQLException("Sin conexion con la base de datos");
-        }
-        return responsablesProyecto;
-    }
-    
-    /**
      * Obtiene la lista de responsables de proyecto que no están asignados a ningún proyecto.
      * 
      * @return Lista de objetos ResponsableProyecto sin proyecto asignado.
