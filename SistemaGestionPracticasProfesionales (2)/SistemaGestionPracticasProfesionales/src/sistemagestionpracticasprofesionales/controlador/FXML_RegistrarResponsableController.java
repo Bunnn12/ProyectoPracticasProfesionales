@@ -1,21 +1,15 @@
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
-<<<<<<< HEAD
-=======
 import java.sql.SQLException;
 import java.util.ArrayList;
->>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import sistemagestionpracticasprofesionales.modelo.dao.OrganizacionVinculadaDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;

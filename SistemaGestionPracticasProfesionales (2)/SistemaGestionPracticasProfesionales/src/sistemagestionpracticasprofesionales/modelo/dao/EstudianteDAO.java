@@ -176,35 +176,8 @@ public class EstudianteDAO {
         } else {
             throw new SQLException("Sin conexión con la base de datos");
         }
-
-<<<<<<< HEAD
         return listaDatos;
     }
-=======
-        public static ArrayList<Estudiante> obtenerEstudiantesPeriodoActualConProyecto() throws SQLException{
-            ArrayList<Estudiante> estudiantes= new ArrayList<>();
-            Connection conexionBD= Conexion.abrirConexion();
-            if (conexionBD!= null){
-                String consulta=  "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
-                                "e.matricula, e.correo, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
-                                "FROM estudiante e " +
-                                "JOIN grupo g ON e.idGrupo = g.idGrupo " +
-                                "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
-                                "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
-                                "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin";
-                PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
-                ResultSet resultado = sentencia.executeQuery();
-                while(resultado.next()){
-                    estudiantes.add(convertirRegistroEstudiante(resultado));
-                }
-                sentencia.close();
-                resultado.close();
-                conexionBD.close();
-            }else{
-                throw new SQLException("Sin conexion con la base de datos");
-            }
-            return estudiantes;
-        }
 
         public static ArrayList<Estudiante> obtenerEstudiantesJuntoConSuProyectoYOrganizacionVinculada() throws SQLException{
             ArrayList<Estudiante> estudiantes = new ArrayList<>();
@@ -244,11 +217,7 @@ public class EstudianteDAO {
             
             return estudiantes;
         }
-        
-        public static ArrayList<DatosDocumentoAsignacion> obtenerDatosDocumentosAsignacion() throws SQLException {
-            ArrayList<DatosDocumentoAsignacion> listaDatos = new ArrayList<>();
-            Connection conexion = Conexion.abrirConexion();
->>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
+
 
     /**
      * Verifica si existe un estudiante con el ID especificado.
