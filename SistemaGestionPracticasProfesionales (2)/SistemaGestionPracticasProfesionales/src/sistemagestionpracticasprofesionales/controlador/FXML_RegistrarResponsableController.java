@@ -1,21 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
-import java.util.Observable;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import sistemagestionpracticasprofesionales.modelo.dao.OrganizacionVinculadaDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
+import sistemagestionpracticasprofesionales.modelo.pojo.ResponsableProyecto;
+import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -32,32 +35,69 @@ public class FXML_RegistrarResponsableController implements Initializable {
     @FXML
     private TextField tfTelefonoResponsable;
     @FXML
-    private TableView<OrganizacionVinculada> tvOrganizacionesVinculadas;
-    @FXML
-    private TableColumn nombreOV;
-    @FXML
-    private TableColumn direccionOV;
-    @FXML
-    private TableColumn correoOV;
-    @FXML
-    private TableColumn telefonoOV;
-    @FXML
-    private TextField tfBuscarOV;
-    @FXML
     private Label lbErrorNombre;
     @FXML
     private Label lbErrorCorreo;
     @FXML
     private Label lbErrorTelefono;
-    private ObservableList<OrganizacionVinculada> organizacionesVinculadas;
+    @FXML
+    private ComboBox<OrganizacionVinculada> cbOrganizacionVinculada;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        cargarOrganizaciones();
+    }
+
+    private void cargarOrganizaciones() {
+    try {
+        ArrayList<OrganizacionVinculada> lista = OrganizacionVinculadaDAO.obtenerOrganizacionesVinculadas();
+        ObservableList<OrganizacionVinculada> observableList = FXCollections.observableArrayList(lista);
+        cbOrganizacionVinculada.setItems(observableList);
+        System.out.println("Total organizaciones cargadas: " + lista.size()); // Puedes quitarlo después
+    } catch (Exception e) {
+        e.printStackTrace(); // ← Esto imprimirá el error exacto en consola
+        Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+            "Error", "No se pudieron cargar las organizaciones.\nConsulta la consola para más detalles.");
+    }
+}
+
+    @FXML
+    private void clickAceptar(ActionEvent event) throws SQLException {
+        if (!validarCampos()) {
+            return;
+        }
+
+        String nombre = tfNombreResponsable.getText().trim();
+        String correo = tfCorreoResponsable.getText().trim();
+        String telefono = tfTelefonoResponsable.getText().trim();
+        OrganizacionVinculada organizacion = cbOrganizacionVinculada.getValue();
+
+        if (organizacion == null) {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                    "Error", "Debe seleccionar una organización vinculada");
+            return;
+        }
+
+        ResponsableProyecto responsable = new ResponsableProyecto();
+        responsable.setNombre(nombre);
+        responsable.setCorreo(correo);
+        responsable.setTelefono(telefono);
+        responsable.setIdOrganizacionVinculada(organizacion.getIdOrganizacionVinculada());
+
+        ResultadoOperacion resultado = ResponsableProyectoDAO.registrarResponsableProyecto(responsable);
+
+        if (!resultado.isError()) {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
+                    "Éxito", "Responsable registrado correctamente");
+            Utilidad.cerrarVentanaActual(tfNombreResponsable);
+        } else {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                    "Error", resultado.getMensaje());
+        }
+    }
 
     @FXML
     private void clickRegresar(ActionEvent event) {
@@ -66,31 +106,28 @@ public class FXML_RegistrarResponsableController implements Initializable {
 
     @FXML
     private void clickCancelar(ActionEvent event) {
+        Utilidad.cerrarVentanaActual(tfNombreResponsable);
     }
 
-    @FXML
-    private void clickAceptar(ActionEvent event) {
-    }
-    
-    private boolean validarCampos(){
-        String nombre= tfNombreResponsable.getText();
-        String telefono= tfTelefonoResponsable.getText();
-        String correo= tfCorreoResponsable.getText();
-        lbErrorCorreo.setText(""); 
+    private boolean validarCampos() {
+        String nombre = tfNombreResponsable.getText();
+        String telefono = tfTelefonoResponsable.getText();
+        String correo = tfCorreoResponsable.getText();
+        lbErrorCorreo.setText("");
         lbErrorNombre.setText("");
         lbErrorTelefono.setText("");
         boolean camposValidos = true;
-        if(nombre.isEmpty()){
+        if (nombre.isEmpty()) {
             lbErrorNombre.setText("Nombre obligatorio");
-            camposValidos= false;
+            camposValidos = false;
         }
-        if(telefono.isEmpty()){
-            lbErrorTelefono.setText("Telefono obligatorio");
-            camposValidos= false;
+        if (telefono.isEmpty()) {
+            lbErrorTelefono.setText("Teléfono obligatorio");
+            camposValidos = false;
         }
-        if(correo.isEmpty()){
+        if (correo.isEmpty()) {
             lbErrorCorreo.setText("Correo obligatorio");
-            camposValidos= false;
+            camposValidos = false;
         }
         return camposValidos;
     }

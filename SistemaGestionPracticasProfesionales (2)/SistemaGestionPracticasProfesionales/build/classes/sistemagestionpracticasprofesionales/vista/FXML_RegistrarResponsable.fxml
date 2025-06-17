@@ -99,5 +99,11 @@
             <Font name="Arial Rounded MT Bold" size="15.0" />
          </font>
       </Label>
+      <ComboBox fx:id="cbOrganizacionVinculada" layoutX="412.0" layoutY="594.0" prefHeight="32.0" prefWidth="205.0" />
+      <Label layoutX="119.0" layoutY="596.0" text="Organizacion Vinculada">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

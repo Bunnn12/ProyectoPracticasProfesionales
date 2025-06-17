@@ -11,6 +11,7 @@ package sistemagestionpracticasprofesionales.modelo.pojo;
 public class ResultadoOperacion {
     private boolean error;
     private String mensaje;
+      private int idGenerado;
 
     public ResultadoOperacion() {
     }
@@ -34,5 +35,13 @@ public class ResultadoOperacion {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+    // Getter y Setter para idGenerado
+    public int getIdGenerado() {
+        return idGenerado;
+    }
+
+    public void setIdGenerado(int idGenerado) {
+        this.idGenerado = idGenerado;
     }
 }
