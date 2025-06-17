@@ -88,6 +88,45 @@ public class EstudianteDAO {
             }
             return estudiantes;
         }
+
+        public static ArrayList<Estudiante> obtenerEstudiantesJuntoConSuProyectoYOrganizacionVinculada() throws SQLException{
+            ArrayList<Estudiante> estudiantes = new ArrayList<>();
+            Connection conexionBD = Conexion.abrirConexion();
+
+            if (conexionBD != null) {
+                String consulta = "SELECT e.*," +
+                                "p.nombre AS nombreProyecto, " +
+                                "ov.nombre AS nombreOV " +
+                                "FROM estudiante e " +
+                                "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                                "JOIN periodo per ON g.idPeriodo = per.idPeriodo " +
+                                "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
+                                "JOIN proyecto p ON a.idProyecto = p.idProyecto " +
+                                "JOIN organizacionvinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                                "WHERE CURRENT_DATE BETWEEN per.fechaInicio AND per.fechaFin;";
+            
+                PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+                ResultSet resultado = sentencia.executeQuery();
+                while (resultado.next()) {
+                    Estudiante estudiante = new Estudiante();
+                    estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                    estudiante.setNombre(resultado.getString("nombre"));
+                    estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                    estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                    estudiante.setMatricula(resultado.getString("matricula"));
+                    estudiante.setNombreProyecto(resultado.getString("nombreProyecto"));
+                    estudiante.setNombreOV(resultado.getString("nombreOV"));
+                    estudiantes.add(estudiante);
+                }
+                sentencia.close();
+                resultado.close();
+                conexionBD.close();
+            } else {
+                throw new SQLException("Sin conexion con la base de datos");
+            }
+            
+            return estudiantes;
+        }
         
         public static ArrayList<DatosDocumentoAsignacion> obtenerDatosDocumentosAsignacion() throws SQLException {
             ArrayList<DatosDocumentoAsignacion> listaDatos = new ArrayList<>();
