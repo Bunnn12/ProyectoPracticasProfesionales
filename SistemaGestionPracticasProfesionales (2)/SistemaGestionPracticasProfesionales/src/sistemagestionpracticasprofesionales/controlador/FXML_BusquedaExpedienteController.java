@@ -47,9 +47,15 @@ private void clickBuscar(ActionEvent event) {
     String matricula = tfBuscar.getText().trim();
 
     if (matricula.isEmpty()) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Campo vacío", "Por favor escribe una matrícula.");
-        return;
-    }
+    Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Campo vacío", "Por favor escribe una matrícula.");
+    return;
+}
+
+if (!matricula.matches("S\\d{8}")) {
+    Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Formato inválido", "La matrícula debe iniciar con 'S' mayúscula seguida de 8 dígitos numéricos (ejemplo: S12345678).");
+    return;
+}
+
 
     try {
         Integer idExpediente = ExpedienteDAO.buscarIdExpedientePorMatricula(matricula);
