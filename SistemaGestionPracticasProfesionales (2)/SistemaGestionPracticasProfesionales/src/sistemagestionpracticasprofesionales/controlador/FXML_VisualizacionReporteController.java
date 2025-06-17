@@ -114,16 +114,6 @@ public class FXML_VisualizacionReporteController implements Initializable {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de retroalimentación");
         }
     }
-
-    /**
-     * Cierra la ventana actual.
-     * 
-     * @param event Evento del botón Regresar.
-     */
-    @FXML
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(lbNombreEstudianteReporte);
-    }
     
     /**
      * Carga el reporte a visualizar, lo muestra en pantalla y lo abre en el visor predeterminado del sistema.

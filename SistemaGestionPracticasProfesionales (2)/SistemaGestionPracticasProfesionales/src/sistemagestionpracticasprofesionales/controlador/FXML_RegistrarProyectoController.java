@@ -326,7 +326,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
     /**
      * Cierra la ventana actual
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(cbListaOVs);
     }

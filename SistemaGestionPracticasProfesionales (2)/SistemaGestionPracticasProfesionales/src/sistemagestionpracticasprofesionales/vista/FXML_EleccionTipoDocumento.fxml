@@ -25,18 +25,6 @@
             <Font name="Arial Rounded MT Bold" size="39.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="49.0" layoutY="53.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <ImageView fitHeight="643.0" fitWidth="489.0" layoutX="280.0" layoutY="222.0" opacity="0.36" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />

@@ -79,7 +79,6 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
      *
      * @param event Evento del botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvDocumentos);
     }

@@ -9,13 +9,29 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
  *
  * @author reino
  */
-public class FXML_EntregaDocInicialesController implements Initializable {
+public class FXML_SeleccionOrganizacionController implements Initializable {
+
+    @FXML
+    private TextField tfBuscarOV;
+    @FXML
+    private TableView<?> tvOrganizacionesVinculadas;
+    @FXML
+    private TableColumn<?, ?> nombreOV;
+    @FXML
+    private TableColumn<?, ?> direccionOV;
+    @FXML
+    private TableColumn<?, ?> correoOV;
+    @FXML
+    private TableColumn<?, ?> telefonoOV;
 
     /**
      * Initializes the controller class.
@@ -25,17 +41,12 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         // TODO
     }    
 
-
     @FXML
     private void clickAceptar(ActionEvent event) {
     }
 
     @FXML
     private void clickCancelar(ActionEvent event) {
-    }
-
-    @FXML
-    private void clickSubirDocumento(ActionEvent event) {
     }
     
 }

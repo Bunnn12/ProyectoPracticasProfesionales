@@ -9,6 +9,8 @@ package sistemagestionpracticasprofesionales.controlador;
 import java.io.IOException;
 import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +18,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
+import sistemagestionpracticasprofesionales.modelo.dao.EstudianteDAO;
+import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -95,15 +100,28 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
      */
     @FXML
     private void clickAsignarProyecto(ActionEvent event) {
-        try{
-        Stage escenarioAdmin = new Stage();
-        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_AsignarProyecto.fxml"));
-        Scene escena= new Scene(vista);
-        escenarioAdmin.setScene(escena);
-        escenarioAdmin.setTitle("Asignar proyecto");
-        escenarioAdmin.initModality(Modality.APPLICATION_MODAL);
-        escenarioAdmin.showAndWait();
-        }catch(IOException e){
+        try {
+            ArrayList<Estudiante> estudiantesAsignados = EstudianteDAO.obtenerEstudiantesPeriodoActualConProyecto();
+            if (estudiantesAsignados == null || estudiantesAsignados.isEmpty()) {
+                Utilidad.mostrarAlertaSimple(
+                    Alert.AlertType.INFORMATION, 
+                    "Sin estudiantes asignados", 
+                    "No hay estudiantes con proyectos asignados actualmente. Asigna primero proyectos a estudiantes."
+                );
+                return;
+            }
+
+            Stage escenarioAdmin = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_AsignarProyecto.fxml"));
+            Scene escena = new Scene(vista);
+            escenarioAdmin.setScene(escena);
+            escenarioAdmin.setTitle("Asignar proyecto");
+            escenarioAdmin.initModality(Modality.APPLICATION_MODAL);
+            escenarioAdmin.showAndWait();
+
+        } catch (SQLException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "No se pudo verificar la disponibilidad de estudiantes.");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

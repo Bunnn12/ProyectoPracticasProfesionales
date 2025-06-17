@@ -97,7 +97,6 @@ public class FXML_RegistrarResponsableController implements Initializable {
         }
     }
 
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfNombreResponsable);
     }

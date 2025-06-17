@@ -85,7 +85,6 @@ public class FXML_RegistrarOVController implements Initializable {
      * 
      * @param event Evento generado por el botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfNombreOV);
     }

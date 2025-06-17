@@ -75,18 +75,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="TOP" layoutX="34.0" layoutY="34.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <ComboBox fx:id="cbListaOVs" layoutX="357.0" layoutY="284.0" onMouseClicked="#clickSeleccionarOV" prefHeight="25.0" prefWidth="508.0" />
       <DatePicker fx:id="dpFechaInicio" editable="false" layoutX="357.0" layoutY="421.0" prefHeight="25.0" prefWidth="149.0" />
       <Label layoutX="549.0" layoutY="418.0" text="Fecha de fin:">

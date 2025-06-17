@@ -101,7 +101,6 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
      * 
      * @param event Evento de clic en el botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvReportes);
     }
