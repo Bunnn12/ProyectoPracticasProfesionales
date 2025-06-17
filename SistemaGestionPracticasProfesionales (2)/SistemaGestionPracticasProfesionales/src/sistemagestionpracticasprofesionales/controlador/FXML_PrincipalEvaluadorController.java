@@ -74,5 +74,16 @@ Usuario usuarioSesion;
 
     @FXML
     private void clickEvaluarEstudiante(ActionEvent event) {
+        try {
+            Stage escenario = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_EstudiantesPorEvaluar.fxml"));
+            Scene escena = new Scene(vista);
+            escenario.setScene(escena);
+            escenario.setTitle("Estudiantes por evaluar");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }
