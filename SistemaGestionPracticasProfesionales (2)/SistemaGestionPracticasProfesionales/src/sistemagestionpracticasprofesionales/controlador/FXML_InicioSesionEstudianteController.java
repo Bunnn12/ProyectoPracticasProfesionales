@@ -3,9 +3,9 @@
  * Autor: Rodrigo Santa Bárbara Murrieta
  * Fecha: 08/06/2025
  * Descripción: Controlador para la pantalla de inicio de sesión del estudiante.
- * Permite validar los campos de usuario y contraseña, verificar credenciales
- * y navegar a la pantalla principal del estudiante o a la pantalla de inicio
- * de sesión para otros usuarios.
+ * Permite validar los campos de usuario y contraseña, cifrar la contraseña
+ * usando SHA-256, verificar credenciales y navegar a la pantalla principal del estudiante
+ * o a la pantalla de inicio de sesión para otros usuarios.
  */
 
 package sistemagestionpracticasprofesionales.controlador;
@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
@@ -88,10 +90,10 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
     }
 
     /**
-     * Valida las credenciales del estudiante con la base de datos.
-     * 
+     * Verifica las credenciales del estudiante usando matrícula y contraseña hasheada.
+     *
      * @param matricula Matrícula ingresada.
-     * @param password Contraseña ingresada.
+     * @param passwordHasheada Contraseña ya cifrada con SHA-256.
      */
     private void validarCredenciales(String matricula, String password) {
         try {
@@ -134,6 +136,26 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
         return true;
     }
 
+   /**
+     * Cifra una contraseña usando el algoritmo SHA-256.
+     *
+     * @param contrasenia Contraseña en texto plano.
+     * @return Cadena hexadecimal representando el hash.
+     */
+    private String hashContrasenia(String contrasenia) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(contrasenia.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("Error al hashear la contraseña: " + e.getMessage());
+            return null;
+        }
+    }
     /**
      * Cambia a la pantalla principal del estudiante.
      * 
@@ -162,9 +184,10 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
     }
     
     /**
-     * Maneja el evento del botón para iniciar sesión.
-     * 
-     * @param event Evento del botón iniciar sesión
+     * Maneja el evento del botón "Iniciar sesión".
+     * Valida campos, cifra la contraseña y verifica credenciales.
+     *
+     * @param event Evento del botón iniciar sesión.
      */
     @FXML
     private void clickIniciarSesion(ActionEvent event) {
@@ -172,7 +195,12 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
         String password = pfContrasenia.getText();
 
         if (validarCampos(matricula, password)) {
-            validarCredenciales(matricula, password);
+            String passwordHasheada = hashContrasenia(password);
+            if (passwordHasheada != null) {
+                validarCredenciales(matricula, passwordHasheada);
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo procesar la contraseña");
+            }
         }
     }
     

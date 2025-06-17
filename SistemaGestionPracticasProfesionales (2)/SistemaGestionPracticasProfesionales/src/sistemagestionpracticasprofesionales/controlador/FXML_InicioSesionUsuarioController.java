@@ -3,9 +3,10 @@
  * Autor: Rodrigo Santa Bárbara Murrieta
  * Fecha: 08/06/2025
  * Descripción: Controlador para la pantalla de inicio de sesión del usuario.
- * Permite validar los campos de usuario y contraseña, verificar credenciales
- * y navegar a la pantalla principal correspondiente según el rol del usuario.
- */    
+ * Gestiona la validación de campos, el cifrado de contraseñas con SHA-256 y
+ * la verificación de credenciales contra la base de datos. Redirige al usuario
+ * según su rol a la vista principal correspondiente.
+ */  
 package sistemagestionpracticasprofesionales.controlador;
 
 import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
@@ -27,6 +28,8 @@ import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
     /**
@@ -79,10 +82,10 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
     }
 
     /**
-     * Valida las credenciales del usuario con la base de datos.
-     * 
+     * Verifica las credenciales del usuario consultando la base de datos.
+     *
      * @param username Nombre de usuario ingresado.
-     * @param password Contraseña ingresada.
+     * @param passwordHasheada Contraseña ya cifrada con SHA-256.
      */
         private void validarCredenciales(String username, String password) {
             try {
@@ -98,6 +101,26 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
             }
         }
         
+     /**
+     * Cifra una contraseña usando SHA-256.
+     *
+     * @param contrasenia Contraseña en texto plano.
+     * @return Hash SHA-256 en formato hexadecimal.
+     */
+        private String hashContrasenia(String contrasenia) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                byte[] hashBytes = md.digest(contrasenia.getBytes());
+                StringBuilder sb = new StringBuilder();
+                for (byte b : hashBytes) {
+                    sb.append(String.format("%02x", b));
+                }
+                return sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                System.err.println("Error al hashear la contraseña: " + e.getMessage());
+                return null;
+            }
+        }
     /**
      * Navega a la pantalla principal correspondiente al rol del usuario.
      * 
@@ -155,20 +178,25 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
     }
 
     /**
-     * Evento al dar clic en el botón de iniciar sesión.
-     * Valida campos y credenciales.
-     * 
-     * @param event Evento del botón iniciar sesión.
-     */    
+     * Evento del botón "Iniciar sesión".
+     * Valida campos, cifra la contraseña e intenta iniciar sesión.
+     *
+     * @param event Evento del botón.
+     */ 
         @FXML
         private void clickIniciarSesion(ActionEvent event) {
             String username = tfUsuario.getText();
             String password = pfContrasenia.getText();
 
             if (validarCampos(username, password)) {
-                validarCredenciales(username, password);
+            String passwordHasheada = hashContrasenia(password);
+            if (passwordHasheada != null) {
+                validarCredenciales(username, passwordHasheada);
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo procesar la contraseña");
             }
         }
+    }
 
     /**
      * Evento para cambiar a la pantalla de inicio de sesión para estudiantes
