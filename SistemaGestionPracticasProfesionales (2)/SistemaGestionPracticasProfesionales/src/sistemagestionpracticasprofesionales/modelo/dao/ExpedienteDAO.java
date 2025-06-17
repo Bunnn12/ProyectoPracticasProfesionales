@@ -206,18 +206,16 @@ public class ExpedienteDAO {
         return total;
     }
     
-    public static Integer buscarIdExpedientePorNombreOMatricula(String texto) throws SQLException {
+    public static Integer buscarIdExpedientePorMatricula(String matricula) throws SQLException {
     Integer idExpediente = null;
     String sql = "SELECT e.idExpediente " +
                  "FROM expediente e " +
                  "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
-                 "WHERE es.nombre LIKE CONCAT('%', ?, '%') " +
-                 "OR es.matricula LIKE CONCAT('%', ?, '%')";
+                 "WHERE es.matricula = ?";
 
     try (Connection conn = Conexion.abrirConexion();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, texto);
-        ps.setString(2, texto);
+        ps.setString(1, matricula);
         try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 idExpediente = rs.getInt("idExpediente");
@@ -226,6 +224,7 @@ public class ExpedienteDAO {
     }
     return idExpediente;
 }
+
     
     public static Expediente obtenerExpedienteConEstudiante(int idExpediente) throws SQLException {
     Expediente expediente = null;

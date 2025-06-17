@@ -57,24 +57,35 @@ public class FXML_ActualizarExpedienteController implements Initializable {
     lbHorasAgregar.setText("Agregar Horas:");
 }
     public void recibirIdExpediente(Integer idExpediente) {
-        try {
-            expedienteActual = ExpedienteDAO.obtenerExpedienteConEstudiante(idExpediente);
-            if (expedienteActual != null) {
-                Estudiante estudiante = expedienteActual.getEstudiante();
-                lbEstudiante.setText(estudiante.getNombre() + " " +
-                                     estudiante.getApellidoPaterno() + " " +
-                                     estudiante.getApellidoMaterno());
-                lbMatricula.setText(estudiante.getMatricula());
-                lbHoras.setText(String.valueOf(expedienteActual.getHorasAcumuladas()));
-            } else {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se encontró el expediente.");
-                cerrarVentana();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "No se pudo cargar el expediente.");
+    try {
+        expedienteActual = ExpedienteDAO.obtenerExpedienteConEstudiante(idExpediente);
+        if (expedienteActual != null) {
+            Estudiante estudiante = expedienteActual.getEstudiante();
+
+            lbEstudiante.setText("Nombre: " + estudiante.getNombre() + " " +
+                                 estudiante.getApellidoPaterno() + " " +
+                                 estudiante.getApellidoMaterno());
+
+            lbMatricula.setText("Matrícula: " + estudiante.getMatricula());
+
+            // Assuming expedienteActual is retrieved using obtenerExpedienteConEstudianteYProyecto
+if (expedienteActual.getProyecto() != null && expedienteActual.getProyecto().getNombre() != null && !expedienteActual.getProyecto().getNombre().isEmpty()) {
+    lbProyecto.setText("Proyecto: " + expedienteActual.getProyecto().getNombre());
+} else {
+    lbProyecto.setText("Proyecto: No asignado"); // Or any other default text
+}
+
+            lbHoras.setText("Horas: " + expedienteActual.getHorasAcumuladas());
+
+        } else {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se encontró el expediente.");
+            cerrarVentana();
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "No se pudo cargar el expediente.");
     }
+}
 
     @FXML
     private void clickCancelar(ActionEvent event) {

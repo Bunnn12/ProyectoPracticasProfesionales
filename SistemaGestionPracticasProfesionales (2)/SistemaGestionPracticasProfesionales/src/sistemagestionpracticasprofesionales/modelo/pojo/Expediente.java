@@ -17,7 +17,8 @@ public class Expediente {
     private int horasAcumuladas;
     private String estado;
     private int idEstudiante;
-    private Estudiante estudiante; // ← nuevo campo
+    private Estudiante estudiante;
+     private Proyecto proyecto;
 
     public Expediente() {
     }
@@ -85,5 +86,12 @@ public class Expediente {
 
     public void setEstudiante(Estudiante estudiante) {
         this.estudiante = estudiante;
+    }
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
     }
 }
