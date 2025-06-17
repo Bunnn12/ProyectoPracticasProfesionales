@@ -18,9 +18,9 @@ import java.sql.SQLException;
 public class Conexion {
     private static final String IP = "localhost";
     private static final String PUERTO = "3306";
-    private static final String NOMBRE_BD = "practicasprofesionales";
+    private static final String NOMBRE_BD = "practicasprofesionalesbd";
     private static final String USUARIO = "root";
-    private static final String PASS = "arbol123";
+    private static final String PASS = "Hola123";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     
     /**

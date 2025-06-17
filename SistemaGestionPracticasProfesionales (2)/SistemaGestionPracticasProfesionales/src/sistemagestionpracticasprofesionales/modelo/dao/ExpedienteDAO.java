@@ -295,6 +295,7 @@ public class ExpedienteDAO {
         return total;
     }
     
+<<<<<<< HEAD
     /**
      * Busca el ID del expediente a partir del nombre o matrícula del estudiante.
      * 
@@ -318,10 +319,31 @@ public class ExpedienteDAO {
                 if (rs.next()) {
                     idExpediente = rs.getInt("idExpediente");
                 }
+=======
+    public static Integer buscarIdExpedientePorMatricula(String matricula) throws SQLException {
+    Integer idExpediente = null;
+    String sql = "SELECT e.idExpediente " +
+                 "FROM expediente e " +
+                 "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                 "WHERE es.matricula = ?";
+
+    try (Connection conn = Conexion.abrirConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, matricula);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                idExpediente = rs.getInt("idExpediente");
+>>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
             }
         }
         return idExpediente;
     }
+<<<<<<< HEAD
+=======
+    return idExpediente;
+}
+
+>>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
     
     /**
      * Obtiene un expediente con los datos del estudiante asociado.

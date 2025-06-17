@@ -19,7 +19,12 @@ public class Expediente {
     private int horasAcumuladas;
     private String estado;
     private int idEstudiante;
+<<<<<<< HEAD
     private Estudiante estudiante; 
+=======
+    private Estudiante estudiante;
+     private Proyecto proyecto;
+>>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
 
     public Expediente() {
     }
@@ -97,5 +102,12 @@ public class Expediente {
 
     public void setEstudiante(Estudiante estudiante) {
         this.estudiante = estudiante;
+    }
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
     }
 }

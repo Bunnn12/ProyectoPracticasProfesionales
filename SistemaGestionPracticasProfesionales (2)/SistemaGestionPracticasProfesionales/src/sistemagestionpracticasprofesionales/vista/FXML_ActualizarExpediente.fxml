@@ -15,21 +15,21 @@
             <Font name="Arial Rounded MT Bold" size="27.0" />
          </font>
       </Label>
-      <Label fx:id="lbEstudiante" layoutX="47.0" layoutY="64.0" text="Estudiante: ">
+      <Label fx:id="lbEstudiante" layoutX="47.0" layoutY="64.0">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font></Label>
-      <Label fx:id="lbMatricula" layoutX="47.0" layoutY="102.0" text="Matricula: ">
+      <Label fx:id="lbMatricula" layoutX="47.0" layoutY="102.0">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lbProyecto" layoutX="48.0" layoutY="141.0" text="Proyecto: ">
+      <Label fx:id="lbProyecto" layoutX="48.0" layoutY="141.0">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lbHoras" layoutX="48.0" layoutY="179.0" text="Horas hasta ahora:">
+      <Label fx:id="lbHoras" layoutX="48.0" layoutY="179.0">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>

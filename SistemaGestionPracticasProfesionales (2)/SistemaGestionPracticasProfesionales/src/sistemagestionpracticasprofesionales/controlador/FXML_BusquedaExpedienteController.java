@@ -44,36 +44,39 @@ public class FXML_BusquedaExpedienteController implements Initializable {
 
     @FXML
 private void clickBuscar(ActionEvent event) {
-    String texto = tfBuscar.getText().trim();
+    String matricula = tfBuscar.getText().trim();
 
-    if (texto.isEmpty()) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Campo vacío", "Por favor escribe un nombre o matrícula.");
+    if (matricula.isEmpty()) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Campo vacío", "Por favor escribe una matrícula.");
         return;
     }
 
     try {
-        Integer idExpediente = ExpedienteDAO.buscarIdExpedientePorNombreOMatricula(texto);
+        Integer idExpediente = ExpedienteDAO.buscarIdExpedientePorMatricula(matricula);
 
         if (idExpediente != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_ActualizarExpediente.fxml"));
-            Parent root = loader.load();
-
-            FXML_ActualizarExpedienteController controlador = loader.getController();
-            controlador.recibirIdExpediente(idExpediente);
-
-            Stage stage = new Stage();
-            stage.setTitle("Actualizar Expediente");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
+            abrirActualizarExpediente(idExpediente);
         } else {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "No encontrado", "No se encontró ningún expediente con ese nombre o matrícula.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "No encontrado", "No se encontró ningún expediente con esa matrícula.");
         }
     } catch (SQLException | IOException e) {
         e.printStackTrace();
         Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Ocurrió un error al buscar el expediente.");
     }
+}
+
+private void abrirActualizarExpediente(int idExpediente) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_ActualizarExpediente.fxml"));
+    Parent root = loader.load();
+
+    FXML_ActualizarExpedienteController controlador = loader.getController();
+    controlador.recibirIdExpediente(idExpediente);
+
+    Stage stage = new Stage();
+    stage.setTitle("Actualizar Expediente");
+    stage.setScene(new Scene(root));
+    stage.initModality(Modality.APPLICATION_MODAL);
+    stage.showAndWait();
 }
 
 }
