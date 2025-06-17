@@ -33,7 +33,8 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
 /**
  * Controlador para la vista FXML_InicioSesionEstudiante.
- * Permite validar las credenciales del estudiante y acceder a la pantalla principal si la autenticación es correcta.
+ * Gestiona el proceso de inicio de sesión del estudiante, validando campos,
+ * autenticando credenciales contra la base de datos y redirigiendo a la pantalla principal si el acceso es exitoso.
  */
 public class FXML_InicioSesionEstudianteController implements Initializable {
 

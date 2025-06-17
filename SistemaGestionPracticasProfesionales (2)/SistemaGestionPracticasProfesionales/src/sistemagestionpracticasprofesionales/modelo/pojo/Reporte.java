@@ -1,14 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: Reporte.java
+ * Autor: reino
+ * Fecha: 17/06/2025
+ * Descripción: Clase POJO que representa un reporte de prácticas profesionales,
+ * con detalles como fecha de entrega, horas trabajadas, archivo adjunto y estado.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 import java.sql.Date;
 
 /**
- *
- * @author reino
+ * Representa un reporte relacionado con un expediente dentro del sistema
+ * de gestión de prácticas profesionales.
  */
 public class Reporte {
     private int idReporte;
@@ -19,6 +22,17 @@ public class Reporte {
     private byte[] archivo;
     private String estado;
 
+    /**
+     * Constructor completo con todos los atributos del reporte.
+     *
+     * @param idReporte Identificador único del reporte
+     * @param fechaEntrega Fecha en que se entregó el reporte
+     * @param numeroHorasTrabajadas Número de horas trabajadas registradas en el reporte
+     * @param idExpediente Identificador del expediente asociado
+     * @param nombre Nombre del reporte o archivo
+     * @param archivo Contenido binario del archivo adjunto
+     * @param estado Estado actual del reporte (por ejemplo, aprobado, pendiente, rechazado)
+     */
     public Reporte(int idReporte, Date fechaEntrega, int numeroHorasTrabajadas, int idExpediente, String nombre, byte[] archivo, String estado) {
         this.idReporte = idReporte;
         this.fechaEntrega = fechaEntrega;

@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: OrganizacionVinculadaDAO.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 10/06/25
+ * Descripción: Clase DAO encargada de manejar la persistencia de datos de Organizaciones Vinculadas.
+ * Permite registrar nuevas organizaciones y obtener la lista de organizaciones registradas.
  */
 package sistemagestionpracticasprofesionales.modelo.dao;
 
@@ -14,10 +17,17 @@ import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 
 /**
- *
- * @author reino
+ * Clase DAO para la gestión de Organizaciones Vinculadas.
  */
 public class OrganizacionVinculadaDAO {
+    
+    /**
+     * Registra una nueva organización vinculada en la base de datos.
+     *
+     * @param ov Objeto OrganizacionVinculada con los datos a guardar.
+     * @return ResultadoOperacion que indica éxito o fallo de la operación.
+     * @throws SQLException Si ocurre un error durante la conexión o consulta a la base de datos.
+     */
     public static ResultadoOperacion registrarOV(OrganizacionVinculada ov) throws SQLException{
         ResultadoOperacion resultado= new ResultadoOperacion();
         Connection conexionBD= Conexion.abrirConexion();
@@ -45,6 +55,13 @@ public class OrganizacionVinculadaDAO {
         return resultado;
     }
     
+    
+    /**
+     * Obtiene la lista de organizaciones vinculadas registradas en la base de datos.
+     *
+     * @return ArrayList con objetos OrganizacionVinculada.
+     * @throws SQLException Si ocurre un error durante la conexión o consulta a la base de datos.
+     */
     public static ArrayList<OrganizacionVinculada> obtenerOrganizacionesVinculadas() throws SQLException{
         ArrayList<OrganizacionVinculada> organizacionesVinculadas= new ArrayList<>();
         Connection conexionBD= Conexion.abrirConexion();
@@ -63,7 +80,14 @@ public class OrganizacionVinculadaDAO {
         }
         return organizacionesVinculadas;
     }
-        
+    
+    /**
+     * Convierte un registro de la tabla organizacionVinculada en un objeto OrganizacionVinculada.
+     *
+     * @param resultado ResultSet con los datos de la organización.
+     * @return Objeto OrganizacionVinculada con los datos cargados.
+     * @throws SQLException Si ocurre un error accediendo al ResultSet.
+     */    
     private static OrganizacionVinculada convertirRegistroOV(ResultSet resultado) throws SQLException{
         OrganizacionVinculada ov = new OrganizacionVinculada();
         ov.setIdOrganizacionVinculada(resultado.getInt("idOrganizacionVinculada"));

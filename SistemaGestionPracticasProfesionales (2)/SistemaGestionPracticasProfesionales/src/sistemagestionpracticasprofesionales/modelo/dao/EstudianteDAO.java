@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: EstudianteDAO.java  
+ * Autor: Astrid Azucena Torres Lagunes  
+ * Fecha: 08/06/2025  
+ * Descripción: Esta clase proporciona métodos para acceder, consultar y manipular los datos 
+ * de los estudiantes en la base de datos del sistema de gestión de prácticas profesionales.
  */
 package sistemagestionpracticasprofesionales.modelo.dao;
 
@@ -12,14 +15,57 @@ import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.DatosDocumentoAsignacion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
-import sistemagestionpracticasprofesionales.modelo.pojo.ResponsableProyecto;
 
 /**
- *
- * @author reino
+ * Clase que permite realizar operaciones de acceso a datos relacionadas con los estudiantes.
  */
 public class EstudianteDAO {
-        public static Estudiante convertirRegistroEstudiante(ResultSet resultado) throws SQLException{
+    /**
+     * Convierte un registro de resultado de base de datos en un objeto Estudiante.
+     * 
+     * @param resultado ResultSet obtenido de la base de datos.
+     * @return Objeto Estudiante con los datos del registro.
+     * @throws SQLException si ocurre un error al obtener los datos.
+     */
+    public static Estudiante convertirRegistroEstudiante(ResultSet resultado) throws SQLException {
+        Estudiante estudiante = new Estudiante();
+        estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+        estudiante.setNombre(resultado.getString("nombre"));
+        estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+        estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+        estudiante.setCorreo(resultado.getString("correo"));
+        estudiante.setMatricula(resultado.getString("matricula"));
+        estudiante.setIdGrupo(resultado.getInt("idGrupo"));
+        estudiante.setGrupo(resultado.getString("grupo"));
+        return estudiante;
+    }
+
+    /**
+     * Busca estudiantes que no tengan proyecto asignado actualmente y filtra por matrícula.
+     * 
+     * @param textoBusqueda Texto para filtrar matrícula (puede estar vacío para no filtrar).
+     * @return Lista de estudiantes sin proyecto asignado que coinciden con el filtro.
+     * @throws SQLException en caso de error con la base de datos.
+     */
+    public static ArrayList<Estudiante> buscarEstudiantesSinProyectoPorMatricula(String textoBusqueda) throws SQLException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        Connection conexion = Conexion.abrirConexion();
+
+        String consulta = "SELECT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.correo, e.matricula "
+                        + "FROM estudiante e "
+                        + "JOIN grupo g ON e.idGrupo = g.idGrupo "
+                        + "JOIN periodo p ON g.idPeriodo = p.idPeriodo "
+                        + "WHERE CURDATE() BETWEEN p.fechaInicio AND p.fechaFin "
+                        + "AND e.idEstudiante NOT IN (SELECT idEstudiante FROM asignacion) "
+                        + "AND (? = '' OR e.matricula LIKE ?)";
+
+        PreparedStatement sentencia = conexion.prepareStatement(consulta);
+        sentencia.setString(1, textoBusqueda);
+        sentencia.setString(2, "%" + textoBusqueda + "%");
+
+        ResultSet resultado = sentencia.executeQuery();
+
+        while (resultado.next()) {
             Estudiante estudiante = new Estudiante();
             estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
             estudiante.setNombre(resultado.getString("nombre"));
@@ -27,200 +73,199 @@ public class EstudianteDAO {
             estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
             estudiante.setCorreo(resultado.getString("correo"));
             estudiante.setMatricula(resultado.getString("matricula"));
-            estudiante.setIdGrupo(resultado.getInt("idGrupo"));
-            estudiante.setGrupo(resultado.getString("grupo"));
-            return estudiante;
+            estudiantes.add(estudiante);
         }
-        public static ArrayList<Estudiante> buscarEstudiantesSinProyectoPorMatricula(String textoBusqueda) throws SQLException {
-            ArrayList<Estudiante> estudiantes = new ArrayList<>();
-            Connection conexion = Conexion.abrirConexion();
 
-            String consulta = "SELECT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, e.correo, e.matricula "
-                            + "FROM estudiante e "
-                            + "JOIN grupo g ON e.idGrupo = g.idGrupo "
-                            + "JOIN periodo p ON g.idPeriodo = p.idPeriodo "
-                            + "WHERE CURDATE() BETWEEN p.fechaInicio AND p.fechaFin "
-                            + "AND e.idEstudiante NOT IN (SELECT idEstudiante FROM asignacion) "
-                            + "AND (? = '' OR e.matricula LIKE ?)";
+        conexion.close();
+        return estudiantes;
+    }
 
-            PreparedStatement sentencia = conexion.prepareStatement(consulta);
-            sentencia.setString(1, textoBusqueda);
-            sentencia.setString(2, "%" + textoBusqueda + "%");
+    /**
+     * Obtiene la lista de estudiantes del periodo actual que ya cuentan con proyecto asignado.
+     * 
+     * @return Lista de estudiantes con proyecto en periodo actual.
+     * @throws SQLException en caso de error con la base de datos o sin conexión.
+     */
+    public static ArrayList<Estudiante> obtenerEstudiantesPeriodoActualConProyecto() throws SQLException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        Connection conexionBD = Conexion.abrirConexion();
 
+        if (conexionBD != null) {
+            String consulta = "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
+                              "e.matricula, e.correo, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
+                              "FROM estudiante e " +
+                              "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                              "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
+                              "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
+                              "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin";
+
+            PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
             ResultSet resultado = sentencia.executeQuery();
 
             while (resultado.next()) {
-                Estudiante estudiante = new Estudiante();
-                estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
-                estudiante.setNombre(resultado.getString("nombre"));
-                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                estudiante.setCorreo(resultado.getString("correo"));
-                estudiante.setMatricula(resultado.getString("matricula"));
-                estudiantes.add(estudiante);
+                estudiantes.add(convertirRegistroEstudiante(resultado));
             }
 
+            sentencia.close();
+            resultado.close();
+            conexionBD.close();
+        } else {
+            throw new SQLException("Sin conexión con la base de datos");
+        }
+
+        return estudiantes;
+    }
+
+    /**
+     * Obtiene los datos necesarios para la generación del documento de asignación.
+     * 
+     * @return Lista con los datos para documentos de asignación.
+     * @throws SQLException en caso de error con la base de datos o sin conexión.
+     */
+    public static ArrayList<DatosDocumentoAsignacion> obtenerDatosDocumentosAsignacion() throws SQLException {
+        ArrayList<DatosDocumentoAsignacion> listaDatos = new ArrayList<>();
+        Connection conexion = Conexion.abrirConexion();
+
+        if (conexion != null) {
+            String consulta = "SELECT e.idEstudiante, p.idProyecto, " +
+                    "CONCAT(e.nombre, ' ', e.apellidoPaterno, ' ', IFNULL(e.apellidoMaterno, '')) AS nombreCompleto, " +
+                    "e.matricula, p.nombre AS nombreProyecto, p.fechaInicio, p.fechaFin, " +
+                    "TIME_FORMAT(p.horaEntrada, '%H:%i') AS horaEntrada, " +
+                    "TIME_FORMAT(p.horaSalida, '%H:%i') AS horaSalida, " +
+                    "ov.nombre AS nombreOrganizacion, " +
+                    "rp.nombre AS nombreResponsable, rp.correo AS correoResponsable, rp.telefono AS telefonoResponsable " +
+                    "FROM estudiante e " +
+                    "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
+                    "JOIN proyecto p ON a.idProyecto = p.idProyecto " +
+                    "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                    "JOIN periodo per ON g.idPeriodo = per.idPeriodo " +
+                    "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                    "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto " +
+                    "WHERE CURRENT_DATE BETWEEN per.fechaInicio AND per.fechaFin";
+
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+            ResultSet resultado = sentencia.executeQuery();
+
+            java.util.HashSet<String> matriculasUnicas = new java.util.HashSet<>();
+            while (resultado.next()) {
+                String matricula = resultado.getString("matricula");
+                if (matriculasUnicas.contains(matricula)) continue;
+
+                DatosDocumentoAsignacion datos = new DatosDocumentoAsignacion();
+                datos.setIdEstudiante(resultado.getInt("idEstudiante"));
+                datos.setIdProyecto(resultado.getInt("idProyecto"));
+                datos.setNombreCompleto(resultado.getString("nombreCompleto"));
+                datos.setMatricula(matricula);
+                datos.setNombreProyecto(resultado.getString("nombreProyecto"));
+                datos.setFechaInicio(resultado.getString("fechaInicio"));
+                datos.setFechaFin(resultado.getString("fechaFin"));
+                datos.setHoraEntrada(resultado.getString("horaEntrada"));
+                datos.setHoraSalida(resultado.getString("horaSalida"));
+                datos.setNombreOrganizacion(resultado.getString("nombreOrganizacion"));
+                datos.setNombreResponsable(resultado.getString("nombreResponsable"));
+                datos.setCorreoResponsable(resultado.getString("correoResponsable"));
+                datos.setTelefonoResponsable(resultado.getString("telefonoResponsable"));
+
+                listaDatos.add(datos);
+                matriculasUnicas.add(matricula);
+            }
+
+            resultado.close();
+            sentencia.close();
             conexion.close();
-            return estudiantes;
+        } else {
+            throw new SQLException("Sin conexión con la base de datos");
         }
 
-        public static ArrayList<Estudiante> obtenerEstudiantesPeriodoActualConProyecto() throws SQLException{
-            ArrayList<Estudiante> estudiantes= new ArrayList<>();
-            Connection conexionBD= Conexion.abrirConexion();
-            if (conexionBD!= null){
-                String consulta=  "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
-                                "e.matricula, e.correo, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
-                                "FROM estudiante e " +
-                                "JOIN grupo g ON e.idGrupo = g.idGrupo " +
-                                "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
-                                "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
-                                "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin";
-                PreparedStatement sentencia= conexionBD.prepareStatement(consulta);
-                ResultSet resultado = sentencia.executeQuery();
-                while(resultado.next()){
-                    estudiantes.add(convertirRegistroEstudiante(resultado));
-                }
-                sentencia.close();
-                resultado.close();
-                conexionBD.close();
-            }else{
-                throw new SQLException("Sin conexion con la base de datos");
-            }
-            return estudiantes;
-        }
-        
-        public static ArrayList<DatosDocumentoAsignacion> obtenerDatosDocumentosAsignacion() throws SQLException {
-            ArrayList<DatosDocumentoAsignacion> listaDatos = new ArrayList<>();
-            Connection conexion = Conexion.abrirConexion();
+        return listaDatos;
+    }
 
-            if (conexion != null) {
-                String consulta = "SELECT " +
-                        "e.idEstudiante, " +
-                        "p.idProyecto, " +
-                        "CONCAT(e.nombre, ' ', e.apellidoPaterno, ' ', IFNULL(e.apellidoMaterno, '')) AS nombreCompleto, " +
-                        "e.matricula, " +
-                        "p.nombre AS nombreProyecto, " +
-                        "p.fechaInicio, " +
-                        "p.fechaFin, " +
-                        "TIME_FORMAT(p.horaEntrada, '%H:%i') AS horaEntrada, " +
-                        "TIME_FORMAT(p.horaSalida, '%H:%i') AS horaSalida, " +
-                        "ov.nombre AS nombreOrganizacion, " +
-                        "rp.nombre AS nombreResponsable, " +
-                        "rp.correo AS correoResponsable, " +
-                        "rp.telefono AS telefonoResponsable " +
-                        "FROM estudiante e " +
-                        "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
-                        "JOIN proyecto p ON a.idProyecto = p.idProyecto " +
-                        "JOIN grupo g ON e.idGrupo = g.idGrupo " +
-                        "JOIN periodo per ON g.idPeriodo = per.idPeriodo " +
-                        "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
-                        "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto " +
-                        "WHERE CURRENT_DATE BETWEEN per.fechaInicio AND per.fechaFin";
+    /**
+     * Verifica si existe un estudiante con el ID especificado.
+     * 
+     * @param idEstudiante ID del estudiante a verificar.
+     * @return true si el estudiante existe, false en caso contrario.
+     * @throws SQLException en caso de error con la base de datos.
+     */
+    public static boolean existeEstudiante(int idEstudiante) throws SQLException {
+        Connection conexion = Conexion.abrirConexion();
+        String sql = "SELECT 1 FROM estudiante WHERE idEstudiante = ?";
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setInt(1, idEstudiante);
+        ResultSet rs = ps.executeQuery();
+        boolean existe = rs.next();
+        rs.close();
+        ps.close();
+        conexion.close();
+        return existe;
+    }
 
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
-                ResultSet resultado = sentencia.executeQuery();
+    /**
+     * Busca estudiantes que hayan entregado documentos de cierto tipo durante el periodo actual,
+     * filtrando por matrícula si se proporciona.
+     * 
+     * @param textoBusqueda Texto para filtrar matrícula (puede estar vacío para no filtrar).
+     * @param tipoDocumento Tipo de documento a buscar.
+     * @return Lista de estudiantes que cumplan con los criterios.
+     * @throws SQLException en caso de error con la base de datos o sin conexión.
+     */
+    public static ArrayList<Estudiante> buscarEstudiantesConDocumentosEntregadosPorTipoYMatricula(String textoBusqueda, String tipoDocumento) throws SQLException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        Connection conexion = Conexion.abrirConexion();
 
-                java.util.HashSet<String> matriculasUnicas = new java.util.HashSet<>();
-                while (resultado.next()) {
-                    String matricula = resultado.getString("matricula");
-                    if (matriculasUnicas.contains(matricula)) {
-                        continue; // evitar duplicado
-                    }
+        if (conexion != null) {
+            String consulta =
+                "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
+                "e.correo, e.matricula, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
+                "FROM estudiante e " +
+                "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
+                "JOIN expediente ex ON e.idEstudiante = ex.idEstudiante " +
+                "JOIN documento d ON ex.idExpediente = d.idExpediente " +
+                "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin " +
+                "AND d.tipo = ? " +
+                "AND (? = '' OR e.matricula LIKE ?)";
 
-                    DatosDocumentoAsignacion datos = new DatosDocumentoAsignacion();
-                    datos.setIdEstudiante(resultado.getInt("idEstudiante"));
-                    datos.setIdProyecto(resultado.getInt("idProyecto"));
-                    datos.setNombreCompleto(resultado.getString("nombreCompleto"));
-                    datos.setMatricula(matricula);
-                    datos.setNombreProyecto(resultado.getString("nombreProyecto"));
-                    datos.setFechaInicio(resultado.getString("fechaInicio"));
-                    datos.setFechaFin(resultado.getString("fechaFin"));
-                    datos.setHoraEntrada(resultado.getString("horaEntrada"));
-                    datos.setHoraSalida(resultado.getString("horaSalida"));
-                    datos.setNombreOrganizacion(resultado.getString("nombreOrganizacion"));
-                    datos.setNombreResponsable(resultado.getString("nombreResponsable"));
-                    datos.setCorreoResponsable(resultado.getString("correoResponsable"));
-                    datos.setTelefonoResponsable(resultado.getString("telefonoResponsable"));
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+            sentencia.setString(1, tipoDocumento);
+            sentencia.setString(2, textoBusqueda);
+            sentencia.setString(3, "%" + textoBusqueda + "%");
 
-                    listaDatos.add(datos);
-                    matriculasUnicas.add(matricula);
-                }
-
-                resultado.close();
-                sentencia.close();
-                conexion.close();
-            } else {
-                throw new SQLException("Sin conexión con la base de datos");
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                estudiantes.add(convertirRegistroEstudiante(resultado));
             }
 
-            return listaDatos;
+            resultado.close();
+            sentencia.close();
+            conexion.close();
+        } else {
+            throw new SQLException("Sin conexión con la base de datos");
         }
 
-        public static boolean existeEstudiante(int idEstudiante) throws SQLException {
-            Connection conexion = Conexion.abrirConexion();
-            String sql = "SELECT 1 FROM estudiante WHERE idEstudiante = ?";
-            PreparedStatement ps = conexion.prepareStatement(sql);
+        return estudiantes;
+    }
+
+    /**
+     * Obtiene el nombre completo de un estudiante a partir de su ID.
+     * 
+     * @param idEstudiante ID del estudiante.
+     * @return Nombre completo (nombre y apellidos) o cadena vacía si no se encuentra.
+     */
+    public static String obtenerNombreEstudiantePorId(int idEstudiante) {
+        String nombreCompleto = "";
+        String consulta = "SELECT nombre, apellidoPaterno, apellidoMaterno FROM estudiante WHERE idEstudiante = ?";
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(consulta)) {
             ps.setInt(1, idEstudiante);
             ResultSet rs = ps.executeQuery();
-            boolean existe = rs.next();
-            rs.close();
-            ps.close();
-            conexion.close();
-            return existe;
-        }
-        public static ArrayList<Estudiante> buscarEstudiantesConDocumentosEntregadosPorTipoYMatricula(String textoBusqueda, String tipoDocumento) throws SQLException {
-            ArrayList<Estudiante> estudiantes = new ArrayList<>();
-            Connection conexion = Conexion.abrirConexion();
-
-            if (conexion != null) {
-                String consulta = 
-                    "SELECT DISTINCT e.idEstudiante, e.nombre, e.apellidoPaterno, e.apellidoMaterno, " +
-                    "e.correo, e.matricula, g.idGrupo, CONCAT(g.bloque, '-', g.seccion) AS grupo " +
-                    "FROM estudiante e " +
-                    "JOIN grupo g ON e.idGrupo = g.idGrupo " +
-                    "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
-                    "JOIN expediente ex ON e.idEstudiante = ex.idEstudiante " +
-                    "JOIN documento d ON ex.idExpediente = d.idExpediente " +
-                    "WHERE CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin " +
-                    "AND d.tipo = ? " +
-                    "AND (? = '' OR e.matricula LIKE ?)";
-
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
-                sentencia.setString(1, tipoDocumento);                  
-                sentencia.setString(2, textoBusqueda);                  // textoBusqueda para filtro vacío o no
-                sentencia.setString(3, "%" + textoBusqueda + "%");      
-
-                ResultSet resultado = sentencia.executeQuery();
-
-                while (resultado.next()) {
-                    estudiantes.add(convertirRegistroEstudiante(resultado));
-                }
-
-                resultado.close();
-                sentencia.close();
-                conexion.close();
-            } else {
-                throw new SQLException("Sin conexión con la base de datos");
+            if (rs.next()) {
+                nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidoPaterno") + " " + rs.getString("apellidoMaterno");
             }
-
-            return estudiantes;
+        } catch (SQLException ex) {
+            ex.getMessage();
         }
-
-        public static String obtenerNombreEstudiantePorId(int idEstudiante) {
-            String nombreCompleto = "";
-            String consulta = "SELECT nombre, apellidoPaterno, apellidoMaterno FROM estudiante WHERE idEstudiante = ?";
-            try (Connection conn = Conexion.abrirConexion();
-                 PreparedStatement ps = conn.prepareStatement(consulta)) {
-                ps.setInt(1, idEstudiante);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidoPaterno") + " " + rs.getString("apellidoMaterno");
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            return nombreCompleto;
-        }
-
+        return nombreCompleto;
+    }
 }
 

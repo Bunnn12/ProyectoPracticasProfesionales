@@ -1,66 +1,89 @@
-    package sistemagestionpracticasprofesionales.controlador;
+/**
+ * Nombre del archivo: FXML_InicioSesionUsuarioController.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 08/06/2025
+ * Descripción: Controlador para la pantalla de inicio de sesión del usuario.
+ * Permite validar los campos de usuario y contraseña, verificar credenciales
+ * y navegar a la pantalla principal correspondiente según el rol del usuario.
+ */    
+package sistemagestionpracticasprofesionales.controlador;
 
-    import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
-    import sistemagestionpracticasprofesionales.modelo.dao.InicioSesionUsuarioDAO;
-    import sistemagestionpracticasprofesionales.utilidades.Utilidad;
-    import java.net.URL;
-    import java.sql.SQLException;
-    import java.util.ResourceBundle;
-    import javafx.event.ActionEvent;
-    import javafx.fxml.FXML;
-    import javafx.fxml.FXMLLoader;
-    import javafx.fxml.Initializable;
-    import javafx.scene.Parent;
-    import javafx.scene.Scene;
-    import javafx.scene.control.Alert;
-    import javafx.scene.control.Label;
-    import javafx.scene.control.TextField;
-    import javafx.scene.control.PasswordField;
-    import javafx.stage.Stage;
-    import java.io.IOException;
+import sistemagestionpracticasprofesionales.modelo.pojo.Usuario;
+import sistemagestionpracticasprofesionales.modelo.dao.InicioSesionUsuarioDAO;
+import sistemagestionpracticasprofesionales.utilidades.Utilidad;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-    import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 
     /**
-     * FXML Controller class
-     *
-     * @author rodri
-     */
+    * Controlador para la vista FXML_InicioSesionUsuario.
+    * Gestiona el proceso de inicio de sesión del usuario general, validando campos,
+    * autenticando credenciales contra la base de datos y redirigiendo a la pantalla principal según el rol.
+    */
     public class FXML_InicioSesionUsuarioController implements Initializable {
 
-        @FXML
-        private TextField tfUsuario;
-        @FXML
-        private PasswordField pfContrasenia;
-        @FXML
-        private Label lblErrorUsuario;
-        @FXML
-        private Label lblErrorContrasenia;
+    @FXML
+    private TextField tfUsuario;
+    @FXML
+    private PasswordField pfContrasenia;
+    @FXML
+    private Label lblErrorUsuario;
+    @FXML
+    private Label lblErrorContrasenia;
 
-        /**
-         * Initializes the controller class.
-         */
-        @Override
-        public void initialize(URL url, ResourceBundle rb) {
-            // TODO
+    /**
+     * Inicializa el controlador.
+     * 
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
+    */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
+
+    /**
+     * Valida que los campos usuario y contraseña no estén vacíos.
+     * Muestra mensajes de error en caso contrario.
+     * 
+     * @param username Nombre de usuario ingresado.
+     * @param password Contraseña ingresada.
+     * @return true si ambos campos son válidos, false en caso contrario.
+     */
+    private boolean validarCampos(String username, String password) {
+        lblErrorUsuario.setText(""); 
+        lblErrorContrasenia.setText("");
+        boolean camposValidos = true;
+        if (username.isEmpty()) {
+            lblErrorUsuario.setText("Usuario obligatorio");
+            camposValidos = false;
         }
-
-        private boolean validarCampos(String username, String password) {
-            lblErrorUsuario.setText(""); 
-            lblErrorContrasenia.setText("");
-            boolean camposValidos = true;
-            if (username.isEmpty()) {
-                lblErrorUsuario.setText("Usuario obligatorio");
-                camposValidos = false;
-            }
-            if (password.isEmpty()){
-                lblErrorContrasenia.setText("Contraseña obligatoria");
-                camposValidos = false;
-            }
+        if (password.isEmpty()){
+            lblErrorContrasenia.setText("Contraseña obligatoria");
+            camposValidos = false;
+        }
             return camposValidos;
-        }
+    }
 
+    /**
+     * Valida las credenciales del usuario con la base de datos.
+     * 
+     * @param username Nombre de usuario ingresado.
+     * @param password Contraseña ingresada.
+     */
         private void validarCredenciales(String username, String password) {
             try {
                 Usuario usuarioSesion = InicioSesionUsuarioDAO.verificarCredenciales(username, password);
@@ -75,15 +98,20 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
             }
         }
         
+    /**
+     * Navega a la pantalla principal correspondiente al rol del usuario.
+     * 
+     * @param usuarioSesion Usuario que ha iniciado sesión.
+     */
         private void irPantallaPrincipal(Usuario usuarioSesion) {
         if (usuarioSesion == null) {
-            mostrarError("Error interno", "El usuario no ha sido encontrado en el sistema");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Rol desconocido", "El rol del usuario no está definido correctamente");
             return;
         }
         Sesion.setUsuarioSeleccionado(usuarioSesion);
         String rol = usuarioSesion.getRol();
         if (rol == null || rol.trim().isEmpty()) {
-            mostrarError("Rol desconocido", "El rol del usuario no está definido correctamente.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Rol desconocido", "El rol del usuario no está definido correctamente");
             return;
         }
 
@@ -104,7 +132,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
                 titulo = "Principal profesor ee";
                 break;
             default:
-                mostrarError("Rol desconocido", "El rol del usuario no está definido correctamente.");
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Rol desconocido", "El rol del usuario no está definido correctamente");
                 return;
         }
 
@@ -122,17 +150,16 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
             escenarioBase.centerOnScreen();
             escenarioBase.show();
         } catch (IOException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
-            mostrarError("Error al abrir vista", "No se pudo cargar la pantalla principal: " + e.getMessage());
-            e.printStackTrace();
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al abrir vista", "No se pudo cargar la pantalla principal: " + e.getMessage());
         }
     }
 
-        private void mostrarError(String titulo, String mensaje) {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, titulo, mensaje);
-}
-
-
-
+    /**
+     * Evento al dar clic en el botón de iniciar sesión.
+     * Valida campos y credenciales.
+     * 
+     * @param event Evento del botón iniciar sesión.
+     */    
         @FXML
         private void clickIniciarSesion(ActionEvent event) {
             String username = tfUsuario.getText();
@@ -143,6 +170,11 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
             }
         }
 
+    /**
+     * Evento para cambiar a la pantalla de inicio de sesión para estudiantes
+     * 
+     * @param event Evento del botón "Soy estudiante".
+     */    
         @FXML
         private void clickSoyEstudiante(ActionEvent event) {
             try {
@@ -157,7 +189,6 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
                 escenarioBase.show();
             } catch (IOException e) {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al cambiar de vista", "No se pudo cargar la vista de inicio de sesión de usuario");
-                e.printStackTrace();
             }
         }    
     }

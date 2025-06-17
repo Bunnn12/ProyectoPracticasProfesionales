@@ -1,12 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: ResponsableProyecto.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 09/06/2025
+ * Descripción: Clase POJO que representa a un responsable de proyecto
+ * con sus datos personales y la organización vinculada.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
+
 /**
- *
- * @author reino
+ * Representa a un responsable asignado a un proyecto,
+ * incluyendo su información de contacto y la organización a la que pertenece.
  */
 public class ResponsableProyecto {
     private int idResponsable;
@@ -19,7 +23,16 @@ public class ResponsableProyecto {
     public ResponsableProyecto() {
     }
     
-    
+    /**
+    * Constructor completo que inicializa todos los atributos de un ResponsableProyecto.
+    *
+    * @param idResponsable Identificador único del responsable
+    * @param nombre Nombre completo del responsable
+    * @param correo Correo electrónico del responsable
+    * @param telefono Número telefónico del responsable
+    * @param idOrganizacionVinculada Identificador de la organización vinculada
+    * @param nombreOrganizacionVinculada Nombre de la organización vinculada
+    */
     public ResponsableProyecto(int idResponsable, String nombre, String correo, String telefono, int idOrganizacionVinculada, String nombreOrganizacionVinculada) {
         this.idResponsable = idResponsable;
         this.nombre = nombre;
@@ -76,7 +89,5 @@ public class ResponsableProyecto {
     public void setNombreOrganizacionVinculada(String nombreOrganizacionVinculada) {
         this.nombreOrganizacionVinculada = nombreOrganizacionVinculada;
     }
-    
-    
-    
+     
 }

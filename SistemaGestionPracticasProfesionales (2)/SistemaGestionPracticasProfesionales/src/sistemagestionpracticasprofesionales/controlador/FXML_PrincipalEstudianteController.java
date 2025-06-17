@@ -1,3 +1,12 @@
+/**
+ * Nombre del archivo: FXML_PrincipalEstudianteController.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 08/06/2025
+ * Descripción: Controlador para la vista principal del estudiante.
+ * Permite gestionar la sesión del usuario estudiante y controlar la navegación
+ * a las funcionalidades disponibles, como subir documentos iniciales,
+ * consultar avances y evaluar oficios de vinculación.
+ */
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.io.IOException;
@@ -17,9 +26,10 @@ import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author rodri
+ * Controlador para la vista principal del estudiante.
+ * Permite gestionar la sesión del estudiante en curso y controlar
+ * la navegación a otras vistas desde la interfaz principal.
+ * 
  */
 public class FXML_PrincipalEstudianteController implements Initializable {
 
@@ -28,24 +38,40 @@ public class FXML_PrincipalEstudianteController implements Initializable {
     private Label lblSaludoEstudiante;
     
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     * 
+     * @param url URL de localización del archivo FXML.
+     * @param rb  ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
+    /**
+     * Inicializa la información del estudiante en sesión.
+     * 
+     * @param estudianteSesion Estudiante que ha iniciado sesión.
+     */
     public void inicializarInformacion(Estudiante estudianteSesion){
         this.estudianteSesion = estudianteSesion;
         cargarInformacionUsuario();
     }
     
+    /**
+     * Carga la información del estudiante en la vista.
+     */
     private void cargarInformacionUsuario(){
         if (estudianteSesion != null){
             lblSaludoEstudiante.setText("Hola, " + estudianteSesion.getNombre());
         }
     }
     
+    /**
+     * Maneja el cierre de sesión, mostrando alerta de confirmación y
+     * regresando a la ventana de inicio de sesión si se confirma.
+     * 
+     * @param event Evento generado por el botón cerrar sesión.
+     */
     @FXML
     private void btnCerrarSesion(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?");

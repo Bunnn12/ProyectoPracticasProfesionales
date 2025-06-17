@@ -1,8 +1,15 @@
+/*
+ * Nombre del archivo: Usuario.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 08/06/2025
+ * Descripción: Clase POJO que representa un usuario del sistema,
+ * con atributos para datos personales y credenciales de acceso.
+ */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 /**
- *
- * @author rodri
+ * Representa un usuario del sistema con su información personal,
+ * credenciales y rol (coordinador, profesor EE o evaluador)
  */
 public class Usuario {
     private int idUsuario;
@@ -15,6 +22,17 @@ public class Usuario {
 
     public Usuario() {}
 
+    /**
+     * Constructor que inicializa todos los atributos del usuario.
+     * 
+     * @param idUsuario Identificador único del usuario.
+     * @param nombre Nombre del usuario.
+     * @param apellidoPaterno Apellido paterno del usuario.
+     * @param apellidoMaterno Apellido materno del usuario.
+     * @param usuario Nombre de usuario para acceso.
+     * @param contrasenia Contraseña del usuario.
+     * @param rol Rol asignado al usuario.
+     */
     public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String usuario, String contrasenia, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;

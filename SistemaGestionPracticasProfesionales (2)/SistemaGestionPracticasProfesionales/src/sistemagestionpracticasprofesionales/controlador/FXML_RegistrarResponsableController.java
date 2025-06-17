@@ -5,7 +5,6 @@
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

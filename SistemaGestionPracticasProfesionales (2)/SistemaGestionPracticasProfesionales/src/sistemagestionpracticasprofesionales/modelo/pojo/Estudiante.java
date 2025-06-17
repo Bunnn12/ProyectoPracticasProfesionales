@@ -1,8 +1,15 @@
+/**
+ * Nombre del archivo: Estudiante.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 09/06/2025
+ * Descripción: Clase POJO que representa a un estudiante en el sistema de gestión de prácticas.
+ * Contiene datos personales, académicos y de contacto del estudiante.
+ */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
+
 /**
- *
- * @author rodri
+ * Clase que representa un estudiante con su información básica y de grupo.
  */
 public class Estudiante {
     private int idEstudiante;
@@ -18,6 +25,21 @@ public class Estudiante {
     private String grupo;
     public Estudiante() {}
 
+    /**
+     * Constructor que inicializa todos los atributos del estudiante.
+     *
+     * @param idEstudiante Identificador único del estudiante.
+     * @param nombre Nombre del estudiante.
+     * @param apellidoPaterno Apellido paterno.
+     * @param apellidoMaterno Apellido materno.
+     * @param genero Género del estudiante.
+     * @param matricula Matrícula del estudiante.
+     * @param contrasenia Contraseña de acceso.
+     * @param correo Correo electrónico.
+     * @param telefono Número de teléfono.
+     * @param idGrupo Identificador del grupo al que pertenece.
+     * @param grupo Nombre del grupo.
+     */
     public Estudiante(int idEstudiante, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String matricula, String contrasenia, String correo, String telefono, int idGrupo, String grupo) {
         this.idEstudiante = idEstudiante;
         this.nombre = nombre;
@@ -120,6 +142,11 @@ public class Estudiante {
         this.idGrupo = idGrupo;
     }
     
+    /**
+     * Obtiene el nombre completo del estudiante.
+     *
+     * @return Cadena compuesta por nombre, apellido paterno y materno.
+     */
     public String getNombreCompleto() {
         String nombreCompuesto = nombre;
         if (apellidoPaterno != null) nombreCompuesto += " " + apellidoPaterno;

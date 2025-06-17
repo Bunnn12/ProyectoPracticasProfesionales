@@ -1,6 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_ReportesDisponiblesEstudianteController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 15/06/2025
+ * Descripción: Controlador que permite visualizar y gestionar los reportes disponibles para un estudiante específico.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -8,7 +10,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,9 +30,9 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Reporte;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_ReportesDisponiblesEstudiante.
+ * Permite mostrar la lista de reportes disponibles para un estudiante,
+ * abrir la visualización del reporte seleccionado y manejar eventos de la interfaz.
  */
 public class FXML_ReportesDisponiblesEstudianteController implements Initializable {
 
@@ -41,31 +42,47 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
     private TableColumn colNombreReporte;
     @FXML
     private TableColumn colFechaEntrega;
+    @FXML
+    private TableColumn colEstado;
+    
     private ObservableList<Reporte> reportes = FXCollections.observableArrayList();
     private int idEstudiante;
     private String nombreEstudiante;
-    @FXML
-    private TableColumn colEstado;
+    
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     * 
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
     
+    /**
+     * Establece el ID del estudiante y configura la tabla de reportes según el estudiante seleccionado
+     * 
+     * @param idEstudiante ID del estudiante.
+     */
     public void setIdEstudiante(int idEstudiante) {
         this.idEstudiante = idEstudiante;
         this.nombreEstudiante = EstudianteDAO.obtenerNombreEstudiantePorId(idEstudiante);
         configurarTablaReportes();
         cargarReportes();
     }
+    
+    /**
+     * Configura las columnas de la tabla de reportes.
+     */
     private void configurarTablaReportes() {
         colNombreReporte.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFechaEntrega.setCellValueFactory(new PropertyValueFactory<>("fechaEntrega"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
     }
-     
+    
+    /**
+     * Carga los reportes asociados al estudiante.
+     */
     public void cargarReportes() {
         try {
             reportes.clear();
@@ -75,16 +92,26 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
             }
             tvReportes.setItems(reportes);
         } catch (SQLException ex) {
-            Utilidad.mostrarAlertaSimple(
-                javafx.scene.control.Alert.AlertType.ERROR,"Sin conexion","No hay conexion con la base de datos");
-            ex.printStackTrace();
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,"Sin conexion","No hay conexion con la base de datos");
         }
-    }     
+    }  
+    
+    /**
+     * Maneja el evento de regresar y cierra la ventana actual.
+     * 
+     * @param event Evento de clic en el botón regresar.
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvReportes);
     }
 
+    /**
+     * Maneja el evento para visualizar el reporte seleccionado.
+     * Si no hay selección muestra una alerta.
+     * 
+     * @param event Evento de clic en el botón aceptar.
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         Reporte reporteSeleccionado = tvReportes.getSelectionModel().getSelectedItem();
@@ -118,16 +145,21 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
             Utilidad.mostrarAlertaSimple(
                 javafx.scene.control.Alert.AlertType.ERROR,
                 "Error al abrir ventana",
-                "Ocurrió un error al intentar abrir la visualización del reporte."
+                "Ocurrió un error al intentar abrir la visualización del reporte, intentélo de nuevo más tarde :)"
             );
         }
     }
 
+    /**
+     * Maneja el evento para cancelar y cerrar la ventana si el usuario confirma.
+     * 
+     * @param event Evento de clic en el botón cancelar.
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Seguro Cancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
-        Utilidad.cerrarVentanaActual(tvReportes);
+            Utilidad.cerrarVentanaActual(tvReportes);
         } 
     }
 

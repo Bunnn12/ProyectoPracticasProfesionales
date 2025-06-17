@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_RetroalimentacionDocumentoController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 16/06/2025
+ * Descripción: Controlador para gestionar la retroalimentación de un documento específico,
+ * permitiendo visualizar el nombre del documento y estudiante, así como guardar la retroalimentación.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -16,9 +19,9 @@ import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_RetroalimentacionDocumento.
+ * Permite mostrar los datos del documento y del estudiante, 
+ * así como guardar y cancelar la retroalimentación del documento.
  */
 public class FXML_RetroalimentacionDocumentoController implements Initializable {
 
@@ -26,22 +29,37 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
     private Label lbNombreDocumento;
     @FXML
     private Label lbEstudianteDocumento;
-    private int idDocumento;
     @FXML
     private TextArea taRetroalimentacionDocumento;
+    
+    private int idDocumento;
+    
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     * 
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
+    /**
+     * Maneja el evento para regresar y cerrar la ventana actual.
+     * 
+     * @param event Evento de clic en el botón regresar.
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(lbNombreDocumento);
     }
 
+    /**
+     * Maneja el evento para aceptar y guardar la retroalimentación.
+     * Valida que se pueda actualizar en la base de datos y muestra alertas según resultado.
+     * 
+     * @param event Evento de clic en el botón aceptar.
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
             String retroalimentacion = taRetroalimentacionDocumento.getText().trim();
@@ -59,6 +77,11 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
         }
     }
 
+    /**
+     * Maneja el evento para cancelar y cerrar la ventana si el usuario confirma.
+     * 
+     * @param event Evento de clic en el botón cancelar.
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
@@ -66,6 +89,14 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
             Utilidad.cerrarVentanaActual(lbEstudianteDocumento);
         } 
     }
+    
+    /**
+     * Establece los datos del documento y estudiante para mostrar en la vista.
+     * 
+     * @param nombreDocumento Nombre del documento.
+     * @param nombreEstudiante Nombre del estudiante.
+     * @param idDocumento ID del documento.
+     */
     public void setDatosDocumento(String nombreDocumento, String nombreEstudiante, int idDocumento) {
         lbNombreDocumento.setText(nombreDocumento);
         lbEstudianteDocumento.setText(nombreEstudiante);

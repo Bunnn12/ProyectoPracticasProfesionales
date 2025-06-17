@@ -1,12 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: OrganizacionVinculada.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 09/06/2025
+ * Descripción: Clase POJO que representa una organización vinculada en el sistema
+ * de gestión de prácticas profesionales, incluyendo sus datos básicos.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 /**
- *
- * @author reino
+ * Representa una organización vinculada con la institución educativa para
+ * fines de prácticas profesionales.
  */
 public class OrganizacionVinculada {
     private int idOrganizacionVinculada;
@@ -18,6 +21,15 @@ public class OrganizacionVinculada {
     public OrganizacionVinculada() {
     }
 
+    /**
+     * Constructor que inicializa todos los campos de la organización vinculada.
+     *
+     * @param idOrganizacionVinculada Identificador único.
+     * @param nombre Nombre de la organización.
+     * @param telefono Teléfono de contacto.
+     * @param direccion Dirección física.
+     * @param correo Correo electrónico.
+     */
     public OrganizacionVinculada(int idOrganizacionVinculada, String nombre, String telefono, String direccion, String correo) {
         this.idOrganizacionVinculada = idOrganizacionVinculada;
         this.nombre = nombre;

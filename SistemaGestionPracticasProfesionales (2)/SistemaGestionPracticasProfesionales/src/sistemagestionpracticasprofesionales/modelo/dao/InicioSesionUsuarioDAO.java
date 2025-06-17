@@ -1,3 +1,11 @@
+/**
+ * Nombre del archivo: InicioSesionUsuarioDAO.java
+ * Autor: Rodirgo Santa Bárbara Murrieta
+ * Fecha: 08/06/25
+ * Descripción: Clase DAO responsable de verificar las credenciales de inicio de sesión
+ * de los usuarios en el sistema. Accede a la base de datos para autenticar
+ * a un usuario mediante su nombre de usuario y contraseña.
+ */
 package sistemagestionpracticasprofesionales.modelo.dao;
 
 import sistemagestionpracticasprofesionales.modelo.Conexion;
@@ -9,11 +17,21 @@ import java.sql.SQLException;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 
 /**
- *
- * @author rodri
+ * Clase DAO que permite verificar las credenciales de un usuario al momento de iniciar sesión.
+ * Consulta la base de datos y retorna los datos del usuario si las credenciales son válidas.
  */
 public class InicioSesionUsuarioDAO {
-public static Usuario verificarCredenciales(String username, String password) throws SQLException{
+    
+    /**
+     * Verifica las credenciales ingresadas por un usuario.
+     *
+     * @param username Nombre de usuario.
+     * @param password Contraseña del usuario.
+     * @return Objeto Usuario con los datos recuperados si las credenciales son válidas;
+     *         null si no coinciden.
+     * @throws SQLException Si ocurre un error de conexión o durante la consulta a la base de datos.
+     */
+    public static Usuario verificarCredenciales(String username, String password) throws SQLException{
         Usuario usuarioSesion = null;
         Connection conexionBD = Conexion.abrirConexion();
         if (conexionBD != null){
@@ -34,6 +52,13 @@ public static Usuario verificarCredenciales(String username, String password) th
         return usuarioSesion;
     }
     
+    /**
+     * Convierte un registro de la tabla usuario en un objeto Usuario.
+     *
+     * @param resultado ResultSet que contiene los datos del usuario.
+     * @return Objeto Usuario con los datos extraídos del ResultSet.
+     * @throws SQLException Si ocurre un error al acceder a los datos del ResultSet.
+     */
     private static Usuario convertirRegistroUsuario (ResultSet resultado) throws SQLException{
         Usuario usuarioSesion = new Usuario();
         usuarioSesion.setIdUsuario(resultado.getInt("idUsuario"));

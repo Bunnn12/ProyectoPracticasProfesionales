@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_VisualizacionReporteController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 15/06/2025
+ * Descripción: Controlador que permite visualizar un reporte de prácticas profesionales,
+ * validarlo o enviar retroalimentación, abriendo el documento PDF en el visor predeterminado del sistema.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -19,7 +22,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
@@ -27,27 +29,34 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Reporte;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista FXML_VisualizacionReporte.
+ * Permite visualizar un reporte en PDF, validarlo o generar retroalimentación.
  */
 public class FXML_VisualizacionReporteController implements Initializable {
-
-    private Reporte reporteVisualizado;
+    
     @FXML
     private Label lbNombreReporteVisualizado;
     @FXML
     private Label lbNombreEstudianteReporte;
+    
     private FXML_ReportesDisponiblesEstudianteController controladorPrincipal;
+    private Reporte reporteVisualizado;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     *
+     * @param url URL de localización.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
+    /**
+     * Valida el reporte visualizado actual.
+     * 
+     * @param event Evento del botón Validar.
+     */
     @FXML
     private void clickValidar(ActionEvent event) {
         if (reporteVisualizado == null) {
@@ -59,7 +68,6 @@ public class FXML_VisualizacionReporteController implements Initializable {
             if (exito) {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "El reporte fue validado correctamente");
 
-                // Recargar tabla en ventana principal
                 if (controladorPrincipal != null) {
                     controladorPrincipal.cargarReportes();
                 }
@@ -70,9 +78,14 @@ public class FXML_VisualizacionReporteController implements Initializable {
             }
         } catch (SQLException e) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
-            e.printStackTrace();
         }
     }
+    
+    /**
+     * Abre la ventana para retroalimentar el reporte.
+     * 
+     * @param event Evento del botón Retroalimentar.
+     */
 
     @FXML
     private void clickRetroalimentar(ActionEvent event) {
@@ -95,16 +108,25 @@ public class FXML_VisualizacionReporteController implements Initializable {
 
         } catch (IOException e) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de retroalimentación");
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Cierra la ventana actual.
+     * 
+     * @param event Evento del botón Regresar.
+     */
     @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(lbNombreEstudianteReporte);
     }
     
-    
+    /**
+     * Carga el reporte a visualizar, lo muestra en pantalla y lo abre en el visor predeterminado del sistema.
+     * 
+     * @param reporte Objeto Reporte a visualizar.
+     * @param nombreEstudiante Nombre del estudiante correspondiente al reporte.
+     */
     public void cargarReporte(Reporte reporte, String nombreEstudiante) {
         this.reporteVisualizado = reporte;
         lbNombreReporteVisualizado.setText(reporte.getNombre());
@@ -119,21 +141,29 @@ public class FXML_VisualizacionReporteController implements Initializable {
             tempFile.toFile().deleteOnExit();
 
             if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(tempFile.toFile());  // Abre con el programa predeterminado
+                Desktop.getDesktop().open(tempFile.toFile());  
             } else {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Aviso", "Tu sistema no soporta abrir archivos automáticamente.");
             }
+        } catch (IOException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de archivo", "Ocurrió un error al guardar o abrir el archivo del reporte");
+        } catch (UnsupportedOperationException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Operación no soportada", "Esta operación no es compatible con tu sistema");
         } catch (Exception e) {
-            e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo cargar el reporte.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error inesperado", "No se pudo cargar el reporte");
         }
     } else {
-        Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Información", "El reporte no contiene archivo.");
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Información", "El reporte no contiene archivo");
     }
 
     }
     
-   public void setControladorPrincipal(FXML_ReportesDisponiblesEstudianteController controlador) {
+    /**
+     * Establece el controlador principal que permite refrescar la tabla al regresar.
+     * 
+     * @param controlador Controlador principal (pantalla anterior).
+     */
+    public void setControladorPrincipal(FXML_ReportesDisponiblesEstudianteController controlador) {
          this.controladorPrincipal = controlador;
     }
 

@@ -1,26 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: ProyectoDAO.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 10/06/25
+ * Descripción: Clase DAO encargada de gestionar el acceso a los datos relacionados con los proyectos
+ * en la base de datos del sistema de gestión de prácticas profesionales.
  */
 package sistemagestionpracticasprofesionales.modelo.dao;
 
-import com.mysql.cj.protocol.Resultset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
-import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 
 /**
- *
- * @author reino
+ * Clase DAO que permite realizar operaciones de lectura, escritura y actualización
+ * sobre los proyectos registrados en la base de datos del sistema.
  */
 public class ProyectoDAO {
 
+    /**
+     * Registra un nuevo proyecto en la base de datos.
+     * 
+     * @param proyecto Objeto Proyecto con los datos a registrar.
+     * @return ResultadoOperacion indicando éxito o error de la operación.
+     * @throws SQLException Si ocurre un error en la conexión o ejecución SQL.
+     */
     public static ResultadoOperacion registrarProyecto(Proyecto proyecto) throws SQLException {
         ResultadoOperacion resultado = new ResultadoOperacion();
         Connection conexionBD = Conexion.abrirConexion();
@@ -54,6 +62,13 @@ public class ProyectoDAO {
         return resultado;
     }
     
+    /**
+     * Busca proyectos cuyo nombre contenga un filtro dado (búsqueda parcial).
+     * 
+     * @param filtroNombre Cadena para filtrar proyectos por nombre (LIKE '%filtro%').
+     * @return Lista de proyectos que cumplen con el filtro.
+     * @throws SQLException Si hay error en la conexión o consulta SQL.
+     */
     public static ArrayList<Proyecto> buscarProyectoPorNombre(String filtroNombre) throws SQLException {
         ArrayList<Proyecto> proyectos = new ArrayList<>();
         Connection conexionBD = Conexion.abrirConexion();
@@ -92,6 +107,15 @@ public class ProyectoDAO {
         return proyectos;
     }
 
+    /**
+     * Asigna un proyecto a un estudiante dado su número de matrícula.
+     * Valida que no se exceda el número máximo de estudiantes permitidos en el proyecto.
+     * 
+     * @param matriculaEstudiante Matrícula del estudiante a asignar.
+     * @param idProyecto Identificador del proyecto.
+     * @return true si la asignación fue exitosa, false si no hay cupo o ya está asignado.
+     * @throws SQLException Si hay errores en la conexión o ejecución SQL.
+     */
     public static boolean asignarProyectoAEstudiante(String matriculaEstudiante, int idProyecto) throws SQLException {
     Connection conexion = Conexion.abrirConexion();
 
@@ -149,7 +173,14 @@ public class ProyectoDAO {
         throw new SQLException("Sin conexión con la base de datos");
     }
 }
-        
+       
+    /**
+     * Obtiene la lista completa de proyectos registrados, incluyendo información
+     * de responsables, organizaciones vinculadas y cantidad de estudiantes asignados.
+     * 
+     * @return Lista de todos los proyectos con detalles.
+     * @throws SQLException Si ocurre un error en la consulta o conexión.
+     */
     public static ArrayList<Proyecto> obtenerProyectos() throws SQLException{
         ArrayList<Proyecto> proyectos= new ArrayList<>();
         Connection conexionBD= Conexion.abrirConexion();
@@ -181,6 +212,14 @@ public class ProyectoDAO {
         }
         return proyectos;
     }
+    
+    /**
+     * Convierte un registro obtenido de la consulta SQL en un objeto Proyecto.
+     * 
+     * @param resultado ResultSet apuntando al registro actual.
+     * @return Proyecto con los datos del registro.
+     * @throws SQLException Si ocurre un error al leer los datos del ResultSet.
+     */
      private static Proyecto convertirRegistroProyecto(ResultSet resultado) throws SQLException{
         Proyecto proyecto= new Proyecto();
         proyecto.setIdProyecto(resultado.getInt("idProyecto"));
@@ -198,7 +237,16 @@ public class ProyectoDAO {
         proyecto.setEstudiantesAsignados(resultado.getInt("estudiantesAsignados"));
         return proyecto;
     }
-     public static boolean actualizarResponsableDeProyecto(int idProyecto, int idNuevoResponsable) throws SQLException {
+     
+     /**
+     * Actualiza el responsable asignado a un proyecto específico.
+     * 
+     * @param idProyecto Identificador del proyecto.
+     * @param idNuevoResponsable Identificador del nuevo responsable.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     * @throws SQLException Si hay problemas con la conexión o ejecución SQL.
+     */
+    public static boolean actualizarResponsableDeProyecto(int idProyecto, int idNuevoResponsable) throws SQLException {
         Connection conexionBD = Conexion.abrirConexion();
         if (conexionBD != null) {
             String consulta = "UPDATE proyecto SET idResponsableProyecto = ? WHERE idProyecto = ?";

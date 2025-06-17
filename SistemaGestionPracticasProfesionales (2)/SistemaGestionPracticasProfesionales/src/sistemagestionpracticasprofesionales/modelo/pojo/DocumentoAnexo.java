@@ -1,14 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: DocumentoAnexo.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 15/06/2025
+ * Descripción: Clase POJO que representa un documento anexo del expediente de prácticas.
+ * Contiene información como nombre, tipo, estado, archivo y retroalimentación.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 import java.sql.Date;
 
 /**
- *
- * @author reino
+ * Clase que representa un documento anexo dentro de un expediente.
+ * Incluye información relevante como nombre, fecha de elaboración,
+ * tipo de documento(inicial, final o intermedio), estado y retroalimentación.
  */
 public class DocumentoAnexo {
     private int idDocumentoAnexo;
@@ -20,6 +24,18 @@ public class DocumentoAnexo {
     private String estado; 
     private String retroalimentacion; 
 
+    /**
+     * Constructor que inicializa todos los atributos del documento anexo.
+     *
+     * @param idDocumentoAnexo Identificador único del documento anexo.
+     * @param nombre Nombre del documento.
+     * @param fechaElaboracion Fecha de elaboración del documento.
+     * @param tipo Tipo de documento (por ejemplo, carta, reporte).
+     * @param idExpediente Identificador del expediente al que pertenece.
+     * @param archivo Archivo binario del documento.
+     * @param estado Estado del documento (pendiente, aceptado, rechazado).
+     * @param retroalimentacion Comentarios o retroalimentación del responsable.
+     */
     public DocumentoAnexo(int idDocumentoAnexo, String nombre, Date fechaElaboracion, String tipo, int idExpediente, byte[] archivo, String estado, String retroalimentacion) {
         this.idDocumentoAnexo = idDocumentoAnexo;
         this.nombre = nombre;

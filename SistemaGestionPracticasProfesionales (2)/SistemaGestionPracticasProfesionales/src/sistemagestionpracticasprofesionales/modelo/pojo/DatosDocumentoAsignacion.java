@@ -1,18 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: DatosDocumentoAsignacion.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 14/06/2025
+ * Descripción: Clase POJO que encapsula los datos necesarios para generar 
+ * el documento de asignación de prácticas profesionales. 
+ * Contiene información del estudiante, proyecto, organización y responsable.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 /**
- *
- * @author reino
+ * Clase que contiene los datos para la generación del documento de asignación
+ * de un estudiante a un proyecto dentro de una organización vinculada.
  */
 public class DatosDocumentoAsignacion {
     // Estudiante
     private String nombreCompleto;
     private String matricula;
-
+    private int idEstudiante;
+    
     // Proyecto
     private String nombreProyecto;
     private String fechaInicio;
@@ -27,10 +32,25 @@ public class DatosDocumentoAsignacion {
     private String nombreResponsable;
     private String correoResponsable;
     private String telefonoResponsable;
-    
-    private int idEstudiante;
     private int idProyecto;
 
+    /**
+     * Constructor que inicializa todos los atributos de la clase.
+     *
+     * @param nombreCompleto Nombre completo del estudiante.
+     * @param matricula Matrícula del estudiante.
+     * @param nombreProyecto Nombre del proyecto asignado.
+     * @param fechaInicio Fecha de inicio de las prácticas.
+     * @param fechaFin Fecha de finalización de las prácticas.
+     * @param horaEntrada Hora de entrada diaria del estudiante a las practicas.
+     * @param horaSalida Hora de salida diaria del estudiante a las practicas.
+     * @param nombreOrganizacion Nombre de la organización vinculada.
+     * @param nombreResponsable Nombre del responsable del proyecto.
+     * @param correoResponsable Correo electrónico del responsable.
+     * @param telefonoResponsable Teléfono del responsable del proyecto.
+     * @param idEstudiante Identificador único del estudiante.
+     * @param idProyecto Identificador único del proyecto.
+     */
     public DatosDocumentoAsignacion(String nombreCompleto, String matricula, String nombreProyecto, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, String nombreOrganizacion, String nombreResponsable, String correoResponsable, String telefonoResponsable, int idEstudiante, int idProyecto) {
         this.nombreCompleto = nombreCompleto;
         this.matricula = matricula;

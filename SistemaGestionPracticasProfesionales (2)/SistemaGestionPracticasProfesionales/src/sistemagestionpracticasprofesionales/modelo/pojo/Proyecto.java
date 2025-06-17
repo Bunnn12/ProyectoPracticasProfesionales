@@ -1,12 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: Proyecto.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 10/06/2025
+ * Descripción: Clase POJO que representa un proyecto de prácticas profesionales,
+ * incluyendo detalles del proyecto, organización, responsable y estudiantes.
  */
+
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
+
 /**
- *
- * @author reino
+ * Representa un proyecto vinculado a una organización y coordinado por un responsable,
+ * que puede tener varios estudiantes asignados.
  */
 public class Proyecto {
     private int idProyecto;
@@ -27,6 +32,24 @@ public class Proyecto {
 
     public Proyecto() {}
 
+     /**
+     * Constructor completo con todos los atributos del proyecto.
+     *
+     * @param idProyecto Identificador del proyecto
+     * @param nombre Nombre del proyecto
+     * @param descripcion Descripción del proyecto
+     * @param fechaInicio Fecha de inicio del proyecto
+     * @param fechaFin Fecha de finalización del proyecto
+     * @param horaEntrada Hora de entrada diaria de los estudiantes
+     * @param horaSalida Hora de salida diaria de los estudiantes
+     * @param cantidadEstudiantesParticipantes Número total de estudiantes requeridos
+     * @param idOrganizacionVinculada ID de la organización donde se desarrolla el proyecto
+     * @param idResponsableProyecto ID del responsable del proyecto
+     * @param idEstudiante ID del estudiante asignado (puede ser null)
+     * @param nombreResponsable Nombre completo del responsable del proyecto
+     * @param nombreOrganizacion Nombre de la organización vinculada
+     * @param estudiantesAsignados Número actual de estudiantes asignados
+     */
     public Proyecto(int idProyecto, String nombre, String descripcion, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, int idOrganizacionVinculada, int idResponsableProyecto, Integer idEstudiante, String nombreResponsable, String nombreOrganizacion, int estudiantesAsignados) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;
@@ -44,6 +67,7 @@ public class Proyecto {
         this.estudiantesAsignados = estudiantesAsignados;
     }
 
+    //Constructor alterno para la creación de objetos de tipo Proyecto
     public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, String descripcion) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;

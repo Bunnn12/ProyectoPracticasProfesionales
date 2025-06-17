@@ -1,14 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Nombre del archivo: Expediente.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 09/06/2025
+ * Descripción: Clase POJO que representa un expediente de prácticas profesionales,
+ * incluyendo fechas, horas acumuladas, estado y relación con un estudiante.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 import java.sql.Date;
 
 /**
- *
- * @author reino
+ * Clase que representa un expediente de prácticas profesionales.
  */
 public class Expediente {
     private int idExpediente;
@@ -17,11 +19,21 @@ public class Expediente {
     private int horasAcumuladas;
     private String estado;
     private int idEstudiante;
-    private Estudiante estudiante; // ← nuevo campo
+    private Estudiante estudiante; 
 
     public Expediente() {
     }
 
+    /**
+     * Constructor que inicializa todos los atributos excepto el objeto estudiante.
+     *
+     * @param idExpediente     Identificador del expediente.
+     * @param fechaInicio      Fecha de inicio de las prácticas.
+     * @param fechaFin         Fecha de fin de las prácticas.
+     * @param horasAcumuladas  Cantidad de horas acumuladas.
+     * @param estado           Estado actual del expediente.
+     * @param idEstudiante     Identificador del estudiante relacionado.
+     */
     public Expediente(int idExpediente, Date fechaInicio, Date fechaFin, int horasAcumuladas, String estado, int idEstudiante) {
         this.idExpediente = idExpediente;
         this.fechaInicio = fechaInicio;

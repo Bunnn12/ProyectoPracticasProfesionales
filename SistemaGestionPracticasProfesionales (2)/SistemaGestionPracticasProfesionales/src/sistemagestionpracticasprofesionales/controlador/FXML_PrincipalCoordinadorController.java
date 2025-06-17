@@ -1,3 +1,9 @@
+/**
+ * Nombre del archivo: FXML_PrincipalCoordinadorController.java
+ * Autor: Astrid Azucena Torres Lagunes
+ * Fecha: 08/06/2025
+ * Descripción: Controlador para la vista principal del coordinador. Permite gestionar la sesión del usuario coordinador y abrir ventanas modales para asignar proyectos, registrar proyectos, organizaciones vinculadas, responsables y actualizar responsables.
+ */
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.io.IOException;
@@ -28,24 +34,36 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
     private Label lbSaludoUsuario;
     
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador.
+     * @param url URL de localización del archivo FXML.
+     * @param rb ResourceBundle con recursos internacionalizados.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
+    /**
+     * Inicializa la información del usuario coordinador en sesión.
+     * @param usuarioSesion Usuario coordinador que inició sesión.
+     */
     public void inicializarInformacion(Usuario usuarioSesion){
         this.usuarioSesion = usuarioSesion;
         cargarInformacionUsuario();
     }
     
+    /**
+     * Carga la información del usuario coordinador en la vista.
+     */
     private void cargarInformacionUsuario(){
         if (usuarioSesion != null){
             lbSaludoUsuario.setText("Hola, " + usuarioSesion.getNombre());
         }
     }
     
+    /**
+     * Maneja el cierre de sesión, mostrando alerta de confirmación y regresando a la ventana de inicio de sesión.
+     * @param event Evento de acción del botón cerrar sesión.
+     */
     @FXML
     private void btnCerrarSesion(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?");
@@ -71,6 +89,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
         }
     }
 
+    /**
+     * Abre la ventana modal para asignar un proyecto.
+     * @param event Evento del botón asignar proyecto.
+     */
     @FXML
     private void clickAsignarProyecto(ActionEvent event) {
         try{
@@ -86,6 +108,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
         }
     }
 
+    /**
+     * Abre la ventana modal para generar los oficios de asignación.
+     * @param event Evento del botón generar documento de asignación.
+     */
     @FXML
     private void clickGenerarDocAsignacion(ActionEvent event) {
         try{
@@ -102,6 +128,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
     }
 
 
+    /**
+     * Abre la ventana modal para registrar un nuevo proyecto.
+     * @param event Evento del botón registrar proyecto.
+     */
     @FXML
     private void clickRegistrarProyecto(ActionEvent event) {
         try {
@@ -117,6 +147,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
         }
     }
 
+    /**
+     * Abre la ventana modal para registrar una organización vinculada.
+     * @param event Evento del botón registrar organización vinculada.
+     */
     @FXML
     private void clickRegistrarOV(ActionEvent event) {
         try{
@@ -132,6 +166,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
         }
     }
 
+    /**
+     * Abre la ventana modal para registrar un responsable.
+     * @param event Evento del botón registrar responsable.
+     */
     @FXML
     private void clickRegistrarResponsable(ActionEvent event) {
         try{
@@ -148,6 +186,10 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
      
     }
 
+    /**
+     * Abre la ventana modal para actualizar responsable de un proyecto
+     * @param event Evento del botón actualizar responsable.
+     */
     @FXML
     private void clickActualizarResponsable(ActionEvent event) {
         try{
