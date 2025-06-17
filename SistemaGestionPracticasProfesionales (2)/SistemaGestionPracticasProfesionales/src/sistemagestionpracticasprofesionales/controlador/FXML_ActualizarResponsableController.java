@@ -62,7 +62,6 @@ public class FXML_ActualizarResponsableController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTablaResponsables();
-        cargarResponsablesProyecto();
     } 
     
      /**
@@ -73,22 +72,28 @@ public class FXML_ActualizarResponsableController implements Initializable {
         this.proyecto = proyecto;
         lbProyectoSeleccionado.setText(proyecto.getNombre()); 
         lbResponsableActual.setText(proyecto.getNombreResponsable()); 
+        cargarResponsablesProyecto();
     }
     
     /**
-     * Carga la lista de responsables que no tienen proyecto asignado
+     * Carga la lista de responsables que no tienen proyecto asignado de la organización
+     * vinculada del proyecto seleccionado
      */    
-    private void cargarResponsablesProyecto(){
+    private void cargarResponsablesProyecto() {
         try {
-           responsablesDisponibles = FXCollections.observableArrayList();
-           List<ResponsableProyecto> responsablesDisponiblesDAO = ResponsableProyectoDAO.obtenerResponsablesSinProyecto(); 
-           responsablesDisponibles.addAll(responsablesDisponiblesDAO);
-           tvResponsableProyecto.setItems(responsablesDisponibles);
+            responsablesDisponibles = FXCollections.observableArrayList();
+            List<ResponsableProyecto> responsablesDisponiblesDAO = ResponsableProyectoDAO
+                .obtenerResponsableSinProyectoDeUnaOV(proyecto.getIdOrganizacionVinculada());
+
+            responsablesDisponibles.addAll(responsablesDisponiblesDAO);
+            tvResponsableProyecto.setItems(responsablesDisponibles);
         } catch (SQLException ex) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al cargar", "Lo sentimos, por el momento no se puede cargar la información de los responsables de proyecto, por favor intentélo más tarde");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", 
+                "No hay conexión con la base de datos");
             Utilidad.cerrarVentanaActual(tvResponsableProyecto);
         }
     }
+
     
     /**
      * Configura las columnas de la tabla de responsables

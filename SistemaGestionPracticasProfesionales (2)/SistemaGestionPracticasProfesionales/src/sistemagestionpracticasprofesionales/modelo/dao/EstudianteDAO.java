@@ -306,5 +306,64 @@ public class EstudianteDAO {
         }
         return nombreCompleto;
     }
+    
+    /**
+    * Obtiene una lista de estudiantes que aún no han sido evaluados en su presentación
+    * final, dentro del periodo actual.
+    * 
+    * Este método filtra a los estudiantes que:
+    * <ul>
+    *   <li>Están asignados a un grupo dentro del periodo activo (fecha actual entre inicio y fin del periodo).</li>
+    *   <li>Ya han realizado su presentación (la fecha de presentación es menor o igual a la actual).</li>
+    *   <li>No han sido evaluados (el campo {@code evaluacionpresentacion} es distinto de 'evaluado').</li>
+    * </ul>
+    * 
+    * Además, incluye el nombre del proyecto asignado y el nombre de la organización vinculada.
+    * 
+    * @return Lista de estudiantes pendientes por evaluación en el periodo activo.
+    * @throws SQLException en caso de error con la base de datos o si no hay conexión.
+    */
+       public static ArrayList<Estudiante> obtenerEstudiantesPorEvaluar() throws SQLException {
+            ArrayList<Estudiante> estudiantes = new ArrayList<>();
+            Connection conexionBD = Conexion.abrirConexion();
+
+            if (conexionBD != null) {
+                String consulta = "SELECT e.*," +
+                                "p.nombre AS nombreProyecto, " +
+                                "ov.nombre AS nombreOV " +
+                                "FROM estudiante e " +
+                                "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                                "JOIN periodo per ON g.idPeriodo = per.idPeriodo " +
+                                "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
+                                "JOIN proyecto p ON a.idProyecto = p.idProyecto " +
+                                "JOIN organizacionvinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                                "JOIN presentacion pre ON e.idEstudiante = pre.idEstudiante " +
+                                "JOIN expediente ex ON e.idEstudiante = ex.idEstudiante " +
+                                "WHERE CURRENT_DATE BETWEEN per.fechaInicio AND per.fechaFin " +
+                                "AND pre.fechaPresentacion <= CURRENT_DATE " +
+                                "AND evaluacionpresentacion != 'evaluado';";
+            
+                PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+                ResultSet resultado = sentencia.executeQuery();
+                while (resultado.next()) {
+                    Estudiante estudiante = new Estudiante();
+                    estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                    estudiante.setNombre(resultado.getString("nombre"));
+                    estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                    estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                    estudiante.setMatricula(resultado.getString("matricula"));
+                    estudiante.setNombreProyecto(resultado.getString("nombreProyecto"));
+                    estudiante.setNombreOV(resultado.getString("nombreOV"));
+                    estudiantes.add(estudiante);
+                }
+                sentencia.close();
+                resultado.close();
+                conexionBD.close();
+            } else {
+                throw new SQLException("Sin conexion con la base de datos");
+            }
+            
+            return estudiantes;
+        }
 }
 

@@ -27,7 +27,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.modelo.dao.ProyectoDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
+import sistemagestionpracticasprofesionales.modelo.pojo.ResponsableProyecto;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -144,7 +146,7 @@ public class FXML_BusquedaProyectoController implements Initializable {
      * @param event Evento del botón aceptar
      */
     @FXML
-    private void clickAceptar(ActionEvent event) {
+    private void clickAceptar(ActionEvent event) throws SQLException {
         Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
     
         if (proyectoSeleccionado == null) {
@@ -153,7 +155,15 @@ public class FXML_BusquedaProyectoController implements Initializable {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_ActualizarResponsable.fxml"));
+            List<ResponsableProyecto> disponibles = ResponsableProyectoDAO
+            .obtenerResponsableSinProyectoDeUnaOV(proyectoSeleccionado.getIdOrganizacionVinculada());
+
+            if (disponibles.isEmpty()) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Sin responsables disponibles",
+                    "No hay responsables sin proyecto disponibles en esta organización vinculada");
+                return; 
+            }
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_ActualizarResponsable.fxml"));
             Parent root = loader.load();
 
             FXML_ActualizarResponsableController controlador = loader.getController();
