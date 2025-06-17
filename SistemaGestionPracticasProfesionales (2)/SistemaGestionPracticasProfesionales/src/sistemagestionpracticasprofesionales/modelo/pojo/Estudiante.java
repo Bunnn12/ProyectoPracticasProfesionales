@@ -16,6 +16,8 @@ public class Estudiante {
     private String telefono;
     private int idGrupo;
     private String grupo;
+    private String nombreProyecto;
+    private String nombreOV;
     public Estudiante() {}
 
     public Estudiante(int idEstudiante, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String matricula, String contrasenia, String correo, String telefono, int idGrupo, String grupo) {
@@ -118,6 +120,22 @@ public class Estudiante {
 
     public void setIdGrupo(int idGrupo) {
         this.idGrupo = idGrupo;
+    }
+
+    public String getNombreProyecto() {
+        return nombreProyecto;
+    }
+    
+    public void setNombreProyecto(String nombreProyecto) {
+        this.nombreProyecto = nombreProyecto;
+    }
+
+    public String getNombreOV() {
+        return nombreOV;
+    }
+    
+    public void setNombreOV(String nombreOV) {
+        this.nombreOV = nombreOV;
     }
     
     public String getNombreCompleto() {
