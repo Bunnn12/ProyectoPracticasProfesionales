@@ -295,8 +295,7 @@ public class ExpedienteDAO {
         return total;
     }
     
-<<<<<<< HEAD
-    /**
+     /**
      * Busca el ID del expediente a partir del nombre o matrícula del estudiante.
      * 
      * @param texto Texto para buscar, puede ser parte del nombre o matrícula.
@@ -319,31 +318,37 @@ public class ExpedienteDAO {
                 if (rs.next()) {
                     idExpediente = rs.getInt("idExpediente");
                 }
-=======
-    public static Integer buscarIdExpedientePorMatricula(String matricula) throws SQLException {
-    Integer idExpediente = null;
-    String sql = "SELECT e.idExpediente " +
-                 "FROM expediente e " +
-                 "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
-                 "WHERE es.matricula = ?";
-
-    try (Connection conn = Conexion.abrirConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, matricula);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                idExpediente = rs.getInt("idExpediente");
->>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
             }
         }
         return idExpediente;
     }
-<<<<<<< HEAD
-=======
-    return idExpediente;
-}
 
->>>>>>> cea35e77b829d9c025609ea2d6d4cf4d12a5e560
+    /**
+     * Busca el ID del expediente a partir de la matrícula del estudiante.
+     * 
+     * @param matricula Matrícula exacta del estudiante.
+     * @return ID del expediente encontrado o null si no existe.
+     * @throws SQLException Si ocurre un error al acceder a la base de datos.
+     */
+    public static Integer buscarIdExpedientePorMatricula(String matricula) throws SQLException {
+        Integer idExpediente = null;
+        String sql = "SELECT e.idExpediente " +
+                     "FROM expediente e " +
+                     "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                     "WHERE es.matricula = ?";
+
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, matricula);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    idExpediente = rs.getInt("idExpediente");
+                }
+            }
+        }
+        return idExpediente;
+    }
+
     
     /**
      * Obtiene un expediente con los datos del estudiante asociado.
