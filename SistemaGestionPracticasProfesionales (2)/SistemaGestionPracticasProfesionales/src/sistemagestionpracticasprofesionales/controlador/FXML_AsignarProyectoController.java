@@ -10,8 +10,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -128,7 +126,7 @@ public class FXML_AsignarProyectoController implements Initializable {
             }
             tvEstudiantes.setItems(estudiantes);
         } catch (SQLException ex) {
-            Logger.getLogger(FXML_AsignarProyectoController.class.getName()).log(Level.SEVERE, null, ex);
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexion", "No hay conexión con la base de datos");
         }
     }
     
@@ -157,30 +155,35 @@ public class FXML_AsignarProyectoController implements Initializable {
         Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
 
         if (estudianteSeleccionado == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar estudiante", "Por favor selecciona un estudiante.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Error Selección", "Por favor selecciona un estudiante.");
             return;
         }
         if (proyectoSeleccionado == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Seleccionar proyecto", "Por favor selecciona un proyecto.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Error Selección", "Por favor selecciona un proyecto.");
+            return;
+        }
+        if (proyectoSeleccionado== null && estudianteSeleccionado== null){
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Error Selección", 
+                    "Tienes que seleccionar ambos, un proyecto y un estudiante, inténtalo nuevamente");
             return;
         }
 
         if (proyectoSeleccionado.getEstudiantesAsignados() >= proyectoSeleccionado.getCantidadEstudiantesParticipantes()) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado","El proyecto '" + proyectoSeleccionado.getNombre() + "' ya tiene el máximo de estudiantes asignados");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite de estudiantes alcanzado","El proyecto '" + proyectoSeleccionado.getNombre() + 
+                    "' ya tiene el máximo de estudiantes asignados, seleccione otro proyecto para continuar");
             return;
         }
         
         try {
             boolean asignacionExitosa = ProyectoDAO.asignarProyectoAEstudiante(estudianteSeleccionado.getMatricula(), proyectoSeleccionado.getIdProyecto());
             if (asignacionExitosa) {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Asignación exitosa", "Proyecto asignado correctamente.");
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Asignación exitosa", "Proyecto asignado correctamente");
                 cargarEstudiantes(); 
-                cargarProyectos();  // actualizar la lista de proyectos para reflejar el cambio en cantidad
+                cargarProyectos();  
             } else {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error al asignar", "No se pudo asignar el proyecto. Intenta de nuevo.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "Ocurrió un error al asignar el proyecto.");
         }
     }

@@ -23,7 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import sistemagestionpracticasprofesionales.modelo.dao.ProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
@@ -142,7 +141,7 @@ public class FXML_ActualizarResponsableController implements Initializable {
      */
     @FXML
     private void clickCancelar(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Seguro Cancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
             Utilidad.cerrarVentanaActual(tfBuscarResponsable);
         } 

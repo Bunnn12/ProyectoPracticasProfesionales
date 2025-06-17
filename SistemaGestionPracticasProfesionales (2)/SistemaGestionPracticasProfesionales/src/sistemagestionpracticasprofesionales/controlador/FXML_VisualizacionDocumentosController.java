@@ -107,7 +107,6 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
             }
         } catch (SQLException e) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Sin conexión", "No hay conexión con la base de datos");
-            e.printStackTrace();
         }
     }
 
@@ -120,7 +119,7 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
     private void clickRetroalimentar(ActionEvent event) {
         DocumentoAnexo documentoSeleccionado = tvDocumentos.getSelectionModel().getSelectedItem();
         if (documentoSeleccionado == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación", "Debes seleccionar un documento.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación", "Debes seleccionar un documento para retroalimentar");
             return;
         }
 
@@ -140,7 +139,6 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
             cargarDocumentos();
         } catch (IOException e) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de retroalimentación.");
-            e.printStackTrace();
         }
     }
     

@@ -39,18 +39,7 @@
                   <Image url="@../recursos/carga-de-documentos.png" />
                </image></ImageView>
          </graphic></Button>
-      <Button contentDisplay="TOP" layoutX="656.0" layoutY="462.0" mnemonicParsing="false" onAction="#clickConsultarAvance" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Consultar Avance" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="19.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="50.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/consulta.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <Button contentDisplay="TOP" layoutX="656.0" layoutY="592.0" mnemonicParsing="false" onAction="#clickEvaluarOV" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Evaluar Organización Vinculada" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="656.0" layoutY="563.0" mnemonicParsing="false" onAction="#clickEvaluarOV" prefHeight="106.0" prefWidth="329.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Evaluar Organización Vinculada" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>

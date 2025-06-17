@@ -101,9 +101,6 @@ public class FXML_PrincipalEstudianteController implements Initializable {
     private void clickSubirDocIniciales(ActionEvent event) {
     }
 
-    @FXML
-    private void clickConsultarAvance(ActionEvent event) {
-    }
 
     @FXML
     private void clickEvaluarOV(ActionEvent event) {
