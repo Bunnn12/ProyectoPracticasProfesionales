@@ -60,8 +60,9 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
     }
     
     /**
-     * Valida que los campos matrícula y contraseña no estén vacíos.
-     * En caso de que algún campo esté vacío o la matrícula no cumpla el formato válido,
+     * Valida que los campos matrícula y contraseña no estén vacíos y la contraseña tenga 5
+     * o más caracteres.
+     * En caso de que algún campo esté vacío, la contraseña no  o la matrícula no cumpla el formato válido,
      * se muestran los mensajes de error correspondientes en las etiquetas lblErrorMatricula y lblErrorContrasenia.
      * 
      * @param matricula Matrícula ingresada.
@@ -74,20 +75,24 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
         boolean camposValidos = true;
 
         if (matricula.isEmpty()) {
-            lblErrorMatricula.setText("Matricula obligatoria");
+            lblErrorMatricula.setText("Matrícula obligatoria");
             camposValidos = false;
         } else if (!validarMatricula(matricula)) {
-            lblErrorMatricula.setText("Matricula no válida");
+            lblErrorMatricula.setText("Matrícula no válida");
             camposValidos = false;
         }
 
-        if (password.isEmpty()){
+        if (password.isEmpty()) {
             lblErrorContrasenia.setText("Contraseña obligatoria");
+            camposValidos = false;
+        } else if (password.length() < 5) {
+            lblErrorContrasenia.setText("Debe tener al menos 5 caracteres");
             camposValidos = false;
         }
 
         return camposValidos;
     }
+
 
     /**
      * Verifica las credenciales del estudiante usando matrícula y contraseña hasheada.

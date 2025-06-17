@@ -99,6 +99,13 @@ public class OrganizacionVinculadaDAO {
     }
 
     
+    /**
+     * Verifica si ya existe una organización vinculada con el correo especificado.
+     *
+     * @param correo Correo electrónico a verificar.
+     * @return true si ya existe una organización con ese correo; false en caso contrario.
+     * @throws SQLException Si ocurre un error al acceder a la base de datos.
+     */
     public static boolean existeOVConCorreo(String correo) throws SQLException {
         boolean existe = false;
         String query = "SELECT COUNT(*) FROM organizacionvinculada WHERE correo = ?";
@@ -117,6 +124,13 @@ public class OrganizacionVinculadaDAO {
         return existe;
     }
 
+    /**
+     * Verifica si ya existe una organización vinculada con el teléfono especificado.
+     *
+     * @param telefono Número telefónico a verificar.
+     * @return true si ya existe una organización con ese teléfono; false en caso contrario.
+     * @throws SQLException Si ocurre un error al acceder a la base de datos.
+     */
     public static boolean existeOVConTelefono(String telefono) throws SQLException {
         boolean existe = false;
         String query = "SELECT COUNT(*) FROM organizacionvinculada WHERE telefono = ?";
