@@ -89,8 +89,25 @@ public class FXML_PrincipalProfesorEEController implements Initializable {
         }
     }
 
+    /**
+     * Evento que se activa al hacer click en el botón "Consultar expediente"
+     * Abre una nueva ventana modal para ver la lista de estudiantes con expediente.
+     * 
+     * @param event Evento de acción del botón
+     */
     @FXML
     private void clickConsultarExpediente(ActionEvent event) {
+        try {
+            Stage escenario = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_ConsultarExpediente.fxml"));
+            Scene escena = new Scene(vista);
+            escenario.setScene(escena);
+            escenario.setTitle("Consular expediente");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

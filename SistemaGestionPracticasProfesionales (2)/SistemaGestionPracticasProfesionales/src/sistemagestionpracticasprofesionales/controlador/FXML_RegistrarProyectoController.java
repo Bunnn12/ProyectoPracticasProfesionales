@@ -1,3 +1,4 @@
+
 /**
  * Nombre del archivo: FXML_RegistrarResponsableController.java
  * Autor: Rodrigo Santa Bárbara Murrieta
@@ -353,7 +354,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
             camposValidos = false;
         }
 
-        return camposValidos;
+        return camposValidos; 
     }
 
     

@@ -101,6 +101,14 @@ public class FXML_PrincipalEvaluadorController implements Initializable {
         }
     }
 
+    /**
+     * Evento que se ejecuta al hacer clic en el botón "Evaluar Estudiante".
+     * Carga y muestra la ventana correspondiente a los estudiantes por evaluar.
+     * La ventana se muestra de forma modal, bloqueando interacción con otras ventanas
+     * hasta que sea cerrada.
+     * 
+     * @param event Evento generado por la acción del botón.
+     */
     @FXML
     private void clickEvaluarEstudiante(ActionEvent event) {
         try {
