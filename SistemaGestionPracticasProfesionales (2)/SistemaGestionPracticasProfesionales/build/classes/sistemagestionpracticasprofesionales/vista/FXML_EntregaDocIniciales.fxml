@@ -59,7 +59,7 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="348.0" layoutY="316.0" mnemonicParsing="false" onAction="#clickSubirDocumento" prefHeight="153.0" prefWidth="330.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Subir documento(s)" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="652.0" layoutY="280.0" mnemonicParsing="false" onAction="#clickSubirDocumento" prefHeight="91.0" prefWidth="298.0" style="-fx-background-color: #0c2f61; -fx-background-radius: 19;" text="Subir documento(s)" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
@@ -71,10 +71,77 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="132.0" fitWidth="139.0" layoutX="636.0" layoutY="370.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="132.0" fitWidth="139.0" layoutX="872.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/hacer-clic.png" />
          </image>
       </ImageView>
+      <Label fx:id="lbFechaMaximaEntrega" layoutX="365.0" layoutY="219.0" prefHeight="32.0" prefWidth="573.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="94.0" layoutY="294.0" prefHeight="28.0" prefWidth="162.0" text="Documento 1:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="292.0" layoutY="188.0" text="Debes subir 4 documentos iniciales al sistema (Solo se aceptan pdf)" />
+      <Label layoutX="94.0" layoutY="333.0" prefHeight="28.0" prefWidth="162.0" text="Documento 2:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="94.0" layoutY="374.0" prefHeight="28.0" prefWidth="162.0" text="Documento 3:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="94.0" layoutY="409.0" prefHeight="28.0" prefWidth="162.0" text="Documento 4:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbNombreDoc1" layoutX="261.0" layoutY="294.0" prefHeight="28.0" prefWidth="338.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="115.0" layoutY="259.0" text="Documentos seleccionados" />
+      <Label fx:id="lbNombreDoc2" layoutX="261.0" layoutY="333.0" prefHeight="28.0" prefWidth="338.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbNombreDoc3" layoutX="261.0" layoutY="374.0" prefHeight="28.0" prefWidth="338.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbNombreDoc4" layoutX="261.0" layoutY="409.0" prefHeight="28.0" prefWidth="338.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button layoutX="11.0" layoutY="295.0" mnemonicParsing="false" onAction="#clickEliminarDoc1" prefHeight="6.0" prefWidth="81.0" style="-fx-background-color: #ffffff;" text="Eliminar" textFill="#ff0505">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="11.0" layoutY="334.0" mnemonicParsing="false" onAction="#clickEliminarDoc2" prefHeight="6.0" prefWidth="81.0" style="-fx-background-color: #ffffff;" text="Eliminar" textFill="#ff0505">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="11.0" layoutY="375.0" mnemonicParsing="false" onAction="#clickEliminarDoc3" prefHeight="6.0" prefWidth="81.0" style="-fx-background-color: #ffffff;" text="Eliminar" textFill="#ff0505">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="11.0" layoutY="410.0" mnemonicParsing="false" onAction="#clickEliminarDoc4" prefHeight="6.0" prefWidth="81.0" style="-fx-background-color: #ffffff;" text="Eliminar" textFill="#ff0505">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

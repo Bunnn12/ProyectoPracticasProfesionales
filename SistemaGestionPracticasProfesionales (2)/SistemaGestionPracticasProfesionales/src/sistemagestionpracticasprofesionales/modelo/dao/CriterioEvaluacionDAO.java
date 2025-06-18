@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.CriterioEvaluacion;
 
@@ -62,24 +63,21 @@ public class CriterioEvaluacionDAO {
     /**
      * Recupera todos los criterios de evaluación para evaluar organizaciones vinculadas de la base de datos.
      * @return Lista de objetos {@code CriterioEvaluacion} correspondientes a los criterios almacenados.
-     * @throws SQLException Si no se puede establecer conexión con la base de datos o si ocurre un error durante la consulta.
      */
-    public static ArrayList<CriterioEvaluacion> obtenerCriteriosEvaluacionOV() throws SQLException {
-        ArrayList<CriterioEvaluacion> criteriosEvaluacionPresentacion = new ArrayList<>();
-        Connection conexionBD = Conexion.abrirConexion();
-        if (conexionBD!= null){
-            String consulta = "SELECT * FROM criterioevaluacionov;";
-        PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
-        ResultSet resultado = sentencia.executeQuery();
-        while(resultado.next()){
-            criteriosEvaluacionPresentacion.add(convertirRegistroCriterioEvaluacion(resultado));
+    public static List<CriterioEvaluacion> obtenerCriterios() {
+        List<CriterioEvaluacion> lista = new ArrayList<>();
+        String sql = "SELECT idCriterio, nombreCriterio, descripcion FROM criterioEvaluacionOV";
+
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                lista.add(convertirRegistroCriterioEvaluacion(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        sentencia.close();
-        resultado.close();
-        conexionBD.close();
-        } else {
-            throw new SQLException("Sin conexion con la base de datos");
-        }
-        return criteriosEvaluacionPresentacion;
+        return lista;
     }
 }
