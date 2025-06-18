@@ -423,16 +423,16 @@ public class ExpedienteDAO {
         }
     }
     public static boolean actualizarEvaluacionesYEstado(int idExpediente, String evalPres, String evalOV, String estado) throws SQLException {
-    String sql = "UPDATE expediente SET evaluacionPresentacion = ?, evaluacionOV = ?, estado = ? WHERE idExpediente = ?";
-    try (Connection conn = Conexion.abrirConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, evalPres);
-        ps.setString(2, evalOV);
-        ps.setString(3, estado);
-        ps.setInt(4, idExpediente);
-        return ps.executeUpdate() > 0;
+        String sql = "UPDATE expediente SET evaluacionPresentacion = ?, evaluacionOV = ?, estado = ? WHERE idExpediente = ?";
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, evalPres);
+            ps.setString(2, evalOV);
+            ps.setString(3, estado);
+            ps.setInt(4, idExpediente);
+            return ps.executeUpdate() > 0;
+        }
     }
-}
 /**
  * Obtiene un objeto ExpedienteCompleto a partir del id del expediente.
  * Realiza una consulta SQL para obtener los datos del expediente junto con

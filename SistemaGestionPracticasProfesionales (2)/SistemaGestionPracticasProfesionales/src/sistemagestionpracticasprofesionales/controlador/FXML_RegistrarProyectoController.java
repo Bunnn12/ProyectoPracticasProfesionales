@@ -258,7 +258,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
         String horaSalida = tfHoraSalida.getText().trim();
         String participantes = tfParticipantes.getText().trim();
         String descripcion = tfDescripcion.getText().trim();
-        
+
         lbErrorNombre.setText("");
         lbErrorOV.setText("");
         lbErrorResponsable.setText("");
@@ -268,7 +268,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
         lbErrorHoraSalida.setText("");
         lbErrorParticipantes.setText("");
         lbErrorDescripcion.setText("");
-        
+
         boolean camposValidos = true;
 
         if (nombreProyecto.isEmpty()) {
@@ -284,32 +284,74 @@ public class FXML_RegistrarProyectoController implements Initializable {
             camposValidos = false;
         }
         if (fechaInicio == null) {
-            lbErrorFechaInicio.setText("Fecha obligatoria");
+            lbErrorFechaInicio.setText("Fecha de inicio obligatoria");
             camposValidos = false;
         }
         if (fechaFin == null) {
-            lbErrorFechaFin.setText("Fecha obligatoria");
+            lbErrorFechaFin.setText("Fecha de fin obligatoria");
+            camposValidos = false;
+        } else if (fechaInicio != null && fechaFin.isBefore(fechaInicio)) {
+            lbErrorFechaFin.setText("Fecha de fin no puede ser anterior a la fecha de inicio");
             camposValidos = false;
         }
+
+        String patronHora = "([01]?\\d|2[0-3]):[0-5]\\d(:[0-5]\\d)?";
+
         if (horaEntrada.isEmpty()) {
             lbErrorHoraEntrada.setText("Hora obligatoria");
             camposValidos = false;
+        } else if (!horaEntrada.matches(patronHora)) {
+            lbErrorHoraEntrada.setText("Formato inválido (hh:mm o hh:mm:ss)");
+            camposValidos = false;
         }
+
         if (horaSalida.isEmpty()) {
             lbErrorHoraSalida.setText("Hora obligatoria");
             camposValidos = false;
+        } else if (!horaSalida.matches(patronHora)) {
+            lbErrorHoraSalida.setText("Formato inválido (hh:mm o hh:mm:ss)");
+            camposValidos = false;
         }
+
+        if (horaEntrada.matches(patronHora) && horaSalida.matches(patronHora)) {
+            try {
+                java.time.LocalTime entrada = java.time.LocalTime.parse(horaEntrada.length() == 5 ? horaEntrada + ":00" : horaEntrada);
+                java.time.LocalTime salida = java.time.LocalTime.parse(horaSalida.length() == 5 ? horaSalida + ":00" : horaSalida);
+                if (!salida.isAfter(entrada)) {
+                    lbErrorHoraSalida.setText("Hora de salida debe ser posterior a hora de entrada");
+                    camposValidos = false;
+                }
+            } catch (Exception e) {
+                lbErrorHoraEntrada.setText("Formato de hora inválido");
+                lbErrorHoraSalida.setText("Formato de hora inválido");
+                camposValidos = false;
+            }
+        }
+
         if (participantes.isEmpty()) {
             lbErrorParticipantes.setText("Número de participantes obligatorio");
             camposValidos = false;
+        } else {
+            try {
+                int num = Integer.parseInt(participantes);
+                if (num <= 0) {
+                    lbErrorParticipantes.setText("Debe ser mayor a cero");
+                    camposValidos = false;
+                }
+            } catch (NumberFormatException e) {
+                lbErrorParticipantes.setText("Debe ser un número entero");
+                camposValidos = false;
+            }
         }
+
         if (descripcion.isEmpty()) {
-            lbErrorDescripcion.setText("Descripcion del proyecto obligatoria");
+            lbErrorDescripcion.setText("Descripción del proyecto obligatoria");
             camposValidos = false;
         }
-        
+
         return camposValidos;
     }
+
     
     /**
      * Cierra la ventana si el usuario lo confirma
