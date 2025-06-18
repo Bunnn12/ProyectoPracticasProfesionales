@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="859.0" prefWidth="1172.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_EvaluarOVController">
+   <children>
+      <Label layoutX="437.0" layoutY="31.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="354.0" layoutY="65.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="97.0" text="Evaluar Organización Vinculada" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="712.0" fitWidth="616.0" layoutX="310.0" layoutY="151.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Button contentDisplay="TOP" layoutX="670.0" layoutY="736.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="908.0" layoutY="737.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="31.0" layoutY="157.0" text="Proyecto:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbNombreProyecto" layoutX="168.0" layoutY="157.0" prefHeight="32.0" prefWidth="650.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="31.0" layoutY="205.0" text="Organización Vinculada:" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbNombreOrganizacionVinculada" layoutX="360.0" layoutY="205.0" prefHeight="32.0" prefWidth="725.0" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+    <AnchorPane layoutX="71.0" layoutY="266.0" minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="1027.0">
+         <children>
+            <ScrollPane fx:id="spCriteriosEvaluacion" layoutX="-14.0" layoutY="-5.0" prefHeight="275.0" prefWidth="1041.0">
+               <content>
+                  <VBox fx:id="vBoxCriteriosEvaluacion" prefHeight="291.0" prefWidth="1096.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+      <TextArea fx:id="taRetroalimentacion" layoutX="64.0" layoutY="587.0" prefHeight="250.0" prefWidth="521.0" promptText="Ingrese su retroalimentación (máximo 100 palabras)" />
+      <Label layoutX="31.0" layoutY="545.0" text="Retroalimentación" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

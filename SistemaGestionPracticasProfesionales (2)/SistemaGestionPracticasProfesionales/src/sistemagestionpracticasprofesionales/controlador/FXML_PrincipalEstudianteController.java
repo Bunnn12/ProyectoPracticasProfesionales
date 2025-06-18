@@ -27,6 +27,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
 import sistemagestionpracticasprofesionales.modelo.dao.EntregaDocumentoDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.EstudianteDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.EvaluacionOvDAO;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -108,12 +110,18 @@ public class FXML_PrincipalEstudianteController implements Initializable {
                 "La fecha actual no está dentro del periodo permitido para subir documentos iniciales");
             return; 
         }
+        boolean tieneProyecto = EstudianteDAO.tieneProyectoAsignado(estudianteSesion.getIdEstudiante());
+        if (!tieneProyecto) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Proyecto no asignado", 
+                "No puedes subir documentos iniciales porque aún no tienes un proyecto asignado");
+            return;
+        }
         try {
             Stage escenario = new Stage();
             Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_EntregaDocIniciales.fxml"));
             Scene escena = new Scene(vista);
             escenario.setScene(escena);
-            escenario.setTitle("Registrar proyecto");
+            escenario.setTitle("Subir documentos iniciales");
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch(IOException e) {
@@ -124,6 +132,29 @@ public class FXML_PrincipalEstudianteController implements Initializable {
 
     @FXML
     private void clickEvaluarOV(ActionEvent event) {
+        String estadoEvaluacion = EvaluacionOvDAO.obtenerEstadoEvaluacionOV(estudianteSesion.getIdEstudiante());
+
+        if (estadoEvaluacion == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Si no tienes tu expediente creado, no puedes implementar esta opción, lo sentimos :(");
+            return;
+        }
+
+        if (!estadoEvaluacion.equalsIgnoreCase("sin realizar")) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Evaluación ya realizada",
+                "Ya has realizado la evaluación de la organización vinculada y no puedes volver a evaluarla");
+            return;
+        }
+        try {
+            Stage escenario = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaOV.fxml"));
+            Scene escena = new Scene(vista);
+            escenario.setScene(escena);
+            escenario.setTitle("Evaluar ov- Busqueda OV");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     

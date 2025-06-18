@@ -365,5 +365,26 @@ public class EstudianteDAO {
             
             return estudiantes;
         }
+       
+       public static boolean tieneProyectoAsignado(int idEstudiante) {
+            boolean tieneProyecto = false;
+            String sql = "SELECT COUNT(*) FROM asignacion WHERE idEstudiante = ?";
+
+            try (Connection conn = Conexion.abrirConexion();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setInt(1, idEstudiante);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        tieneProyecto = rs.getInt(1) > 0;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return tieneProyecto;
+        }
+
 }
 

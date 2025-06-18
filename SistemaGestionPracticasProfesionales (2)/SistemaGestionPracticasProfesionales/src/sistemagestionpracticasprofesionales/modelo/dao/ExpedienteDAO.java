@@ -513,10 +513,15 @@ public class ExpedienteDAO {
         String sql = "SELECT idExpediente FROM expediente WHERE idEstudiante = ?";
         try (Connection conn = Conexion.abrirConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
+            System.out.println("Buscando expediente con idEstudiante: " + idEstudiante);
             ps.setInt(1, idEstudiante);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("idExpediente");
+                    int idExpediente = rs.getInt("idExpediente");
+                    System.out.println("Expediente encontrado: " + idExpediente);
+                    return idExpediente;
+                } else {
+                    System.out.println("No se encontró expediente para idEstudiante: " + idEstudiante);
                 }
             }
         } catch (SQLException e) {
@@ -524,6 +529,7 @@ public class ExpedienteDAO {
         }
         return -1; 
     }
+
     
     
     /**
@@ -568,5 +574,23 @@ public class ExpedienteDAO {
 
         return -1;
     }
+    
+    public static void actualizarEstadoEvaluacionOV(int idExpediente) {
+        String sql = "UPDATE expediente SET evaluacionov = 'realizada' WHERE idExpediente = ?";
+
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idExpediente);
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Estado de evaluación OV actualizado correctamente.");
+            } else {
+                System.out.println("No se encontró expediente para actualizar evaluación OV.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar estado de evaluación OV: " + e.getMessage());
+        }
+    }
+
 
 }

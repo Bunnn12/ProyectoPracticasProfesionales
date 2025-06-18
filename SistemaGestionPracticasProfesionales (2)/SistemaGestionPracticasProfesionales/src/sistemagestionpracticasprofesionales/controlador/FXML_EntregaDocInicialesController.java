@@ -1,6 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_EntregaDocInicialesController.java
+ * Autor: 
+ * Fecha: 16/06/2025
+ * Descripción: Controlador para la interfaz de entrega de documentos iniciales de un estudiante.
+ * Permite visualizar la fecha límite de entrega, cargar hasta 4 documentos PDF, 
+ * mostrar los documentos seleccionados o ya guardados, eliminarlos y subirlos al expediente.
+ * Maneja validaciones de tipo y tamaño de archivo, control de duplicados y límites.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -25,9 +30,12 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la interfaz de entrega de documentos iniciales de un estudiante.
+ * Permite visualizar la fecha límite de entrega, cargar hasta 4 documentos PDF, 
+ * mostrar los documentos seleccionados o ya guardados, eliminarlos y subirlos al expediente.
+ * 
+ * Maneja validaciones de tipo y tamaño de archivo, control de duplicados y límites.
+ * 
  */
 public class FXML_EntregaDocInicialesController implements Initializable {
 
@@ -48,7 +56,9 @@ public class FXML_EntregaDocInicialesController implements Initializable {
     private Estudiante estudianteSesion;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador, carga datos del estudiante, documentos guardados y la fecha máxima de entrega.
+     * @param url URL de ubicación del recurso
+     * @param rb Bundle de recursos
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,6 +87,9 @@ public class FXML_EntregaDocInicialesController implements Initializable {
 
     }    
 
+    /**
+     * Obtiene y muestra la fecha máxima permitida para la entrega de documentos iniciales.
+     */
     private void mostrarFechaMaximaEntrega() {
         LocalDate fechaMaxima = EntregaDocumentoDAO.obtenerFechaMaximaEntregaInicial();
         if (fechaMaxima != null) {
@@ -86,6 +99,10 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
     
+    /**
+     * Carga los documentos iniciales ya guardados en el expediente del estudiante en sesión,
+     * actualiza listas internas para control y visualización.
+     */
     private void cargarDocumentosGuardados() {
         int idExpediente = ExpedienteDAO.obtenerIdExpedientePorEstudiante(estudianteSesion.getIdEstudiante());
         if (idExpediente == -1) return;
@@ -99,18 +116,22 @@ public class FXML_EntregaDocInicialesController implements Initializable {
             documentosGuardadosNombres.add(doc.getNombre());
         }
 
-        // Aseguramos que archivosSeleccionados tenga siempre 4 posiciones (máximo documentos)
         archivosSeleccionados.clear();
-        int totalSlots = 4; // Máximo documentos permitidos
+        int totalSlots = 4; 
         for (int i = 0; i < totalSlots; i++) {
             if (i < documentosGuardadosNombres.size()) {
-                archivosSeleccionados.add(null); // Documento guardado sin archivo local
+                archivosSeleccionados.add(null); 
             } else {
-                archivosSeleccionados.add(null); // Posición vacía
+                archivosSeleccionados.add(null); 
             }
         }
     }
 
+    /**
+     * Evento que se dispara al hacer clic en "Aceptar". Valida y sube los archivos seleccionados.
+     * Actualiza la interfaz y cierra la ventana si la operación es exitosa.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         if (archivosSeleccionados.isEmpty()) {
@@ -130,6 +151,10 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
+    /**
+     * Evento que se dispara al hacer clic en "Cancelar". Pide confirmación y cierra la ventana si se confirma.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Seguro Cancelar", "¿Estás seguro que quieres cancelar?");
@@ -138,6 +163,11 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         } 
     }
 
+    /**
+     * Evento que permite al usuario seleccionar archivos PDF para subir.
+     * Valida el periodo de entrega, el límite de documentos, tamaño, tipo y duplicados.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickSubirDocumento(ActionEvent event) {
         if (!EntregaDocumentoDAO.estaDentroDeRangoEntregaInicial()) {
@@ -208,6 +238,10 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
+    /**
+     * Busca un índice válido para reemplazar un archivo seleccionado o agregar uno nuevo.
+     * @return índice disponible para agregar/reemplazar archivo, o -1 si no hay espacio
+     */
     private int encontrarIndiceReemplazo() {
         for (int i = documentosGuardadosIds.size(); i < archivosSeleccionados.size(); i++) {
             if (archivosSeleccionados.get(i) == null) {
@@ -219,6 +253,11 @@ public class FXML_EntregaDocInicialesController implements Initializable {
     }
 
 
+    /**
+     * Elimina un documento guardado en base de datos según el índice indicado,
+     * además de actualizar las listas internas.
+     * @param indice índice del documento a eliminar
+     */
     private void borrarDocumentoGuardado(int indice) {
         if (indice < documentosGuardadosIds.size()) {
             int idDoc = documentosGuardadosIds.get(indice);
@@ -228,6 +267,10 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
+    /**
+     * Cuenta cuántos documentos guardados no han sido reemplazados o eliminados.
+     * @return cantidad de documentos guardados no reemplazados
+     */
     private int contarDocumentosGuardadosNoReemplazados() {
         int cuenta = 0;
         for (int i = 0; i < documentosGuardadosIds.size(); i++) {
@@ -238,6 +281,10 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         return cuenta;
     }
 
+    /**
+     * Actualiza los labels con los nombres de los documentos seleccionados o guardados.
+     * Si no hay documento en una posición, muestra "No seleccionado".
+     */
     private void mostrarNombresArchivos() {
         lbNombreDoc1.setText("No seleccionado");
         lbNombreDoc2.setText("No seleccionado");
@@ -256,6 +303,11 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
+    /**
+     * Establece el texto de uno de los labels de nombre de documento según el índice.
+     * @param indice índice (0 a 3) del label
+     * @param nombre nombre del documento a mostrar
+     */
     private void setLabelNombre(int indice, String nombre) {
         switch(indice) {
             case 0: lbNombreDoc1.setText(nombre); break;
@@ -265,7 +317,11 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
-    
+    /**
+     * Elimina un documento de la lista de archivos seleccionados y de la base de datos si está guardado.
+     * Actualiza la interfaz de usuario.
+     * @param indice índice del documento a eliminar (0 a 3)
+     */
     private void eliminarDocumento(int indice) {
         if (archivosSeleccionados != null && archivosSeleccionados.size() > indice) {
             archivosSeleccionados.set(indice, null); 
@@ -281,26 +337,48 @@ public class FXML_EntregaDocInicialesController implements Initializable {
         }
     }
 
+    /**
+     * Evento para eliminar el primer documento.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickEliminarDoc1(ActionEvent event) {
         eliminarDocumento(0);
     }
 
+    /**
+     * Evento para eliminar el segundo documento.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickEliminarDoc2(ActionEvent event) {
         eliminarDocumento(1);
     }
 
+    /**
+     * Evento para eliminar el tercer documento.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickEliminarDoc3(ActionEvent event) {
         eliminarDocumento(2);
     }
 
+    /**
+     * Evento para eliminar el cuarto documento.
+     * @param event Evento del clic
+     */
     @FXML
     private void clickEliminarDoc4(ActionEvent event) {
         eliminarDocumento(3);
     }
     
+    /**
+     * Sube a la base de datos los archivos seleccionados.
+     * Actualiza documentos existentes o guarda nuevos según corresponda.
+     * @param archivos lista de archivos seleccionados
+     * @return true si todos los archivos se subieron correctamente, false si hubo errores
+     */
    private boolean subirArchivos(List<File> archivos) {
         if (archivos == null || archivos.isEmpty()) return false;
 

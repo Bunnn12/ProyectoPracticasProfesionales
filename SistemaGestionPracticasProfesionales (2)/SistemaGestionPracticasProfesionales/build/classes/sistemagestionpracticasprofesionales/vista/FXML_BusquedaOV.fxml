@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_BusquedaOVController">
+   <children>
+      <Label layoutX="385.0" layoutY="43.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="95.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="314.0" layoutY="169.0" text="Seleccione el proyecto deseado y de click en &quot;Aceptar&quot;">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="658.0" fitWidth="555.0" layoutX="259.0" layoutY="203.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfBusquedaProyecto" layoutX="409.0" layoutY="244.0" onKeyReleased="#buscarProyectoPorNombre" prefHeight="45.0" prefWidth="529.0" promptText="Nombre del proyecto" />
+      <Label layoutX="193.0" layoutY="252.0" text="Buscar proyecto:">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tvProyectos" layoutX="37.0" layoutY="340.0" prefHeight="365.0" prefWidth="955.0">
+         <columns>
+            <TableColumn fx:id="colNombre" prefWidth="153.0" text="Nombre" />
+            <TableColumn fx:id="colDescripcion" prefWidth="116.0" text="Descripción" />
+            <TableColumn fx:id="colFechaInicio" prefWidth="166.0" text="Fecha de inicio" />
+            <TableColumn fx:id="colFechaTermino" prefWidth="167.0" text="Fecha de termino" />
+            <TableColumn fx:id="colOV" prefWidth="186.0" text="Organización Vinculada" />
+            <TableColumn fx:id="colResponsable" prefWidth="166.0" text="Responsable" />
+         </columns>
+      </TableView>
+      <Button contentDisplay="TOP" layoutX="199.0" layoutY="744.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="651.0" layoutY="745.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

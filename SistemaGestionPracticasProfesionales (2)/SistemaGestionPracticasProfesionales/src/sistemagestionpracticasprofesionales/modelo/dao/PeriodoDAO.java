@@ -1,6 +1,13 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nombre del archivo: PeriodoDAO.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 16/06/2025
+ * Descripción: Clase DAO que permite acceder a la información de los períodos académicos
+ * almacenados en la base de datos del sistema.
+ * Proporciona métodos para obtener el identificador del período actual,
+ * definido como aquel cuyo rango de fechas incluye la fecha actual.
+ * Esta clase es utilizada por otras clases DAO para validar y relacionar
+ * operaciones con el período vigente.
  */
 package sistemagestionpracticasprofesionales.modelo.dao;
 
@@ -11,10 +18,15 @@ import java.sql.SQLException;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 
 /**
- *
- * @author reino
+ * Clase DAO para manejar operaciones relacionadas con la tabla 'periodo' en la base de datos.
  */
 public class PeriodoDAO {
+    /**
+     * Obtiene el identificador del período actual, definido como aquel
+     * cuyo rango de fechas (fechaInicio a fechaFin) incluye la fecha actual.
+     *
+     * @return el id del período actual si existe, o null si no se encuentra ningún período vigente.
+     */
     public static Integer obtenerIdPeriodoActual() {
         Integer idPeriodo = null;
         String consulta = "SELECT idPeriodo FROM periodo WHERE CURRENT_DATE BETWEEN fechaInicio AND fechaFin";

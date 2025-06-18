@@ -264,5 +264,27 @@ public class ProyectoDAO {
         }
     }
 
+    public static boolean esProyectoDeEstudiante(int idEstudiante, int idProyecto) throws SQLException {
+        Connection conexion = Conexion.abrirConexion();
+        boolean pertenece = false;
+
+        if (conexion != null) {
+            String sql = "SELECT 1 FROM asignacion WHERE idEstudiante = ? AND idProyecto = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idEstudiante);
+            ps.setInt(2, idProyecto);
+            ResultSet rs = ps.executeQuery();
+            pertenece = rs.next();
+
+            rs.close();
+            ps.close();
+            conexion.close();
+        } else {
+            throw new SQLException("Sin conexión con la base de datos");
+        }
+
+        return pertenece;
+    }
+
 }
 
