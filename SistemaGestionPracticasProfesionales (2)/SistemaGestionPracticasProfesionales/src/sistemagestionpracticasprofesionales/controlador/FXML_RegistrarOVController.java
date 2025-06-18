@@ -79,15 +79,6 @@ public class FXML_RegistrarOVController implements Initializable {
             Utilidad.cerrarVentanaActual(lbErrorCorreo);
         } 
     }
-
-    /**
-     * Acción para el botón regresar: cierra la ventana actual.
-     * 
-     * @param event Evento generado por el botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tfNombreOV);
-    }
     
     /**
      * Valida los campos de entrada y guarda la nueva organización vinculada en la base de datos.

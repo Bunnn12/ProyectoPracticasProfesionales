@@ -120,15 +120,6 @@ public class FXML_BusquedaProyectoController implements Initializable {
     }
     
     /**
-     * Cierra la ventana actual sin necesidad de confirmación.
-     * @param event Evento del botón regresar
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tfBusquedaProyecto);
-    }
-    
-    
-    /**
      * Cierra la ventana actual si el usuario confirma la cancelación.
      * @param event Evento de acción del botón cancelar
      */

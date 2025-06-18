@@ -54,15 +54,6 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
     }    
     
     /**
-     * Cierra la ventana actual.
-     * 
-     * @param event Evento del botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
-    }
-
-    /**
      * Abre la visualización de documentos iniciales entregados por el estudiante
      *
      * @param event Evento del botón validar documentos iniciales.

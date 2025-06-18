@@ -85,14 +85,6 @@ public class FXML_AsignarProyectoController implements Initializable {
     }    
     
     /**
-     * Cierra la ventana actual
-     * @param event Evento del botón regresar
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tvEstudiantes);
-    }
-
-    /**
      * Configura las columnas de la tabla de estudiantes
      */
     private void configurarTablaEstudiantes() {

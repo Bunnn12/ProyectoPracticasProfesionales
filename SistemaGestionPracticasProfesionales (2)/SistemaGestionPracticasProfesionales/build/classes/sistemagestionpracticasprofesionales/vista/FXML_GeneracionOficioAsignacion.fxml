@@ -30,18 +30,6 @@
             <Font name="Arial Rounded MT Bold" size="39.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="44.0" layoutY="47.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Label layoutX="64.0" layoutY="238.0" text="Lista de estudiantes de los que se generará el documento:">
          <font>
             <Font name="Arial Rounded MT Bold" size="24.0" />

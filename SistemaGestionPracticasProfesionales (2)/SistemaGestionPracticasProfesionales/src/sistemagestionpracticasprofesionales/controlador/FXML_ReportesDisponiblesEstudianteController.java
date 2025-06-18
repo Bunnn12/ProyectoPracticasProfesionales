@@ -97,15 +97,6 @@ public class FXML_ReportesDisponiblesEstudianteController implements Initializab
     }  
     
     /**
-     * Maneja el evento de regresar y cierra la ventana actual.
-     * 
-     * @param event Evento de clic en el botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tvReportes);
-    }
-
-    /**
      * Maneja el evento para visualizar el reporte seleccionado.
      * Si no hay selección muestra una alerta.
      * 

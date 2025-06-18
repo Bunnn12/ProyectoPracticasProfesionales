@@ -75,15 +75,6 @@ public class FXML_VisualizacionDocumentosController implements Initializable {
     }    
 
     /**
-     * Cierra la ventana actual al hacer clic en regresar.
-     *
-     * @param event Evento del botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tvDocumentos);
-    }
-
-    /**
      * Valida el documento seleccionado actualizando su estado a "Validado" y recarga la tabla.
      *
      * @param event Evento del botón validar

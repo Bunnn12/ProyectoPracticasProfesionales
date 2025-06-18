@@ -30,18 +30,6 @@
             <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
          </image>
       </ImageView>
-      <Button contentDisplay="TOP" layoutX="40.0" layoutY="38.0" mnemonicParsing="false" onAction="#clickRegresar" prefHeight="57.0" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-background-radius: 19;" text="Regresar" textFill="#0c2f61">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="15.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/flecha-hacia-atras.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button contentDisplay="TOP" layoutX="673.0" layoutY="732.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
