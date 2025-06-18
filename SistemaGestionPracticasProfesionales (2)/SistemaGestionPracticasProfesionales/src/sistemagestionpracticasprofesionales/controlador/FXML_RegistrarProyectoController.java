@@ -1,6 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_RegistrarResponsableController.java
+ * Autor: Rodrigo Santa Bárbara Murrieta
+ * Fecha: 15/06/2025
+ * Descripción: Controlador JavaFX encargado de registrar proyectos
+ * para prácticas profesionales. Permite capturar datos, validar y guardar la información
+ * en la base de datos, además de gestionar la carga de organizaciones vinculadas y responsables de proyecto
  */
 package sistemagestionpracticasprofesionales.controlador;
 
