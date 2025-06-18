@@ -17,6 +17,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.DocumentoAnexo;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.modelo.pojo.Expediente;
 import sistemagestionpracticasprofesionales.modelo.pojo.ExpedienteCompleto;
+import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 
 
 /**
@@ -349,24 +350,30 @@ public class ExpedienteDAO {
         return idExpediente;
     }
 
-    
-    /**
-     * Obtiene un expediente con los datos del estudiante asociado.
-     * 
-     * @param idExpediente ID del expediente.
-     * @return Objeto Expediente con información completa, incluido el estudiante, o null si no se encuentra.
-     * @throws SQLException Si ocurre un error al acceder a la base de datos.
-     */
-    public static Expediente obtenerExpedienteConEstudiante(int idExpediente) throws SQLException {
+  /**
+ * Obtiene un expediente con los datos del estudiante asociado y el nombre del proyecto asignado.
+ *
+ * @param idExpediente ID del expediente.
+ * @return Objeto Expediente con información completa, incluido el estudiante y el nombre del proyecto, o null si no se encuentra.
+ * @throws SQLException Si ocurre un error al acceder a la base de datos.
+ */
+    public static Expediente obtenerExpedienteConEstudianteYProyecto(int idExpediente) throws SQLException {
         Expediente expediente = null;
-        String consulta = "SELECT e.*, es.idEstudiante, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula " +
+        String consulta = "SELECT " +
+                          "e.idExpediente, e.fechaInicio, e.fechaFin, e.horasAcumuladas, e.estado, e.idEstudiante AS idEstudianteExp, " +
+                          "es.idEstudiante AS idEstudianteEst, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula, " +
+                          "p.idProyecto, p.nombre AS nombreProyecto " +
                           "FROM expediente e " +
                           "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                          "JOIN asignacion a ON es.idEstudiante = a.idEstudiante " +
+                          "JOIN proyecto p ON a.idProyecto = p.idProyecto " +
                           "WHERE e.idExpediente = ?";
 
         try (Connection conexion = Conexion.abrirConexion();
              PreparedStatement ps = conexion.prepareStatement(consulta)) {
+
             ps.setInt(1, idExpediente);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     expediente = new Expediente();
@@ -375,22 +382,28 @@ public class ExpedienteDAO {
                     expediente.setFechaFin(rs.getDate("fechaFin"));
                     expediente.setHorasAcumuladas(rs.getInt("horasAcumuladas"));
                     expediente.setEstado(rs.getString("estado"));
-                    expediente.setIdEstudiante(rs.getInt("idEstudiante"));
+                    expediente.setIdEstudiante(rs.getInt("idEstudianteExp"));
 
                     Estudiante estudiante = new Estudiante();
-                    estudiante.setIdEstudiante(rs.getInt("idEstudiante"));
+                    estudiante.setIdEstudiante(rs.getInt("idEstudianteEst"));
                     estudiante.setNombre(rs.getString("nombre"));
                     estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
                     estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
                     estudiante.setMatricula(rs.getString("matricula"));
-
                     expediente.setEstudiante(estudiante);
+
+                    Proyecto proyecto = new Proyecto();
+                    proyecto.setIdProyecto(rs.getInt("idProyecto"));
+                    proyecto.setNombre(rs.getString("nombreProyecto"));
+                    expediente.setProyecto(proyecto);
                 }
             }
         }
 
         return expediente;
     }
+
+
 
     /**
      * Actualiza las horas acumuladas de un expediente.
