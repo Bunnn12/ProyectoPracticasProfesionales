@@ -16,6 +16,7 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Reporte;
 import sistemagestionpracticasprofesionales.modelo.pojo.DocumentoAnexo;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import sistemagestionpracticasprofesionales.modelo.pojo.Expediente;
+import sistemagestionpracticasprofesionales.modelo.pojo.ExpedienteCompleto;
 
 
 /**
@@ -220,7 +221,6 @@ public class ExpedienteDAO {
             return ps.executeUpdate() > 0;
         }
     }
-    
     /**
      * Obtiene un expediente a partir del ID del estudiante.
      * 
@@ -409,5 +409,80 @@ public class ExpedienteDAO {
             return ps.executeUpdate() > 0;
         }
     }
-    
+    public static boolean actualizarEvaluacionesYEstado(int idExpediente, String evalPres, String evalOV, String estado) throws SQLException {
+    String sql = "UPDATE expediente SET evaluacionPresentacion = ?, evaluacionOV = ?, estado = ? WHERE idExpediente = ?";
+    try (Connection conn = Conexion.abrirConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, evalPres);
+        ps.setString(2, evalOV);
+        ps.setString(3, estado);
+        ps.setInt(4, idExpediente);
+        return ps.executeUpdate() > 0;
+    }
+}
+/**
+ * Obtiene un objeto ExpedienteCompleto a partir del id del expediente.
+ * Realiza una consulta SQL para obtener los datos del expediente junto con
+ * la información básica del estudiante asociado.
+ * 
+ * @param idExpediente Identificador del expediente a buscar.
+ * @return Un objeto ExpedienteCompleto con la información cargada, o null si no existe.
+ * @throws SQLException En caso de error con la base de datos.
+ */
+public static ExpedienteCompleto obtenerExpedienteCompleto(int idExpediente) throws SQLException {
+    ExpedienteCompleto expediente = null;
+
+    // Consulta para obtener el expediente y los datos básicos del estudiante relacionado
+    String consulta = "SELECT e.*, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula " +
+                      "FROM expediente e " +
+                      "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                      "WHERE e.idExpediente = ?";
+
+    // Uso de try-with-resources para asegurar cierre automático de recursos
+    try (Connection conexion = Conexion.abrirConexion();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+        
+        // Establecer parámetro para la consulta preparada
+        ps.setInt(1, idExpediente);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                // Crear nueva instancia de ExpedienteCompleto para almacenar resultados
+                expediente = new ExpedienteCompleto();
+
+                // Asignar campos básicos del expediente
+                expediente.setIdExpediente(rs.getInt("idExpediente"));
+
+                // Obtener fechas desde java.sql.Date y convertir a java.time.LocalDate
+                java.sql.Date fechaInicioSQL = rs.getDate("fechaInicio");
+                java.sql.Date fechaFinSQL = rs.getDate("fechaFin");
+
+                if (fechaInicioSQL != null) {
+                    expediente.setFechaInicio(fechaInicioSQL.toLocalDate());
+                }
+                if (fechaFinSQL != null) {
+                    expediente.setFechaFin(fechaFinSQL.toLocalDate());
+                }
+
+                // Asignar horas acumuladas, estado y evaluaciones del expediente
+                expediente.setHorasAcumuladas(rs.getInt("horasAcumuladas"));
+                expediente.setEstado(rs.getString("estado"));
+                expediente.setEvaluacionPresentacion(rs.getString("evaluacionPresentacion"));
+                expediente.setEvaluacionOV(rs.getString("evaluacionOV"));
+
+                // Crear y asignar objeto Estudiante con la información obtenida
+                Estudiante estudiante = new Estudiante();
+                estudiante.setNombre(rs.getString("nombre"));
+                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                estudiante.setMatricula(rs.getString("matricula"));
+
+                expediente.setEstudiante(estudiante);
+            }
+        }
+    }
+
+    // Retorna el expediente completo o null si no se encontró
+    return expediente;
+    }
 }

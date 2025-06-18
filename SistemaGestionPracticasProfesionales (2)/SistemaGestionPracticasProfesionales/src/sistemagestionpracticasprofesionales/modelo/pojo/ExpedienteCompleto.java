@@ -1,29 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
-/**
- *
- * @author rodri
- */
+import java.time.LocalDate;
+
 public class ExpedienteCompleto {
+    private int idExpediente;             // ID del expediente
     private String nombreEstudiante;
     private String nombreProyecto;
     private String nombreOV;
-    private String fechaInicio;
-    private String fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private int horasAcumuladas;
     private String estado;
     private String evaluacionPresentacion;
     private double puntajeObtenido;
     private String evaluacionOV;
 
+    // También puedes tener un objeto Estudiante en vez de solo nombre
+    private Estudiante estudiante;  // Si tienes la clase Estudiante y quieres usarla
+
     public ExpedienteCompleto() {
     }
 
-    public ExpedienteCompleto(String nombreEstudiante, String nombreProyecto, String nombreOV, String fechaInicio, String fechaFin, int horasAcumuladas, String estado, String evaluacionPresentacion, double puntajeObtenido, String evaluacionOV) {
+    public ExpedienteCompleto(int idExpediente, String nombreEstudiante, String nombreProyecto, String nombreOV,
+                             LocalDate fechaInicio, LocalDate fechaFin, int horasAcumuladas, String estado,
+                             String evaluacionPresentacion, double puntajeObtenido, String evaluacionOV) {
+        this.idExpediente = idExpediente;
         this.nombreEstudiante = nombreEstudiante;
         this.nombreProyecto = nombreProyecto;
         this.nombreOV = nombreOV;
@@ -35,6 +36,25 @@ public class ExpedienteCompleto {
         this.puntajeObtenido = puntajeObtenido;
         this.evaluacionOV = evaluacionOV;
     }
+
+    // Getters y setters para el nuevo campo
+    public int getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(int idExpediente) {
+        this.idExpediente = idExpediente;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
+    }
+
+    // El resto de getters y setters que ya tenías
 
     public String getNombreEstudiante() {
         return nombreEstudiante;
@@ -60,19 +80,19 @@ public class ExpedienteCompleto {
         this.nombreOV = nombreOV;
     }
 
-    public String getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public String getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 

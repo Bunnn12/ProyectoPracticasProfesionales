@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_ActualizarExpedienteController">
+<AnchorPane id="AnchorPane" prefHeight="614.0" prefWidth="600.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_ActualizarExpedienteController">
    <children>
       <Label layoutX="162.0" layoutY="14.0" text="Actualizar Expediente">
          <font>
@@ -40,15 +40,45 @@
          </font>
       </Label>
       <TextField fx:id="tfAgregarHoras" layoutX="222.0" layoutY="245.0" prefHeight="32.0" prefWidth="212.0" />
-      <Button contentDisplay="TOP" layoutX="328.0" layoutY="346.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="40.0" prefWidth="158.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="336.0" layoutY="552.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="40.0" prefWidth="158.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
       </Button>
-      <Button contentDisplay="TOP" layoutX="127.0" layoutY="346.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="0.0" prefWidth="158.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="143.0" layoutY="552.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="0.0" prefWidth="158.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
       </Button>
+      <Label fx:id="lbFechaInicio" layoutX="43.0" layoutY="307.0" text="Fecha inicio: ">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpFechaInicio" layoutX="219.0" layoutY="302.0" />
+      <DatePicker fx:id="dpFechaFin" layoutX="219.0" layoutY="346.0" />
+      <Label fx:id="lbFechaFin" layoutX="47.0" layoutY="351.0" text="Fecha final: ">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbEvaluacionPresentacion" layoutX="25.0" layoutY="402.0" text="Evaluacion Presentacion">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbEvaluacionOV" layoutX="42.0" layoutY="441.0" text="Evaluacion OV">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbEstado" layoutX="69.0" layoutY="478.0" text="Estado">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbEvaluacionPresentacion" layoutX="261.0" layoutY="397.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbEvaluacionOV" layoutX="261.0" layoutY="436.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbEstado" layoutX="261.0" layoutY="473.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
