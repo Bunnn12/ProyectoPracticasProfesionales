@@ -103,6 +103,15 @@ public class FXML_PrincipalEstudianteController implements Initializable {
         }
     }
 
+    
+    /**
+    * Maneja el evento al hacer clic en el botón para subir documentos iniciales.
+    * Verifica que la fecha actual esté dentro del periodo permitido para subir
+    * documentos iniciales y que el estudiante tenga un proyecto asignado en el periodo actual.
+    * Si ambas condiciones se cumplen, abre la ventana para subir documentos iniciales.
+    * 
+    * @param event El evento de acción generado por el clic en el botón.
+    */
     @FXML
     private void clickSubirDocIniciales(ActionEvent event) {
         if (!EntregaDocumentoDAO.estaDentroDeRangoEntregaInicial()) {
@@ -110,7 +119,7 @@ public class FXML_PrincipalEstudianteController implements Initializable {
                 "La fecha actual no está dentro del periodo permitido para subir documentos iniciales");
             return; 
         }
-        boolean tieneProyecto = EstudianteDAO.tieneProyectoAsignado(estudianteSesion.getIdEstudiante());
+        boolean tieneProyecto = EstudianteDAO.tieneProyectoAsignadoPeriodoActual(estudianteSesion.getIdEstudiante());
         if (!tieneProyecto) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Proyecto no asignado", 
                 "No puedes subir documentos iniciales porque aún no tienes un proyecto asignado");
@@ -130,6 +139,13 @@ public class FXML_PrincipalEstudianteController implements Initializable {
     }
 
 
+    /**
+    * Maneja el evento al hacer clic en el botón para evaluar la organización vinculada (OV).
+    * Verifica el estado actual de la evaluación para evitar evaluaciones duplicadas o si no
+    * existe expediente asociado al estudiante. Si está permitido, abre la ventana para realizar la evaluación.
+    * 
+    * @param event El evento de acción generado por el clic en el botón.
+    */
     @FXML
     private void clickEvaluarOV(ActionEvent event) {
         String estadoEvaluacion = EvaluacionOvDAO.obtenerEstadoEvaluacionOV(estudianteSesion.getIdEstudiante());

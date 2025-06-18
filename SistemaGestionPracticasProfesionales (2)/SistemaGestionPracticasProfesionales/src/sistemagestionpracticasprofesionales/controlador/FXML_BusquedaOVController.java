@@ -1,6 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_BusquedaOVController.java
+ * Autor: 
+ * Fecha: 16/06/25
+ * Descripción: Controlador de la interfaz para la búsqueda y selección de proyectos asignados
+ * al estudiante en sesión, con el propósito de evaluar la Organización Vinculada (OV)
+ * asociada a dichos proyectos. Gestiona la visualización, filtrado y selección de proyectos,
+ * validando que el estudiante tenga expediente y que el proyecto pertenezca al mismo.
+ * Permite abrir la ventana de evaluación o cancelar la operación.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -32,9 +38,9 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la vista principal del estudiante.
+ * Permite gestionar la sesión del estudiante en curso y controlar
+ * la navegación a otras vistas desde la interfaz principal.
  */
 public class FXML_BusquedaOVController implements Initializable {
 
@@ -58,7 +64,10 @@ public class FXML_BusquedaOVController implements Initializable {
     ObservableList<Proyecto> proyectos;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador, configura las columnas de la tabla y carga los proyectos desde la base de datos.
+     * 
+     * @param url URL del recurso (no utilizado).
+     * @param rb ResourceBundle (no utilizado).
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -66,8 +75,9 @@ public class FXML_BusquedaOVController implements Initializable {
         cargarProyectos();
     }    
 
-    /**
-     * Configura las columnas de la tabla de proyectos.
+   /**
+     * Configura los PropertyValueFactory para cada columna de la tabla,
+     * vinculando cada columna con la propiedad correspondiente del objeto Proyecto.
      */
     private void configurarTablaProyectos(){
         colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
@@ -79,7 +89,10 @@ public class FXML_BusquedaOVController implements Initializable {
     }
 
     /**
-     * Carga todos los proyectos disponibles desde la base de datos.
+     * Carga la lista de proyectos desde la base de datos, la agrega a la lista observable
+     * y asigna esta lista a la tabla para su visualización.
+     * 
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
      */
     private void cargarProyectos(){
         try {
@@ -93,6 +106,12 @@ public class FXML_BusquedaOVController implements Initializable {
         }
     }
     
+    /**
+     * Filtra la lista de proyectos mostrados en la tabla según el texto ingresado
+     * en el campo de búsqueda, permitiendo búsquedas parciales por nombre.
+     * 
+     * @param event Evento de teclado que se produce al escribir en el campo de búsqueda.
+     */
     @FXML
     private void buscarProyectoPorNombre(KeyEvent event) {
         String proyectoBuscado = tfBusquedaProyecto.getText().toLowerCase();
@@ -111,6 +130,17 @@ public class FXML_BusquedaOVController implements Initializable {
         tvProyectos.setItems(proyectosFiltrados);
     }
 
+    
+    /**
+     * Evento manejador para el botón aceptar. Valida que el proyecto seleccionado
+     * pertenezca al estudiante en sesión, que el estudiante tenga expediente y,
+     * en caso afirmativo, abre la ventana para evaluar la Organización Vinculada.
+     * Muestra mensajes de alerta en caso de error o condiciones no cumplidas.
+     * 
+     * @param event Evento de acción del botón aceptar.
+     * @throws IOException si ocurre un error al cargar la ventana de evaluación.
+     * @throws SQLException si ocurre un error al validar datos en la base de datos.
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         Proyecto proyectoSeleccionado = tvProyectos.getSelectionModel().getSelectedItem();
@@ -131,7 +161,6 @@ public class FXML_BusquedaOVController implements Initializable {
         try {
             if (ProyectoDAO.esProyectoDeEstudiante(idEstudianteSesion, proyectoSeleccionado.getIdProyecto())) {
 
-                // Verificar si el estudiante tiene expediente
                 int idExpediente = ExpedienteDAO.obtenerIdExpedientePorEstudiante(idEstudianteSesion);
                 if (idExpediente == -1) {
                     Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin expediente", 
@@ -139,7 +168,6 @@ public class FXML_BusquedaOVController implements Initializable {
                     return;
                 }
 
-                // Abrir ventana de evaluación
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_EvaluarOV.fxml"));
                 Parent root = loader.load();
 
@@ -162,6 +190,13 @@ public class FXML_BusquedaOVController implements Initializable {
         }
     }
 
+    
+     /**
+     * Evento manejador para el botón cancelar. Solicita confirmación para cerrar
+     * la ventana actual si el usuario confirma la acción.
+     * 
+     * @param event Evento de acción del botón cancelar.
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");

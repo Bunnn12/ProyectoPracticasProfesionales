@@ -1,6 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * Nombre del archivo: FXML_EvaluarOVController.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 17/06/2025
+ * Descripción: Controlador para la vista de evaluación de organizaciones vinculadas (OV).
+ * Permite mostrar los criterios de evaluación, capturar las calificaciones y retroalimentación,
+ * y guardar la evaluación realizada para un proyecto vinculado.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -19,8 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import sistemagestionpracticasprofesionales.modelo.dao.CriterioEvaluacionDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.EvaluacionOvDAO;
@@ -31,9 +33,14 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
- * FXML Controller class
- *
- * @author reino
+ * Controlador para la interfaz de evaluación de organizaciones vinculadas (OV).
+ * 
+ * Funcionalidades:
+ * - Mostrar la información del proyecto y la organización vinculada.
+ * - Cargar y mostrar los criterios de evaluación con opciones para asignar puntajes.
+ * - Validar la retroalimentación y las calificaciones ingresadas.
+ * - Guardar la evaluación y actualizar el estado del expediente correspondiente.
+ * - Permitir cancelar la evaluación con confirmación.
  */
 public class FXML_EvaluarOVController implements Initializable {
 
@@ -53,13 +60,23 @@ public class FXML_EvaluarOVController implements Initializable {
     private TextArea taRetroalimentacion;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el controlador y los elementos de la interfaz.
+     * No realiza acciones específicas en esta implementación.
+     *
+     * @param url Ruta utilizada para resolver recursos relativos
+     * @param rb  Recursos locales para la internacionalización
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }    
     
+    
+    /**
+     * Recibe el proyecto a evaluar, actualiza las etiquetas y carga los criterios.
+     *
+     * @param proyecto Proyecto que se evaluará.
+     */
     public void inicializarDatos(Proyecto proyecto) {
     if (proyecto != null) {
         this.proyecto = proyecto;
@@ -71,14 +88,17 @@ public class FXML_EvaluarOVController implements Initializable {
 }
 
 
-
+    /**
+     * Carga los criterios de evaluación desde la base de datos,
+     * los muestra en la interfaz con sus respectivos ComboBox para puntuar.
+     */
     private void cargarCriterios() {
         criterios = CriterioEvaluacionDAO.obtenerCriterios();
         vBoxCriteriosEvaluacion.getChildren().clear();
         mapComboPuntajes.clear();
 
         for (CriterioEvaluacion criterio : criterios) {
-            HBox hbox = new HBox(20); // separacion 20px
+            HBox hbox = new HBox(20); 
             hbox.setPrefWidth(1020);
             hbox.setMaxWidth(1020);
 
@@ -90,14 +110,13 @@ public class FXML_EvaluarOVController implements Initializable {
 
             vboxTextos.getChildren().addAll(lblNombre, lblDescripcion);
 
-            // Que el VBox ocupe 85% del ancho total
             vboxTextos.setPrefWidth(1020 * 0.85);
             vboxTextos.setMaxWidth(1020 * 0.85);
 
             ComboBox<Integer> cbPuntaje = new ComboBox<>();
             cbPuntaje.getItems().addAll(1, 2, 3, 4, 5);
             cbPuntaje.setPromptText("Puntaje");
-            cbPuntaje.setPrefWidth(120); // ancho fijo para mostrar el prompt completo
+            cbPuntaje.setPrefWidth(120); 
 
             hbox.getChildren().addAll(vboxTextos, cbPuntaje);
 
@@ -109,7 +128,12 @@ public class FXML_EvaluarOVController implements Initializable {
 
 
 
-
+     /**
+     * Evento que se activa al hacer clic en el botón "Aceptar".
+     * Valida los datos, calcula el puntaje total y guarda la evaluación.
+     *
+     * @param event Evento del clic.
+     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         if (proyecto == null) {
@@ -177,8 +201,10 @@ public class FXML_EvaluarOVController implements Initializable {
     }
 
     /**
-     * Suma todos los puntajes seleccionados en los ComboBox.
-     * Si alguno no está calificado, muestra alerta y devuelve -1.
+     * Calcula la suma total de los puntajes ingresados en los ComboBox.
+     * Si algún criterio no está calificado, muestra alerta y retorna -1.
+     *
+     * @return La suma de puntajes o -1 si falta alguna calificación.
      */
     private double calcularPuntajeTotal() {
         double total = 0;
@@ -194,6 +220,12 @@ public class FXML_EvaluarOVController implements Initializable {
         return total;
     }
 
+     /**
+     * Evento que se activa al hacer clic en el botón "Cancelar".
+     * Pregunta confirmación para cerrar la ventana actual.
+     *
+     * @param event Evento del clic.
+     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Cancelar evaluación", "¿Seguro que deseas cancelar?");

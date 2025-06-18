@@ -366,9 +366,24 @@ public class EstudianteDAO {
             return estudiantes;
         }
        
-       public static boolean tieneProyectoAsignado(int idEstudiante) {
+       /**
+        * Verifica si un estudiante tiene un proyecto asignado dentro del periodo actual.
+        * 
+        * Este método consulta si el estudiante, identificado por su ID, está asignado a un proyecto
+        * que corresponde a un grupo cuyo periodo está vigente en la fecha actual.
+        * 
+        * @param idEstudiante ID del estudiante a verificar.
+        * @return {@code true} si el estudiante tiene un proyecto asignado en el periodo actual; {@code false} en caso contrario.
+        */
+       public static boolean tieneProyectoAsignadoPeriodoActual(int idEstudiante) {
             boolean tieneProyecto = false;
-            String sql = "SELECT COUNT(*) FROM asignacion WHERE idEstudiante = ?";
+
+            String sql = "SELECT COUNT(*) " +
+                         "FROM estudiante e " +
+                         "JOIN grupo g ON e.idGrupo = g.idGrupo " +
+                         "JOIN periodo p ON g.idPeriodo = p.idPeriodo " +
+                         "JOIN asignacion a ON e.idEstudiante = a.idEstudiante " +
+                         "WHERE e.idEstudiante = ? AND CURRENT_DATE BETWEEN p.fechaInicio AND p.fechaFin";
 
             try (Connection conn = Conexion.abrirConexion();
                  PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -385,6 +400,7 @@ public class EstudianteDAO {
 
             return tieneProyecto;
         }
+
 
 }
 

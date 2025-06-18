@@ -575,6 +575,18 @@ public class ExpedienteDAO {
         return -1;
     }
     
+    /**
+    * Actualiza el estado de la evaluación de la organización vinculada (evaluacionov) a "realizada" 
+    * para un expediente específico en la base de datos.
+    * 
+    * Este método modifica el campo {@code evaluacionov} en la tabla {@code expediente} para indicar 
+    * que la evaluación OV ya fue completada.
+    * 
+    * @param idExpediente Identificador del expediente que se actualizará.
+    * 
+    * <p>El método realiza la conexión a la base de datos, ejecuta la actualización y maneja posibles
+    * excepciones SQL, mostrando mensajes en consola con el resultado de la operación.</p>
+    */
     public static void actualizarEstadoEvaluacionOV(int idExpediente) {
         String sql = "UPDATE expediente SET evaluacionov = 'realizada' WHERE idExpediente = ?";
 

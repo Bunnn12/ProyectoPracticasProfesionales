@@ -134,12 +134,12 @@ public class FXML_RegistrarOVController implements Initializable {
         if (nombre.isEmpty()) {
             lbErrorNombre.setText("Nombre obligatorio");
             camposValidos = false;
-        } else if (!nombre.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")) {
-            lbErrorNombre.setText("Solo letras y espacios");
-            camposValidos = false;
         } else if (nombre.length() > 100) {
             lbErrorNombre.setText("Máximo 100 caracteres");
             camposValidos = false;
+        } else if (nombre.length() < 2){
+            lbErrorNombre.setText("Mínimo 2 caracteres");
+            camposValidos= false;
         }
 
         if (direccion.isEmpty()) {

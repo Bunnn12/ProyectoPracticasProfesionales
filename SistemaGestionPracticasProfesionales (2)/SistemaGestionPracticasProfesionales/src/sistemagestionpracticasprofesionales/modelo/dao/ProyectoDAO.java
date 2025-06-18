@@ -264,6 +264,17 @@ public class ProyectoDAO {
         }
     }
 
+    /**
+    * Verifica si un proyecto específico está asignado a un estudiante determinado.
+    * 
+    * Este método consulta la tabla {@code asignacion} para determinar si existe un registro
+    * que relacione al estudiante con el proyecto indicado.
+    * 
+    * @param idEstudiante ID del estudiante a verificar.
+    * @param idProyecto ID del proyecto que se desea comprobar.
+    * @return {@code true} si el proyecto está asignado al estudiante; {@code false} en caso contrario.
+    * @throws SQLException Si ocurre un error al conectar o consultar la base de datos.
+    */
     public static boolean esProyectoDeEstudiante(int idEstudiante, int idProyecto) throws SQLException {
         Connection conexion = Conexion.abrirConexion();
         boolean pertenece = false;
