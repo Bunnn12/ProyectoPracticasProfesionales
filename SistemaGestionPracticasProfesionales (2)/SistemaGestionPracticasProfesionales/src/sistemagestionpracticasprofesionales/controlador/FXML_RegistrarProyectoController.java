@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package sistemagestionpracticasprofesionales.controlador;
 
 import sistemagestionpracticasprofesionales.modelo.dao.ProyectoDAO;
@@ -349,7 +345,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
             camposValidos = false;
         }
 
-        return camposValidos;
+        return camposValidos; 
     }
 
     

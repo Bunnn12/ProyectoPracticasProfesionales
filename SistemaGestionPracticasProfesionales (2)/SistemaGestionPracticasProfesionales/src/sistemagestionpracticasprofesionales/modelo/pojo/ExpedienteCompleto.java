@@ -37,7 +37,6 @@ public class ExpedienteCompleto {
         this.evaluacionOV = evaluacionOV;
     }
 
-    // Getters y setters para el nuevo campo
     public int getIdExpediente() {
         return idExpediente;
     }
