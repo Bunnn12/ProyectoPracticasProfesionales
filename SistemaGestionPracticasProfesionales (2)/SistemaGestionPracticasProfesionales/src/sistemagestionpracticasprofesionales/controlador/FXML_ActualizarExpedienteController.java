@@ -82,7 +82,7 @@ public class FXML_ActualizarExpedienteController implements Initializable {
      */
     public void recibirIdExpediente(Integer idExpediente) {
         try {
-            expedienteActual = ExpedienteDAO.obtenerExpedienteConEstudiante(idExpediente);
+            expedienteActual = ExpedienteDAO.obtenerExpedienteConEstudianteYProyecto(idExpediente); 
             expedienteCompletoActual = ExpedienteDAO.obtenerExpedienteCompleto(idExpediente);
 
             if (expedienteActual != null) {
@@ -117,6 +117,7 @@ public class FXML_ActualizarExpedienteController implements Initializable {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de base de datos", "No se pudo cargar el expediente.");
         }
     }
+
 
     /**
      * Maneja el evento del botón "Aceptar".
@@ -178,7 +179,7 @@ public class FXML_ActualizarExpedienteController implements Initializable {
      * @param event Evento de acción generado por el botón.
      */
     @FXML
-    private void clickCancelar(ActionEvent event) {
+private void clickCancelar(ActionEvent event) {
     boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar cancelación", "¿Estás seguro que quieres cancelar?");
     if (confirmado) {
         cerrarVentana();
