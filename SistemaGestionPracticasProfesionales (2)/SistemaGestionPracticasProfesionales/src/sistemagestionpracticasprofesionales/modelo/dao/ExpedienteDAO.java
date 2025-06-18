@@ -7,9 +7,12 @@
 package sistemagestionpracticasprofesionales.modelo.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Reporte;
@@ -422,6 +425,17 @@ public class ExpedienteDAO {
             return ps.executeUpdate() > 0;
         }
     }
+    
+    /**
+    * Actualiza las evaluaciones y el estado de un expediente específico.
+    *
+    * @param idExpediente el identificador del expediente a actualizar
+    * @param evalPres la evaluación de la presentación (nuevo valor)
+    * @param evalOV la evaluación de la OV (nuevo valor)
+    * @param estado el nuevo estado del expediente
+    * @return true si la actualización fue exitosa, false si no
+    * @throws SQLException si ocurre un error en la operación SQL
+    */
     public static boolean actualizarEvaluacionesYEstado(int idExpediente, String evalPres, String evalOV, String estado) throws SQLException {
         String sql = "UPDATE expediente SET evaluacionPresentacion = ?, evaluacionOV = ?, estado = ? WHERE idExpediente = ?";
         try (Connection conn = Conexion.abrirConexion();
@@ -433,69 +447,126 @@ public class ExpedienteDAO {
             return ps.executeUpdate() > 0;
         }
     }
-/**
- * Obtiene un objeto ExpedienteCompleto a partir del id del expediente.
- * Realiza una consulta SQL para obtener los datos del expediente junto con
- * la información básica del estudiante asociado.
- * 
- * @param idExpediente Identificador del expediente a buscar.
- * @return Un objeto ExpedienteCompleto con la información cargada, o null si no existe.
- * @throws SQLException En caso de error con la base de datos.
- */
-public static ExpedienteCompleto obtenerExpedienteCompleto(int idExpediente) throws SQLException {
-    ExpedienteCompleto expediente = null;
+    /**
+     * Obtiene un objeto ExpedienteCompleto a partir del id del expediente.
+     * Realiza una consulta SQL para obtener los datos del expediente junto con
+     * la información básica del estudiante asociado.
+     * 
+     * @param idExpediente Identificador del expediente a buscar.
+     * @return Un objeto ExpedienteCompleto con la información cargada, o null si no existe.
+     * @throws SQLException En caso de error con la base de datos.
+     */
+    public static ExpedienteCompleto obtenerExpedienteCompleto(int idExpediente) throws SQLException {
+        ExpedienteCompleto expediente = null;
 
-    // Consulta para obtener el expediente y los datos básicos del estudiante relacionado
-    String consulta = "SELECT e.*, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula " +
-                      "FROM expediente e " +
-                      "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
-                      "WHERE e.idExpediente = ?";
+        String consulta = "SELECT e.*, es.nombre, es.apellidoPaterno, es.apellidoMaterno, es.matricula " +
+                          "FROM expediente e " +
+                          "JOIN estudiante es ON e.idEstudiante = es.idEstudiante " +
+                          "WHERE e.idExpediente = ?";
+        try (Connection conexion = Conexion.abrirConexion();
+             PreparedStatement ps = conexion.prepareStatement(consulta)) {
 
-    // Uso de try-with-resources para asegurar cierre automático de recursos
-    try (Connection conexion = Conexion.abrirConexion();
-         PreparedStatement ps = conexion.prepareStatement(consulta)) {
-        
-        // Establecer parámetro para la consulta preparada
-        ps.setInt(1, idExpediente);
+            ps.setInt(1, idExpediente);
 
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                // Crear nueva instancia de ExpedienteCompleto para almacenar resultados
-                expediente = new ExpedienteCompleto();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    expediente = new ExpedienteCompleto();
 
-                // Asignar campos básicos del expediente
-                expediente.setIdExpediente(rs.getInt("idExpediente"));
+                    expediente.setIdExpediente(rs.getInt("idExpediente"));
 
-                // Obtener fechas desde java.sql.Date y convertir a java.time.LocalDate
-                java.sql.Date fechaInicioSQL = rs.getDate("fechaInicio");
-                java.sql.Date fechaFinSQL = rs.getDate("fechaFin");
+                    java.sql.Date fechaInicioSQL = rs.getDate("fechaInicio");
+                    java.sql.Date fechaFinSQL = rs.getDate("fechaFin");
 
-                if (fechaInicioSQL != null) {
-                    expediente.setFechaInicio(fechaInicioSQL.toLocalDate());
+                    if (fechaInicioSQL != null) {
+                        expediente.setFechaInicio(fechaInicioSQL.toLocalDate());
+                    }
+                    if (fechaFinSQL != null) {
+                        expediente.setFechaFin(fechaFinSQL.toLocalDate());
+                    }
+
+                    expediente.setHorasAcumuladas(rs.getInt("horasAcumuladas"));
+                    expediente.setEstado(rs.getString("estado"));
+                    expediente.setEvaluacionPresentacion(rs.getString("evaluacionPresentacion"));
+                    expediente.setEvaluacionOV(rs.getString("evaluacionOV"));
+
+                    Estudiante estudiante = new Estudiante();
+                    estudiante.setNombre(rs.getString("nombre"));
+                    estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                    estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                    estudiante.setMatricula(rs.getString("matricula"));
+
+                    expediente.setEstudiante(estudiante);
                 }
-                if (fechaFinSQL != null) {
-                    expediente.setFechaFin(fechaFinSQL.toLocalDate());
-                }
-
-                // Asignar horas acumuladas, estado y evaluaciones del expediente
-                expediente.setHorasAcumuladas(rs.getInt("horasAcumuladas"));
-                expediente.setEstado(rs.getString("estado"));
-                expediente.setEvaluacionPresentacion(rs.getString("evaluacionPresentacion"));
-                expediente.setEvaluacionOV(rs.getString("evaluacionOV"));
-
-                // Crear y asignar objeto Estudiante con la información obtenida
-                Estudiante estudiante = new Estudiante();
-                estudiante.setNombre(rs.getString("nombre"));
-                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
-                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
-                estudiante.setMatricula(rs.getString("matricula"));
-
-                expediente.setEstudiante(estudiante);
             }
         }
+
+        return expediente;
     }
 
-    // Retorna el expediente completo o null si no se encontró
-    return expediente;
+    /**
+    * Obtiene el ID del expediente asociado a un estudiante dado.
+    *
+    * @param idEstudiante el identificador del estudiante
+    * @return el ID del expediente si se encuentra, o -1 si no existe
+    */
+    public static int obtenerIdExpedientePorEstudiante(int idEstudiante) {
+        String sql = "SELECT idExpediente FROM expediente WHERE idEstudiante = ?";
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idEstudiante);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idExpediente");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; 
     }
+    
+    
+    /**
+    * Crea un nuevo expediente para un estudiante si no existe uno ya asociado.
+    * Si ya existe, devuelve el ID existente.
+    * El nuevo expediente se crea con fecha de inicio actual y duración de 6 meses,
+    * con estado "en progreso" y evaluaciones inicializadas.
+    *
+    * @param idEstudiante el identificador del estudiante
+    * @return el ID del expediente creado o existente, o -1 si hubo error
+    */
+    public static int crearExpedienteSiNoExiste(int idEstudiante) {
+        int idExpediente = obtenerIdExpedientePorEstudiante(idEstudiante);
+        if (idExpediente != -1) {
+            return idExpediente;
+        }
+
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusMonths(6);
+
+        String sql = "INSERT INTO expediente (fechaInicio, fechaFin, horasAcumuladas, estado, idEstudiante, evaluacionpresentacion, evaluacionov) "
+                   + "VALUES (?, ?, 0, 'en progreso', ?, 'sin evaluar', 'sin realizar')";
+
+        try (Connection conn = Conexion.abrirConexion();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setDate(1, Date.valueOf(fechaInicio));
+            ps.setDate(2, Date.valueOf(fechaFin));
+            ps.setInt(3, idEstudiante);
+
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return -1;
+    }
+
 }

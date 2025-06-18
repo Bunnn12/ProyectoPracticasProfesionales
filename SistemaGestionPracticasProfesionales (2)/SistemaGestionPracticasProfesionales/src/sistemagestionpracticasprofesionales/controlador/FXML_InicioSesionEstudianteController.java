@@ -182,7 +182,7 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Principal Estudiante");
             escenarioBase.centerOnScreen();
-            escenarioBase.showAndWait();
+            escenarioBase.show();
         } catch (IOException e) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error de carga", "No se pudo cargar la vista principal");
         } 

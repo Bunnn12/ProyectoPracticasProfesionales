@@ -8,11 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< HEAD
-    <jar href="SistemaGestionPracticasProfesionales.jar" size="2153509" download="eager" />
-=======
-    <jar href="SistemaGestionPracticasProfesionales.jar" size="2152849" download="eager" />
->>>>>>> bff3f6b280249a7d5ccf4ee252d661ed5cd7396c
+    <jar href="SistemaGestionPracticasProfesionales.jar" size="2166894" download="eager" />
     <jar href="lib\commons-collections4-4.4.jar" size="751914" download="eager" />
     <jar href="lib\commons-compress-1.21.jar" size="1018316" download="eager" />
     <jar href="lib\commons-io-2.13.0.jar" size="483954" download="eager" />

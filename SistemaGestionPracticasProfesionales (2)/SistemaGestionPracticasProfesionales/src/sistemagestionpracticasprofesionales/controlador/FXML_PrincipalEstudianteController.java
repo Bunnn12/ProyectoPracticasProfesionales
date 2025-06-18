@@ -20,9 +20,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales;
+import sistemagestionpracticasprofesionales.modelo.dao.EntregaDocumentoDAO;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -99,6 +103,22 @@ public class FXML_PrincipalEstudianteController implements Initializable {
 
     @FXML
     private void clickSubirDocIniciales(ActionEvent event) {
+        if (!EntregaDocumentoDAO.estaDentroDeRangoEntregaInicial()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Fuera de plazo", 
+                "La fecha actual no está dentro del periodo permitido para subir documentos iniciales");
+            return; 
+        }
+        try {
+            Stage escenario = new Stage();
+            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_EntregaDocIniciales.fxml"));
+            Scene escena = new Scene(vista);
+            escenario.setScene(escena);
+            escenario.setTitle("Registrar proyecto");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
