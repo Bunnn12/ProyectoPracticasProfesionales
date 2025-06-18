@@ -105,14 +105,6 @@ public class FXML_ActualizarResponsableController implements Initializable {
         colTelefonoResponsable.setCellValueFactory(new PropertyValueFactory("telefono"));
     }
     
-    /**
-     * Cierra la ventana actual sin hacer cambios
-     * @param event Evento del botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tfBuscarResponsable);
-    }
-    
      /**
       * Actualiza el responsable del proyecto seleccionado
       * @param event Evento del botón aceptar

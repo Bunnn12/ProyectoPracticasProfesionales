@@ -96,15 +96,6 @@ public class FXML_GeneracionOficioAsignacionController implements Initializable 
         }
     }
 
-    
-    /**
-     * Cierra la ventana actual.
-     * 
-     * @param event Evento del botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tvEstudiantes);
-    }
 
     /**
      * Genera y guarda los oficios de asignación para los estudiantes que cumplan los requisitos (los que salen en la tabla)

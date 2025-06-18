@@ -45,15 +45,6 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
     }    
 
     /**
-     * Maneja el evento para regresar y cerrar la ventana actual.
-     * 
-     * @param event Evento de clic en el botón regresar.
-     */
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(lbNombreDocumento);
-    }
-
-    /**
      * Maneja el evento para aceptar y guardar la retroalimentación.
      * Valida que se pueda actualizar en la base de datos y muestra alertas según resultado.
      * 

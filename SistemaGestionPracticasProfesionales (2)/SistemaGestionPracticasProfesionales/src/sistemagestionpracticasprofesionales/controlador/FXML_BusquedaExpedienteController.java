@@ -1,12 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+/**
+    * Nombre del archivo: FXML_BusquedaExpedienteController.java
+    * Autor: Juan Pablo Silva Miranda
+    * Fecha: 13/06/2025
+    * Descripción: Controlador que permite buscar el expediente del estudiante si es que existe.
+*/
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException; // Importación necesaria para SQLException
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO; // Importación necesaria para ExpedienteDAO
+import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -36,7 +38,6 @@ public class FXML_BusquedaExpedienteController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO: Aquí puedes agregar cualquier inicialización adicional que necesites.
     }    
 
     @FXML
