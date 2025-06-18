@@ -49,7 +49,6 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
      * 
      * @param event Evento de clic en el botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(lbNombreDocumento);
     }
@@ -69,8 +68,14 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
             return;
         }
 
-        int maxPalabras = 100; 
-        String[] palabras = retroalimentacion.trim().split("\\s+"); 
+        int maxPalabras = 100;
+        String[] palabras = retroalimentacion.trim().split("\\s+");
+
+        if (palabras.length < 3) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Texto insuficiente", 
+                "La retroalimentación debe contener al menos 3 palabras");
+            return;
+        }
 
         if (palabras.length > maxPalabras) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Texto demasiado largo", 
@@ -113,7 +118,7 @@ public class FXML_RetroalimentacionDocumentoController implements Initializable 
      */
     @FXML
     private void clickCancelar(ActionEvent event) {
-        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Seguro Cancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
             Utilidad.cerrarVentanaActual(lbEstudianteDocumento);
         } 

@@ -59,7 +59,8 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
     }
 
     /**
-     * Valida que los campos usuario y contraseña no estén vacíos.
+     * Valida que los campos usuario y contraseña no estén vacíos y la contraseña tenga 5
+     * o más caracteres.
      * Muestra mensajes de error en caso contrario.
      * 
      * @param username Nombre de usuario ingresado.
@@ -70,16 +71,23 @@ import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
         lblErrorUsuario.setText(""); 
         lblErrorContrasenia.setText("");
         boolean camposValidos = true;
+
         if (username.isEmpty()) {
             lblErrorUsuario.setText("Usuario obligatorio");
             camposValidos = false;
         }
-        if (password.isEmpty()){
+
+        if (password.isEmpty()) {
             lblErrorContrasenia.setText("Contraseña obligatoria");
             camposValidos = false;
+        } else if (password.length() < 5) {
+            lblErrorContrasenia.setText("La contraseña debe tener al menos 5 caracteres");
+            camposValidos = false;
         }
-            return camposValidos;
+
+        return camposValidos;
     }
+
 
     /**
      * Verifica las credenciales del usuario consultando la base de datos.

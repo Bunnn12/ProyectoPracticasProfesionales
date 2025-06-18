@@ -109,7 +109,6 @@ public class FXML_ActualizarResponsableController implements Initializable {
      * Cierra la ventana actual sin hacer cambios
      * @param event Evento del botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfBuscarResponsable);
     }

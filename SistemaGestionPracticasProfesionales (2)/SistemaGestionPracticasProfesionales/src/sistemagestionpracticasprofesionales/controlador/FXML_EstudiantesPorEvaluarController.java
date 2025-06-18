@@ -99,7 +99,6 @@ public class FXML_EstudiantesPorEvaluarController implements Initializable {
      * Cierra la ventana actual.
      * @param event Evento del botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvEstudiantes);
     }

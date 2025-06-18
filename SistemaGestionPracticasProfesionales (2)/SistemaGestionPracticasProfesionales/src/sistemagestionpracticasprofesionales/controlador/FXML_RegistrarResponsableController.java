@@ -120,6 +120,7 @@ public class FXML_RegistrarResponsableController implements Initializable {
         }
     }
 
+<<<<<<< HEAD
     /**
      * Evento disparado al dar clic en el botón regresar.
      * Cierra la ventana actual sin guardar cambios.
@@ -127,6 +128,8 @@ public class FXML_RegistrarResponsableController implements Initializable {
      * @param event Evento de acción.
      */
     @FXML
+=======
+>>>>>>> 1b93330b043a905001410b1ce92a35d91ba245e5
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfNombreResponsable);
     }

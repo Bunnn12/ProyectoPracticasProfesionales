@@ -85,7 +85,6 @@ public class FXML_RegistrarOVController implements Initializable {
      * 
      * @param event Evento generado por el botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfNombreOV);
     }
@@ -122,7 +121,8 @@ public class FXML_RegistrarOVController implements Initializable {
         }
     }
 
-    /**
+
+     /**
      * Valida los campos del formulario mostrando mensajes de error si es necesario.
      * 
      * @return true si todos los campos son válidos; false en caso contrario.
@@ -146,10 +146,19 @@ public class FXML_RegistrarOVController implements Initializable {
         } else if (!nombre.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")) {
             lbErrorNombre.setText("Solo letras y espacios");
             camposValidos = false;
+        } else if (nombre.length() > 100) {
+            lbErrorNombre.setText("Máximo 100 caracteres");
+            camposValidos = false;
         }
 
         if (direccion.isEmpty()) {
             lbErrorDireccion.setText("Dirección obligatoria");
+            camposValidos = false;
+        } else if (direccion.length() < 15) {
+            lbErrorDireccion.setText("Debe contener mínimo 15 caracteres");
+            camposValidos = false;
+        } else if (direccion.length() > 150) {
+            lbErrorDireccion.setText("Máximo 150 caracteres");
             camposValidos = false;
         }
 

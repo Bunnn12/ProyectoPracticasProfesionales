@@ -102,7 +102,6 @@ public class FXML_BusquedaEstudianteValidarDocumentoController implements Initia
      * Cierra la ventana actual
      * @param event Evento del botón regresar
      */     
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tvEstudiantes);
     }

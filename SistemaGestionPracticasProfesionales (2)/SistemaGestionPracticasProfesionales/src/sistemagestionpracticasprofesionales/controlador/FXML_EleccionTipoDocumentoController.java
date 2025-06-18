@@ -58,7 +58,6 @@ public class FXML_EleccionTipoDocumentoController implements Initializable {
      * 
      * @param event Evento del botón regresar.
      */
-    @FXML
     private void clickRegresar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(lbEstudianteSeleccionado);
     }
