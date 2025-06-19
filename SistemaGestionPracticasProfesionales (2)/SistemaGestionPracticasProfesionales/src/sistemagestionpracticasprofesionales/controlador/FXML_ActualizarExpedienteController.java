@@ -54,50 +54,48 @@ public class FXML_ActualizarExpedienteController implements Initializable {
      * Establece validaciones para el campo de horas y valores predeterminados en los ComboBox.
      */
     @Override
-public void initialize(URL url, ResourceBundle rb) {
-    tfAgregarHoras.textProperty().addListener((observable, oldValue, newValue) -> {
-        if (!newValue.matches("\\d*")) {
-            tfAgregarHoras.setText(newValue.replaceAll("[^\\d]", ""));
-        }
-    });
+    public void initialize(URL url, ResourceBundle rb) {
+        tfAgregarHoras.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tfAgregarHoras.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
 
-    lbEstudiante.setText("Nombre:");
-    lbMatricula.setText("Matrícula:");
-    lbProyecto.setText("Proyecto:");
-    lbHoras.setText("Horas:");
-    lbHorasAgregar.setText("Agregar Horas:");
+        lbEstudiante.setText("Nombre:");
+        lbMatricula.setText("Matrícula:");
+        lbProyecto.setText("Proyecto:");
+        lbHoras.setText("Horas:");
+        lbHorasAgregar.setText("Agregar Horas:");
 
-    cbEvaluacionPresentacion.getItems().addAll("Evaluado", "Sin evaluar");
-    cbEvaluacionOV.getItems().addAll("Realizada", "Sin realizar");
-    cbEstado.getItems().addAll("En progreso", "Concluido", "Baja");
+        cbEvaluacionPresentacion.getItems().addAll("Evaluado", "Sin evaluar");
+        cbEvaluacionOV.getItems().addAll("Realizada", "Sin realizar");
+        cbEstado.getItems().addAll("En progreso", "Concluido", "Baja");
 
-    cbEvaluacionPresentacion.setValue("Sin evaluar");
-    cbEvaluacionOV.setValue("Sin realizar");
-    cbEstado.setValue("En progreso");
+        cbEvaluacionPresentacion.setValue("Sin evaluar");
+        cbEvaluacionOV.setValue("Sin realizar");
+        cbEstado.setValue("En progreso");
 
-    // Limitar fecha de inicio desde hoy en adelante
-    dpFechaInicio.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
-        @Override
-        public void updateItem(java.time.LocalDate item, boolean empty) {
-            super.updateItem(item, empty);
-            setDisable(empty || item.isBefore(java.time.LocalDate.now()));
-        }
-    });
+        dpFechaInicio.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(java.time.LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(empty || item.isBefore(java.time.LocalDate.now()));
+            }
+        });
 
-    // Limitar fecha de fin a partir de la fecha de inicio y hasta 6 meses después
-    dpFechaInicio.valueProperty().addListener((obs, oldDate, newDate) -> {
-        if (newDate != null) {
-            dpFechaFin.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
-                @Override
-                public void updateItem(java.time.LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    java.time.LocalDate maxDate = newDate.plusMonths(6);
-                    setDisable(empty || item.isBefore(newDate) || item.isAfter(maxDate));
-                }
-            });
-        }
-    });
-}
+        dpFechaInicio.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                dpFechaFin.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+                    @Override
+                    public void updateItem(java.time.LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        java.time.LocalDate maxDate = newDate.plusMonths(6);
+                        setDisable(empty || item.isBefore(newDate) || item.isAfter(maxDate));
+                    }
+                });
+            }
+        });
+    }
 
     /**
      * Recibe el ID del expediente y carga la información relacionada en la interfaz.
@@ -202,12 +200,12 @@ public void initialize(URL url, ResourceBundle rb) {
      * @param event Evento de acción generado por el botón.
      */
     @FXML
-private void clickCancelar(ActionEvent event) {
-    boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar cancelación", "¿Estás seguro que quieres cancelar?");
-    if (confirmado) {
-        cerrarVentana();
+    private void clickCancelar(ActionEvent event) {
+        boolean confirmado = Utilidad.mostrarAlertaConfirmacion("Confirmar cancelación", "¿Estás seguro que quieres cancelar?");
+        if (confirmado) {
+            cerrarVentana();
+        }
     }
-}
 
 
     /**

@@ -1,6 +1,6 @@
 /**
  * Nombre del archivo: FXML_EntregaDocInicialesController.java
- * Autor: 
+ * Autor: Astrid Azucena Torres Lagunes
  * Fecha: 16/06/2025
  * Descripción: Controlador para la interfaz de entrega de documentos iniciales de un estudiante.
  * Permite visualizar la fecha límite de entrega, cargar hasta 4 documentos PDF, 
