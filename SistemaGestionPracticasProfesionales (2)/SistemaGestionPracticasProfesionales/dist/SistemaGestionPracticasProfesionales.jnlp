@@ -8,18 +8,15 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SistemaGestionPracticasProfesionales.jar" size="2189597" download="eager" />
+    <jar href="SistemaGestionPracticasProfesionales.jar" size="2189562" download="eager" />
     <jar href="lib\commons-collections4-4.4.jar" size="751914" download="eager" />
     <jar href="lib\commons-compress-1.21.jar" size="1018316" download="eager" />
     <jar href="lib\commons-io-2.13.0.jar" size="483954" download="eager" />
-    <jar href="lib\itextpdf-5.5.13.3.jar" size="2334491" download="eager" />
     <jar href="lib\log4j-api-2.17.2.jar" size="302511" download="eager" />
-    <jar href="lib\log4j-core-2.17.2.jar" size="1811089" download="eager" />
     <jar href="lib\mysql-connector-java-8.0.20.jar" size="2385601" download="eager" />
     <jar href="lib\poi-5.2.3.jar" size="2964641" download="eager" />
     <jar href="lib\poi-ooxml-5.2.3.jar" size="2010497" download="eager" />
-    <jar href="lib\poi-ooxml-full-5.2.3.jar" size="13244589" download="eager" />
-    <jar href="lib\slf4j-api-1.7.25.jar" size="41203" download="eager" />
+    <jar href="lib\poi-ooxml-lite-5.2.3.jar" size="5898622" download="eager" />
     <jar href="lib\xmlbeans-5.1.1.jar" size="2196526" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales"  name="SistemaGestionPracticasProfesionales" />
