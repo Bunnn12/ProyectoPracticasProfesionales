@@ -22,67 +22,37 @@ import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
-/**
- * Controlador para la vista de registro de Organizaciones Vinculadas.
- * Gestiona la captura, validación y almacenamiento de datos de una organización vinculada.
- */
 public class FXML_RegistrarOVController implements Initializable {
 
-    @FXML
-    private TextField tfNombreOV;
-    @FXML
-    private TextField tfCorreoOV;
-    @FXML
-    private TextField tfTelefonoOV;
-    @FXML
-    private TextField tfDireccionOV;
-    @FXML
-    private Label lbErrorNombre;
-    @FXML
-    private Label lbErrorCorreo;
-    @FXML
-    private Label lbErrorTelefono;
-    @FXML
-    private Label lbErrorDireccion;
-    
+    @FXML private TextField tfNombreOV;
+    @FXML private TextField tfCorreoOV;
+    @FXML private TextField tfTelefonoOV;
+    @FXML private TextField tfDireccionOV;
+
+    @FXML private Label lbErrorNombre;
+    @FXML private Label lbErrorCorreo;
+    @FXML private Label lbErrorTelefono;
+    @FXML private Label lbErrorDireccion;
+
     INotificacion observador;
-    
-    /**
-     * Inicializa el controlador.
-     *
-     * @param url URL de localización del archivo FXML.
-     * @param rb ResourceBundle con recursos internacionalizados.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }    
+    }
 
-    /**
-     * Acción para el botón aceptar: valida y guarda la organización vinculada.
-     * 
-     * @param event Evento generado por el botón aceptar.
-     */
     @FXML
     private void clickAceptar(ActionEvent event) {
         guardarOV();
     }
 
-    /**
-     * Acción para el botón cancelar: pregunta confirmación y cierra ventana si se confirma.
-     * 
-     * @param event Evento generado por el botón cancelar.
-     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         boolean confirmado = Utilidad.mostrarAlertaConfirmacion("SeguroCancelar", "¿Estás seguro que quieres cancelar?");
         if (confirmado) {
             Utilidad.cerrarVentanaActual(lbErrorCorreo);
-        } 
+        }
     }
-    
-    /**
-     * Valida los campos de entrada y guarda la nueva organización vinculada en la base de datos.
-     */
+
     private void guardarOV() {
         if (!validarCampos()) {
             return;
@@ -112,12 +82,6 @@ public class FXML_RegistrarOVController implements Initializable {
         }
     }
 
-
-     /**
-     * Valida los campos del formulario mostrando mensajes de error si es necesario.
-     * 
-     * @return true si todos los campos son válidos; false en caso contrario.
-     */
     private boolean validarCampos() {
         String nombre = tfNombreOV.getText().trim();
         String direccion = tfDireccionOV.getText().trim();
@@ -129,41 +93,92 @@ public class FXML_RegistrarOVController implements Initializable {
         lbErrorTelefono.setText("");
         lbErrorDireccion.setText("");
 
+        tfNombreOV.setStyle("");
+        tfCorreoOV.setStyle("");
+        tfTelefonoOV.setStyle("");
+        tfDireccionOV.setStyle("");
+
         boolean camposValidos = true;
+        boolean primerFoco = false;
 
         if (nombre.isEmpty()) {
             lbErrorNombre.setText("Nombre obligatorio");
+            tfNombreOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfNombreOV.requestFocus();
+                primerFoco = true;
+            }
         } else if (nombre.length() > 100) {
             lbErrorNombre.setText("Máximo 100 caracteres");
+            tfNombreOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
-        } else if (nombre.length() < 2){
+            if (!primerFoco) {
+                tfNombreOV.requestFocus();
+                primerFoco = true;
+            }
+        } else if (nombre.length() < 2) {
             lbErrorNombre.setText("Mínimo 2 caracteres");
-            camposValidos= false;
+            tfNombreOV.setStyle("-fx-border-color: red;");
+            camposValidos = false;
+            if (!primerFoco) {
+                tfNombreOV.requestFocus();
+                primerFoco = true;
+            }
         }
 
         if (direccion.isEmpty()) {
             lbErrorDireccion.setText("Dirección obligatoria");
+            tfDireccionOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfDireccionOV.requestFocus();
+                primerFoco = true;
+            }
         } else if (direccion.length() < 15) {
             lbErrorDireccion.setText("Debe contener mínimo 15 caracteres");
+            tfDireccionOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfDireccionOV.requestFocus();
+                primerFoco = true;
+            }
         } else if (direccion.length() > 150) {
             lbErrorDireccion.setText("Máximo 150 caracteres");
+            tfDireccionOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfDireccionOV.requestFocus();
+                primerFoco = true;
+            }
         }
 
         if (telefono.isEmpty()) {
             lbErrorTelefono.setText("Teléfono obligatorio");
+            tfTelefonoOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfTelefonoOV.requestFocus();
+                primerFoco = true;
+            }
         } else if (!telefono.matches("\\d{10}")) {
             lbErrorTelefono.setText("Debe contener 10 números");
+            tfTelefonoOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfTelefonoOV.requestFocus();
+                primerFoco = true;
+            }
         } else {
             try {
                 if (OrganizacionVinculadaDAO.existeOVConTelefono(telefono)) {
                     lbErrorTelefono.setText("Ya hay una OV con ese teléfono");
+                    tfTelefonoOV.setStyle("-fx-border-color: red;");
                     camposValidos = false;
+                    if (!primerFoco) {
+                        tfTelefonoOV.requestFocus();
+                        primerFoco = true;
+                    }
                 }
             } catch (SQLException e) {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo verificar teléfono");
@@ -173,15 +188,30 @@ public class FXML_RegistrarOVController implements Initializable {
 
         if (correo.isEmpty()) {
             lbErrorCorreo.setText("Correo obligatorio");
+            tfCorreoOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfCorreoOV.requestFocus();
+                primerFoco = true;
+            }
         } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             lbErrorCorreo.setText("Formato de correo inválido");
+            tfCorreoOV.setStyle("-fx-border-color: red;");
             camposValidos = false;
+            if (!primerFoco) {
+                tfCorreoOV.requestFocus();
+                primerFoco = true;
+            }
         } else {
             try {
                 if (OrganizacionVinculadaDAO.existeOVConCorreo(correo)) {
                     lbErrorCorreo.setText("Ya hay una OV con ese correo");
+                    tfCorreoOV.setStyle("-fx-border-color: red;");
                     camposValidos = false;
+                    if (!primerFoco) {
+                        tfCorreoOV.requestFocus();
+                        primerFoco = true;
+                    }
                 }
             } catch (SQLException e) {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo verificar correo");
@@ -191,5 +221,4 @@ public class FXML_RegistrarOVController implements Initializable {
 
         return camposValidos;
     }
-
 }
