@@ -1,11 +1,9 @@
-
 /**
- * Nombre del archivo: FXML_RegistrarResponsableController.java
- * Autor: Rodrigo Santa Bárbara Murrieta
- * Fecha: 15/06/2025
- * Descripción: Controlador JavaFX encargado de registrar proyectos
- * para prácticas profesionales. Permite capturar datos, validar y guardar la información
- * en la base de datos, además de gestionar la carga de organizaciones vinculadas y responsables de proyecto
+    * Nombre del archivo: FXML_RegistrarProyectoController.java
+    * Autor: Rodrigo Santa Bárbara Murrieta
+    * Fecha: 22/06/2025
+    * Descripción: Controlador para la vista de registro de proyectos.
+    * Permite validar y guardar un nuevo proyecto en el sistema.
  */
 package sistemagestionpracticasprofesionales.controlador;
 
@@ -23,12 +21,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import javafx.util.StringConverter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -55,6 +57,16 @@ public class FXML_RegistrarProyectoController implements Initializable {
     @FXML
     private DatePicker dpFechaFin;
     @FXML
+    private CheckBox chLunes;
+    @FXML
+    private CheckBox chMartes;
+    @FXML
+    private CheckBox chMiercoles;
+    @FXML
+    private CheckBox chJueves;
+    @FXML
+    private CheckBox chViernes;
+    @FXML
     private TextField tfHoraEntrada;
     @FXML
     private TextField tfHoraSalida;
@@ -72,6 +84,8 @@ public class FXML_RegistrarProyectoController implements Initializable {
     private Label lbErrorFechaInicio;
     @FXML
     private Label lbErrorFechaFin;
+    @FXML
+    private Label lbErrorDias;
     @FXML
     private Label lbErrorHoraEntrada;
     @FXML
@@ -123,7 +137,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
         return new TextFormatter<>(cambio -> {
             String nuevoTexto = cambio.getControlNewText();
             
-            if (nuevoTexto.matches("[0-9:]*") && nuevoTexto.length() <= 8) {
+            if (nuevoTexto.matches("[0-9:]*") && nuevoTexto.length() <= 5) {
                 return cambio;
             } else {
                 return null;
@@ -226,6 +240,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
                 cbListaResponsables.getValue().getIdResponsable(),
                 dpFechaInicio.getValue().toString().trim(),
                 dpFechaFin.getValue().toString().trim(),
+                diasTrabajo(),
                 tfHoraEntrada.getText().trim(),
                 tfHoraSalida.getText().trim(),
                 Integer.parseInt(tfParticipantes.getText().trim()),
@@ -269,6 +284,7 @@ public class FXML_RegistrarProyectoController implements Initializable {
         lbErrorResponsable.setText("");
         lbErrorFechaInicio.setText("");
         lbErrorFechaFin.setText("");
+        lbErrorDias.setText("");
         lbErrorHoraEntrada.setText("");
         lbErrorHoraSalida.setText("");
         lbErrorParticipantes.setText("");
@@ -278,6 +294,12 @@ public class FXML_RegistrarProyectoController implements Initializable {
 
         if (nombreProyecto.isEmpty()) {
             lbErrorNombre.setText("Nombre obligatorio");
+            camposValidos = false;
+        } else if (nombreProyecto.length() < 6) {
+            lbErrorNombre.setText("Debe tener mínimo 6 caracteres de longitud");
+            camposValidos = false;
+        } else if (nombreProyecto.length() > 45) {
+            lbErrorNombre.setText("Debe tener máximo 45 caracteres de longitud");
             camposValidos = false;
         }
         if (ovSeleccionada == null) {
@@ -295,52 +317,95 @@ public class FXML_RegistrarProyectoController implements Initializable {
         if (fechaFin == null) {
             lbErrorFechaFin.setText("Fecha de fin obligatoria");
             camposValidos = false;
-        } else if (fechaInicio != null && fechaFin.isBefore(fechaInicio)) {
-            lbErrorFechaFin.setText("Fecha de fin no puede ser anterior a la fecha de inicio");
+        } else if (fechaInicio != null && fechaFin.isBefore(fechaInicio.plusMonths(3))) {
+            lbErrorFechaFin.setText("El proyecto no puede durar menos de 3 meses");
             camposValidos = false;
         }
-
-        String patronHora = "([01]?\\d|2[0-3]):[0-5]\\d(:[0-5]\\d)?";
-
+        
+        boolean ningunDiaSeleccionado = 
+            !chLunes.isSelected() &&
+            !chMartes.isSelected() &&
+            !chMiercoles.isSelected() &&
+            !chJueves.isSelected() &&
+            !chViernes.isSelected();
+        
+        if (ningunDiaSeleccionado) {
+            lbErrorDias.setText("Debe seleccionar al menos un día");
+            camposValidos = false;
+        }
+        
+        int numeroDias = 0;
+        if (chLunes.isSelected()) {
+            numeroDias++;
+        }
+        if (chMartes.isSelected()) {
+            numeroDias++;
+        }
+        if (chMiercoles.isSelected()) {
+            numeroDias++;
+        }
+        if (chJueves.isSelected()) {
+            numeroDias++;
+        }
+        if (chViernes.isSelected()) {
+            numeroDias++;
+        }
+        
+        if (numeroDias > 3) {
+            lbErrorDias.setText("Debe seleccionar máximo tres día");
+        }
+        
+        String patronHora = "(0\\d|1\\d|2[0-3]):[0-5]\\d";
+        
         if (horaEntrada.isEmpty()) {
             lbErrorHoraEntrada.setText("Hora obligatoria");
             camposValidos = false;
         } else if (!horaEntrada.matches(patronHora)) {
-            lbErrorHoraEntrada.setText("Formato inválido (hh:mm o hh:mm:ss)");
+            lbErrorHoraEntrada.setText("Formato inválido (HH:MM)");
             camposValidos = false;
         }
-
+        
         if (horaSalida.isEmpty()) {
             lbErrorHoraSalida.setText("Hora obligatoria");
             camposValidos = false;
         } else if (!horaSalida.matches(patronHora)) {
-            lbErrorHoraSalida.setText("Formato inválido (hh:mm o hh:mm:ss)");
+            lbErrorHoraSalida.setText("Formato inválido (HH:MM)");
             camposValidos = false;
         }
-
+        
         if (horaEntrada.matches(patronHora) && horaSalida.matches(patronHora)) {
             try {
-                java.time.LocalTime entrada = java.time.LocalTime.parse(horaEntrada.length() == 5 ? horaEntrada + ":00" : horaEntrada);
-                java.time.LocalTime salida = java.time.LocalTime.parse(horaSalida.length() == 5 ? horaSalida + ":00" : horaSalida);
+                LocalTime entrada = LocalTime.parse(horaEntrada);
+                LocalTime salida = LocalTime.parse(horaSalida);
                 if (!salida.isAfter(entrada)) {
                     lbErrorHoraSalida.setText("Hora de salida debe ser posterior a hora de entrada");
                     camposValidos = false;
+                } else {
+                    Duration duracionDiaria = Duration.between(entrada, salida);
+                    long horasTotales = duracionDiaria.toHours() * numeroDias;
+                    if (horasTotales != 6) {
+                        lbErrorHoraSalida.setText("Deben ser exactamente 6 horas por semana");
+                        camposValidos = false;
+                    }
                 }
-            } catch (Exception e) {
+            } catch (DateTimeParseException e) {
                 lbErrorHoraEntrada.setText("Formato de hora inválido");
                 lbErrorHoraSalida.setText("Formato de hora inválido");
                 camposValidos = false;
             }
         }
-
+        
         if (participantes.isEmpty()) {
             lbErrorParticipantes.setText("Número de participantes obligatorio");
             camposValidos = false;
         } else {
             try {
                 int num = Integer.parseInt(participantes);
-                if (num <= 0) {
-                    lbErrorParticipantes.setText("Debe ser mayor a cero");
+                if (num == 0) {
+                    lbErrorParticipantes.setText("Debe haber mínimo 1 participante");
+                    camposValidos = false;
+                } else if (num > 5) {
+                    lbErrorParticipantes.setText("Debe haber máximo 5 participantes");
                     camposValidos = false;
                 }
             } catch (NumberFormatException e) {
@@ -352,11 +417,48 @@ public class FXML_RegistrarProyectoController implements Initializable {
         if (descripcion.isEmpty()) {
             lbErrorDescripcion.setText("Descripción del proyecto obligatoria");
             camposValidos = false;
+        } else if (descripcion.length() < 10) {
+            lbErrorDescripcion.setText("Debe contener mínimo 10 caracteres");
+            camposValidos = false;
+        } else if (descripcion.length() > 255) {
+            lbErrorDescripcion.setText("Debe contener máximo 250 caracteres");
+            camposValidos = false;
         }
 
-        return camposValidos; 
+        return camposValidos;
     }
 
+    private String diasTrabajo() {
+        String diasTrabajo = "";
+        
+        String[] dias = new String[5];
+        if (chLunes.isSelected()) {
+            dias[0] = "lunes";
+        }
+        if (chMartes.isSelected()) {
+            dias[1] = "martes";
+        }
+        if (chMiercoles.isSelected()) {
+            dias[2] = "miercoles";
+        }
+        if (chJueves.isSelected()) {
+            dias[3] = "jueves";
+        }
+        if (chViernes.isSelected()) {
+            dias[4] = "viernes";
+        }
+        
+        for (int i = 0; i < dias.length; i++) {
+            if (dias[i] != null) {
+                if (diasTrabajo == "")
+                    diasTrabajo += dias[i];
+                else
+                    diasTrabajo += ", " + dias[i];
+            }
+        }
+        
+        return diasTrabajo;
+    }
     
     /**
      * Cierra la ventana si el usuario lo confirma

@@ -139,7 +139,6 @@ public class FXML_ActualizarExpedienteController implements Initializable {
         }
     }
 
-
     /**
      * Maneja el evento del botón "Aceptar".
      * Valida las horas a agregar y actualiza la información del expediente.
@@ -169,7 +168,15 @@ public class FXML_ActualizarExpedienteController implements Initializable {
                 return;
             }
 
-            int nuevasHoras = expedienteActual.getHorasAcumuladas() + horasAgregar;
+            int horasActuales = expedienteActual.getHorasAcumuladas();
+            int nuevasHoras = horasActuales + horasAgregar;
+
+            if (nuevasHoras > 420) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Límite excedido", 
+                    "No puedes exceder las 420 horas acumuladas. Actualmente tienes " + horasActuales + " horas.");
+                return;
+            }
+
             String evaluacionPresentacion = cbEvaluacionPresentacion.getValue();
             String evaluacionOV = cbEvaluacionOV.getValue();
             String estado = cbEstado.getValue();
@@ -206,7 +213,6 @@ public class FXML_ActualizarExpedienteController implements Initializable {
             cerrarVentana();
         }
     }
-
 
     /**
      * Cierra la ventana actual.

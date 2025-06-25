@@ -19,6 +19,7 @@ public class Proyecto {
     private String descripcion;
     private String fechaInicio;
     private String fechaFin;
+    private String diasTrabajo;
     private String horaEntrada;
     private String horaSalida;
     private int cantidadEstudiantesParticipantes;
@@ -67,14 +68,15 @@ public class Proyecto {
         this.estudiantesAsignados = estudiantesAsignados;
     }
 
-    //Constructor alterno para la creación de objetos de tipo Proyecto
-    public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, String descripcion) {
+    // Constructor alterno para la creación de objetos de tipo Proyecto
+    public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, String diasTrabajo, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, String descripcion) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;
         this.idOrganizacionVinculada = idOrganizacionVinculada;
         this.idResponsableProyecto = idResponsableProyecto;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.diasTrabajo = diasTrabajo;
         this.horaEntrada = horaEntrada;
         this.horaSalida = horaSalida;
         this.cantidadEstudiantesParticipantes = cantidadEstudiantesParticipantes;
@@ -191,5 +193,12 @@ public class Proyecto {
 
     public void setIdEstudiante(Integer idEstudiante) {
         this.idEstudiante = idEstudiante;
+    }
+    public String getDiasTrabajo() {
+        return diasTrabajo;
+    }
+
+    public void setDiasTrabajo(String diasTrabajo) {
+        this.diasTrabajo = diasTrabajo;
     }
 }

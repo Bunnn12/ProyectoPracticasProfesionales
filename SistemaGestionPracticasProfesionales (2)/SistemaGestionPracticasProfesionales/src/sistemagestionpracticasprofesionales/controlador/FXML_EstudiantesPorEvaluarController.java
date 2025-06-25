@@ -129,14 +129,15 @@ public class FXML_EstudiantesPorEvaluarController implements Initializable {
         }
         
         try {
+            Utilidad.cerrarVentanaActual(tvEstudiantes);
             Stage escenarioEvaluar = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_EvaluarEstudiante.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_EvaluarPresentacion.fxml"));
             Parent vista = loader.load();
-            FXML_EvaluarEstudianteController controlador = loader.getController();
+            FXML_EvaluarPresentacionController controlador = loader.getController();
             controlador.inicializarDatos(seleccionado);
             Scene escena = new Scene(vista);
             escenarioEvaluar.setScene(escena);
-            escenarioEvaluar.setTitle("Evaluar estudiante");
+            escenarioEvaluar.setTitle("Evaluar presentación de estudiante");
             escenarioEvaluar.initModality(Modality.APPLICATION_MODAL);
             escenarioEvaluar.showAndWait();
         } catch (IOException e) {

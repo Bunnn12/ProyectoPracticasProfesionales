@@ -93,5 +93,10 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
+      <Label fx:id="lbErrorOV" layoutX="404.0" layoutY="633.0" prefHeight="17.0" prefWidth="221.0" textFill="#d31414">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

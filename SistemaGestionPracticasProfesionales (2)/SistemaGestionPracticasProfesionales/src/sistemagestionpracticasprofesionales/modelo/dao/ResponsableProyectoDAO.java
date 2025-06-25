@@ -149,4 +149,41 @@ public class ResponsableProyectoDAO {
         responsableProyecto.setNombreOrganizacionVinculada(resultado.getString("organizacionVinculada"));
         return responsableProyecto;
     }
+    /**
+ * Actualiza los datos de un responsable de proyecto en la base de datos.
+ *
+ * @param responsable Objeto con los nuevos datos del responsable.
+ * @return Objeto ResultadoOperacion indicando el estado de la operación.
+ * @throws SQLException Si ocurre un error en la base de datos.
+ */
+public static ResultadoOperacion actualizarResponsableProyecto(ResponsableProyecto responsable) throws SQLException {
+    ResultadoOperacion resultado = new ResultadoOperacion();
+    Connection conexionBD = Conexion.abrirConexion();
+    if (conexionBD != null) {
+        String consulta = "UPDATE responsableProyecto " +
+                          "SET correo = ?, telefono = ?, idOrganizacionVinculada = ? " +
+                          "WHERE idResponsableProyecto = ?;";
+        PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+        sentencia.setString(1, responsable.getCorreo());
+        sentencia.setString(2, responsable.getTelefono());
+        sentencia.setInt(3, responsable.getIdOrganizacionVinculada());
+        sentencia.setInt(4, responsable.getIdResponsable());
+
+        int filasAfectadas = sentencia.executeUpdate();
+        if (filasAfectadas == 1) {
+            resultado.setError(false);
+            resultado.setMensaje("Responsable actualizado correctamente.");
+        } else {
+            resultado.setError(true);
+            resultado.setMensaje("No se pudo actualizar el responsable.");
+        }
+
+        sentencia.close();
+        conexionBD.close();
+    } else {
+        throw new SQLException("Sin conexión con la base de datos.");
+    }
+    return resultado;
+}
+
 }

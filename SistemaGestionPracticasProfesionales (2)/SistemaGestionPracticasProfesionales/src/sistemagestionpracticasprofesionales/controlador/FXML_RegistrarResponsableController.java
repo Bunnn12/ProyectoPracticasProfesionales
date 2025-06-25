@@ -42,6 +42,8 @@ public class FXML_RegistrarResponsableController implements Initializable {
     private Label lbErrorCorreo;
     @FXML
     private Label lbErrorTelefono;
+    @FXML 
+    private Label lbErrorOV;
     @FXML
     private ComboBox<OrganizacionVinculada> cbOrganizacionVinculada;
 
@@ -142,54 +144,47 @@ public class FXML_RegistrarResponsableController implements Initializable {
     * @return true si todos los campos son válidos; false en caso contrario.
     */
    private boolean validarCampos() {
-       String nombre = tfNombreResponsable.getText().trim();
-       String telefono = tfTelefonoResponsable.getText().trim();
-       String correo = tfCorreoResponsable.getText().trim();
-       OrganizacionVinculada organizacion = cbOrganizacionVinculada.getValue();
+    String nombre = tfNombreResponsable.getText().trim();
+    String telefono = tfTelefonoResponsable.getText().trim();
+    String correo = tfCorreoResponsable.getText().trim();
+    OrganizacionVinculada organizacion = cbOrganizacionVinculada.getValue();
 
-       lbErrorCorreo.setText("");
-       lbErrorNombre.setText("");
-       lbErrorTelefono.setText("");
+    boolean esValido = true;
 
-       if (nombre.isEmpty()) {
-           lbErrorNombre.setText("Nombre obligatorio");
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "El nombre es obligatorio.");
-           return false;
-       } 
+    lbErrorNombre.setText("");
+    lbErrorTelefono.setText("");
+    lbErrorCorreo.setText("");
+    lbErrorOV.setText("");
 
-       if (telefono.isEmpty()) {
-           lbErrorTelefono.setText("Teléfono obligatorio");
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "El teléfono es obligatorio.");
-           return false;
-       } else if (!telefono.matches("\\d{1,10}")) {
-           lbErrorTelefono.setText("Teléfono inválido");
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "El teléfono debe tener hasta 10 dígitos numéricos.");
-           return false;
-       }
+    if (nombre.isEmpty()) {
+        lbErrorNombre.setText("Nombre obligatorio");
+        esValido = false;
+    }
 
-       if (correo.isEmpty()) {
-           lbErrorCorreo.setText("Correo obligatorio");
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "El correo es obligatorio.");
-           return false;
-       } else if (!esCorreoValido(correo)) {
-           lbErrorCorreo.setText("Correo inválido");
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "El correo no tiene un formato válido.");
-           return false;
-       }
+    if (telefono.isEmpty()) {
+        lbErrorTelefono.setText("Teléfono obligatorio");
+        esValido = false;
+    } else if (!telefono.matches("\\d{1,10}")) {
+        lbErrorTelefono.setText("Teléfono inválido. Solo 1-10 dígitos.");
+        esValido = false;
+    }
 
-       if (organizacion == null) {
-           Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                   "Error de validación", "Debe seleccionar una organización vinculada.");
-           return false;
-       }
+    if (correo.isEmpty()) {
+        lbErrorCorreo.setText("Correo obligatorio");
+        esValido = false;
+    } else if (!esCorreoValido(correo)) {
+        lbErrorCorreo.setText("Correo no válido");
+        esValido = false;
+    }
 
-       return true;
-   }
+    if (organizacion == null) {
+        lbErrorOV.setText("Debe seleccionar una organización");
+        esValido = false;
+    }
+
+    return esValido;
+}
+
 
 
     /**

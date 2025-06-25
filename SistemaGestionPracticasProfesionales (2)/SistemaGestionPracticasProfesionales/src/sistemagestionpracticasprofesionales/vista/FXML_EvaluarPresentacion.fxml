@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_EvaluarEstudianteController">
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1028.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_EvaluarPresentacionController">
    <children>
       <Label layoutX="365.0" layoutY="55.0" text="Universidad Veracruzana" textFill="#0c2f61">
          <font>
@@ -30,7 +30,7 @@
             <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
          </image>
       </ImageView>
-      <Button contentDisplay="TOP" layoutX="673.0" layoutY="739.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="673.0" layoutY="706.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
@@ -42,7 +42,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="TOP" layoutX="175.0" layoutY="738.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+      <Button contentDisplay="TOP" layoutX="673.0" layoutY="564.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
@@ -54,7 +54,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <TableView fx:id="tvCriterios" layoutX="32.0" layoutY="327.0" prefHeight="389.0" prefWidth="966.0">
+      <TableView fx:id="tvCriterios" layoutX="32.0" layoutY="327.0" prefHeight="177.0" prefWidth="966.0">
          <columns>
             <TableColumn fx:id="colCriterio" prefWidth="243.0" text="Criterio de evaluación" />
             <TableColumn fx:id="colDescripcion" prefWidth="240.0" text="Descripción" />
@@ -96,5 +96,11 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Label>
+      <Label layoutX="36.0" layoutY="518.0" text="Retroalimentación:">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="taRetroalimentacion" layoutX="33.0" layoutY="552.0" prefHeight="242.0" prefWidth="483.0" promptText="Ingrese su retroalimentación" />
    </children>
 </AnchorPane>

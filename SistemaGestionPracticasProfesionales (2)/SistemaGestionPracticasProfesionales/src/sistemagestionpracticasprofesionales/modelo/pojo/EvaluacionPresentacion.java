@@ -11,9 +11,10 @@ package sistemagestionpracticasprofesionales.modelo.pojo;
  * Representa las evaluaciones de las presentaciones de los estudiantes.
  */
 public class EvaluacionPresentacion {
-    int idEvaluacionPresentacion;
-    double puntajeTotalObtenido;
-    int idExpediente;
+    private int idEvaluacionPresentacion;
+    private double puntajeTotalObtenido;
+    private int idExpediente;
+    private String retroalimentacion;
     
     public EvaluacionPresentacion() {
     }
@@ -52,6 +53,13 @@ public class EvaluacionPresentacion {
 
     public void setIdExpediente(int idExpediente) {
         this.idExpediente = idExpediente;
+    }
+    public String getRetroalimentacion() {
+        return retroalimentacion;
+    }
+
+    public void setRetroalimentacion(String retroalimentacion) {
+        this.retroalimentacion = retroalimentacion;
     }
     
 }

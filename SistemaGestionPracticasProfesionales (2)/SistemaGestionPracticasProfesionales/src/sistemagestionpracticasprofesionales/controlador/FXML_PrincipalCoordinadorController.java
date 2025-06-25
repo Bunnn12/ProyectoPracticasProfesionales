@@ -212,7 +212,7 @@ public class FXML_PrincipalCoordinadorController implements Initializable {
     private void clickActualizarResponsable(ActionEvent event) {
         try{
         Stage escenario = new Stage();
-        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaProyecto.fxml"));
+        Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaResponsable.fxml"));
         Scene escena= new Scene(vista);
         escenario.setScene(escena);
         escenario.setTitle("Busqueda proyecto");

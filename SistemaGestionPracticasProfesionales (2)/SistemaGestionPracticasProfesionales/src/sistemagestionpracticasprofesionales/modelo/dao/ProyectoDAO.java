@@ -33,17 +33,18 @@ public class ProyectoDAO {
         ResultadoOperacion resultado = new ResultadoOperacion();
         Connection conexionBD = Conexion.abrirConexion();
         if (conexionBD != null) {
-            String consulta = "INSERT INTO proyecto (nombre, idOrganizacionVinculada, idResponsableProyecto, fechaInicio, fechaFin, horaEntrada, horaSalida, cantidadEstudiantesParticipantes, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement prepararSentencia= conexionBD.prepareStatement(consulta);
+            String consulta = "INSERT INTO proyecto (nombre, idOrganizacionVinculada, idResponsableProyecto, fechaInicio, fechaFin, diasTrabajo, horaEntrada, horaSalida, cantidadEstudiantesParticipantes, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
             prepararSentencia.setString(1, proyecto.getNombre());
             prepararSentencia.setInt(2, proyecto.getIdOrganizacionVinculada());
             prepararSentencia.setInt(3, proyecto.getIdResponsableProyecto());
             prepararSentencia.setString(4, proyecto.getFechaInicio());
             prepararSentencia.setString(5, proyecto.getFechaFin());
-            prepararSentencia.setString(6, proyecto.getHoraEntrada());
-            prepararSentencia.setString(7, proyecto.getHoraSalida());
-            prepararSentencia.setInt(8, proyecto.getCantidadEstudiantesParticipantes());
-            prepararSentencia.setString(9, proyecto.getDescripcion());
+            prepararSentencia.setString(6, proyecto.getDiasTrabajo());
+            prepararSentencia.setString(7, proyecto.getHoraEntrada());
+            prepararSentencia.setString(8, proyecto.getHoraSalida());
+            prepararSentencia.setInt(9, proyecto.getCantidadEstudiantesParticipantes());
+            prepararSentencia.setString(10, proyecto.getDescripcion());
             
             int filasAfectadas = prepararSentencia.executeUpdate();
             if (filasAfectadas == 1){

@@ -148,6 +148,32 @@ public class OrganizacionVinculadaDAO {
 
         return existe;
     }
+    /**
+     * Verifica si ya existe una organización vinculada con el nombre especificado.
+     *
+     * @param nombre Nombre de la organización a verificar.
+     * @return true si ya existe una organización con ese nombre; false en caso contrario.
+     * @throws SQLException Si ocurre un error al acceder a la base de datos.
+    */
+    public static boolean existeOVConNombre(String nombre) throws SQLException {
+        boolean existe = false;
+        String query = "SELECT COUNT(*) FROM organizacionvinculada WHERE nombre = ?";
+
+        try (Connection conexion = Conexion.abrirConexion();
+            PreparedStatement sentencia = conexion.prepareStatement(query)) {
+
+            sentencia.setString(1, nombre);
+            ResultSet resultado = sentencia.executeQuery();
+
+            if (resultado.next()) {
+                existe = resultado.getInt(1) > 0;
+            }
+        }
+
+        return existe;
+    }
+    
+    
 
 
 }
