@@ -8,13 +8,14 @@
 package sistemagestionpracticasprofesionales.modelo.pojo;
 
 import java.sql.Date;
+import sistemagestionpracticasprofesionales.interfaz.IArchivoPDF;
 
 /**
  * Clase que representa un documento anexo dentro de un expediente.
  * Incluye información relevante como nombre, fecha de elaboración,
  * tipo de documento(inicial, final o intermedio), estado y retroalimentación.
  */
-public class DocumentoAnexo {
+public class DocumentoAnexo implements IArchivoPDF {
     private int idDocumentoAnexo;
     private String nombre;
     private Date fechaElaboracion;
@@ -66,6 +67,11 @@ public class DocumentoAnexo {
         this.nombre = nombre;
     }
 
+    @Override
+    public Date getFechaEntrega() {
+        return fechaElaboracion; // campo a la interfaz común
+    }
+    
     public Date getFechaElaboracion() {
         return fechaElaboracion;
     }
@@ -113,4 +119,5 @@ public class DocumentoAnexo {
     public void setRetroalimentacion(String retroalimentacion) {
         this.retroalimentacion = retroalimentacion;
     }
+    
 }

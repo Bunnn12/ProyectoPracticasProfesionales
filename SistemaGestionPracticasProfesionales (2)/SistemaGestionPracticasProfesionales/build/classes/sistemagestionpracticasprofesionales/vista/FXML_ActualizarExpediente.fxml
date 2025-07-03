@@ -62,23 +62,11 @@
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lbEvaluacionPresentacion" layoutX="25.0" layoutY="402.0" text="Evaluacion Presentacion">
+      <Label fx:id="lbEstado" layoutX="68.0" layoutY="420.0" text="Estado">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lbEvaluacionOV" layoutX="42.0" layoutY="441.0" text="Evaluacion OV">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbEstado" layoutX="69.0" layoutY="478.0" text="Estado">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="cbEvaluacionPresentacion" layoutX="261.0" layoutY="397.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbEvaluacionOV" layoutX="261.0" layoutY="436.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbEstado" layoutX="261.0" layoutY="473.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbEstado" layoutX="226.0" layoutY="418.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

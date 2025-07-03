@@ -29,6 +29,7 @@ import sistemagestionpracticasprofesionales.modelo.dao.EvaluacionOvDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.ExpedienteDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.CriterioEvaluacion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
+import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Sesion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
@@ -135,70 +136,75 @@ public class FXML_EvaluarOVController implements Initializable {
      * @param event Evento del clic.
      */
     @FXML
-    private void clickAceptar(ActionEvent event) {
-        if (proyecto == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No hay proyecto seleccionado.");
-            return;
-        }
-
-        // Obtener el idEstudiante responsable (según diseño: idResponsableProyecto)
-        int idEstudiante = Sesion.getEstudianteSeleccionado().getIdEstudiante();
-
-        // Obtener el idExpediente asociado al estudiante
-        int idExpediente = ExpedienteDAO.obtenerIdExpedientePorEstudiante(idEstudiante);
-        if (idExpediente == -1) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se encontró expediente para el estudiante.");
-            return;
-        }
-
-        // Calcular puntaje total, validando que todos estén calificados
-        double puntajeTotal = calcularPuntajeTotal();
-        if (puntajeTotal == -1) {
-            // Ya mostró alerta en calcularPuntajeTotal, solo salir
-            return;
-        }
-
-        // Calcular puntaje máximo y mínimo para aprobar dinámicamente
-        double puntajeMax = criterios.size() * 5; // 5 es máximo por criterio
-        double puntajeMinAprob = puntajeMax * 0.6; // Ejemplo: 60% para aprobar
-
-        String retroalimentacion = taRetroalimentacion.getText().trim();
-
-        // Validación de retroalimentación
-        if (retroalimentacion.isEmpty()) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Retroalimentación requerida", "Debes escribir una retroalimentación.");
-            return;
-        }
-
-        String[] palabras = retroalimentacion.split("\\s+");
-        int cantidadPalabras = palabras.length;
-
-        if (cantidadPalabras < 3) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación insuficiente", "La retroalimentación debe contener al menos 3 palabras.");
-            return;
-        }
-
-        if (cantidadPalabras > 100) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación demasiado larga", "La retroalimentación no debe exceder las 100 palabras.");
-            return;
-        }
-
-
-        // Guardar la evaluación mediante DAO
-        try {
-            boolean exito = EvaluacionOvDAO.guardarEvaluacionOV(puntajeMax, puntajeMinAprob, puntajeTotal, retroalimentacion, idExpediente);
-            if (exito) {
-                ExpedienteDAO.actualizarEstadoEvaluacionOV(idExpediente);
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "Evaluación guardada correctamente.");
-                Utilidad.cerrarVentanaActual(lbNombreProyecto);
-            } else {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo guardar la evaluación.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Error al guardar la evaluación: " + e.getMessage());
-        }
+private void clickAceptar(ActionEvent event) {
+    if (proyecto == null) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No hay proyecto seleccionado.");
+        return;
     }
+
+    int idEstudiante = Sesion.getEstudianteSeleccionado().getIdEstudiante();
+    int idExpediente = ExpedienteDAO.obtenerIdExpedientePorEstudiante(idEstudiante);
+    if (idExpediente == -1) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se encontró expediente para el estudiante.");
+        return;
+    }
+
+    double puntajeTotal = calcularPuntajeTotal();
+    if (puntajeTotal == -1) return;
+
+    double puntajeMax = criterios.size() * 5;
+    double puntajeMinAprob = puntajeMax * 0.6;
+
+    String retroalimentacion = taRetroalimentacion.getText().trim();
+    if (retroalimentacion.isEmpty()) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Retroalimentación requerida", "Debes escribir una retroalimentación.");
+        return;
+    }
+
+    String[] palabras = retroalimentacion.split("\\s+");
+    int cantidadPalabras = palabras.length;
+
+    if (cantidadPalabras < 3) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación insuficiente", "La retroalimentación debe contener al menos 3 palabras.");
+        return;
+    }
+
+    if (cantidadPalabras > 100) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Retroalimentación demasiado larga", "La retroalimentación no debe exceder las 100 palabras.");
+        return;
+    }
+
+    // ✅ Armar el mapa de criterios con sus puntajes
+    Map<Integer, Integer> criteriosPuntaje = new HashMap<>();
+    for (Map.Entry<Integer, ComboBox<Integer>> entry : mapComboPuntajes.entrySet()) {
+        Integer idCriterio = entry.getKey();
+        Integer puntaje = entry.getValue().getValue();
+        criteriosPuntaje.put(idCriterio, puntaje);
+    }
+
+    try {
+        ResultadoOperacion resultado = EvaluacionOvDAO.registrarEvaluacionOV(
+            puntajeMax,
+            puntajeMinAprob,
+            puntajeTotal,
+            retroalimentacion,
+            idEstudiante,
+            criteriosPuntaje
+        );
+
+        if (!resultado.isError()) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", resultado.getMensaje());
+            Utilidad.cerrarVentanaActual(lbNombreProyecto);
+        } else {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", resultado.getMensaje());
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Error al registrar la evaluación: " + e.getMessage());
+    }
+}
+
 
     /**
      * Calcula la suma total de los puntajes ingresados en los ComboBox.

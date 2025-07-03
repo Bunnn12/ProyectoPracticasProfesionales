@@ -195,19 +195,20 @@ public class FXML_InicioSesionEstudianteController implements Initializable {
      * @param event Evento del botón iniciar sesión.
      */
     @FXML
-    private void clickIniciarSesion(ActionEvent event) {
-        String matricula = tfMatricula.getText();
-        String password = pfContrasenia.getText();
+private void clickIniciarSesion(ActionEvent event) {
+    String matricula = tfMatricula.getText();
+    String password = pfContrasenia.getText();
 
-        if (validarCampos(matricula, password)) {
-            String passwordHasheada = hashContrasenia(password);
-            if (passwordHasheada != null) {
-                validarCredenciales(matricula, passwordHasheada);
-            } else {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo procesar la contraseña");
-            }
-        }
+    if (validarCampos(matricula, password)) {
+        // Aquí quitas el hasheo, pasas la contraseña tal cual
+        // String passwordHasheada = hashContrasenia(password);
+        // if (passwordHasheada != null) {
+        //     validarCredenciales(matricula, passwordHasheada);
+        // }
+        validarCredenciales(matricula, password);
     }
+}
+
     
     /**
      * Maneja el evento del botón "No soy estudiante" para cambiar a la pantalla de inicio de sesión de usuario.

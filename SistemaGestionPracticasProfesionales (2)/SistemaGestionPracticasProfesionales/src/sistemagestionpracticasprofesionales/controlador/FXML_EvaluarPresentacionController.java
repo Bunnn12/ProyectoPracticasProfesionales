@@ -197,6 +197,11 @@ public class FXML_EvaluarPresentacionController implements Initializable {
         if (taRetroalimentacion.getText().isEmpty()) {
             Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Retroalimentación requerida", "Debe escribir una retroalimentación.");
             return;
+            
+        }
+        else if (taRetroalimentacion.getLength() < 10) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Retroalimentación inválida", "Debe contener mínimo 10 caracteres.");
+            return;
         }
         
         double promedio = suma / total;
@@ -208,6 +213,7 @@ public class FXML_EvaluarPresentacionController implements Initializable {
             ResultadoOperacion resultado = EvaluacionPresentacionDAO.registrarEvaluacionPresentacion(evaluacion, idEstudiante);
             
             if (!resultado.isError()) {
+                EvaluacionPresentacionDAO.registrarDetallesEvaluacion(evaluacion.getIdEvaluacionPresentacion(), filas);
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Evaluación insertada", resultado.getMensaje());
                 Utilidad.cerrarVentanaActual(tvCriterios);
                 if (observador != null) {
@@ -221,5 +227,6 @@ public class FXML_EvaluarPresentacionController implements Initializable {
         }
         
     }
+    
     
 }

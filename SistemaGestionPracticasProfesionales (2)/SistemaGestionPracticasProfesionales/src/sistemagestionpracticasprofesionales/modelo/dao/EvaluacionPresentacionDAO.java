@@ -8,11 +8,14 @@
 package sistemagestionpracticasprofesionales.modelo.dao;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.List;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.EvaluacionPresentacion;
+import sistemagestionpracticasprofesionales.modelo.pojo.CriterioEvaluacionFila;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 
 /**
@@ -40,8 +43,6 @@ public class EvaluacionPresentacionDAO {
             try {
                 conexionBD.setAutoCommit(false); // Inicia transacción para asegurar que todas las operaciones ocurran o ninguna
                 
-                System.out.println("a");
-                
                 // Obtener idExpediente
                 String consultaExpediente = "SELECT idExpediente FROM expediente WHERE idEstudiante = ?";
                 PreparedStatement prepararSentencia1 = conexionBD.prepareStatement(consultaExpediente);
@@ -56,25 +57,23 @@ public class EvaluacionPresentacionDAO {
                     return resultado;
                 }
                 
-                System.out.println("b");
-                
                 // Insertar evaluación
                 String consulta = "INSERT INTO evaluacionpresentacion (puntajeTotalObtenido, retroalimentacion, idExpediente) VALUES (?, ?, ?);";
-                PreparedStatement prepararSentencia2 = conexionBD.prepareStatement(consulta);
+                PreparedStatement prepararSentencia2 = conexionBD.prepareStatement(consulta, Statement.RETURN_GENERATED_KEYS);
                 prepararSentencia2.setDouble(1, evaluacion.getPuntajeTotalObtenido());
                 prepararSentencia2.setString(2, evaluacion.getRetroalimentacion());
                 prepararSentencia2.setInt(3, evaluacion.getIdExpediente());
                 int filasInsertadas = prepararSentencia2.executeUpdate();
-                
-                System.out.println("c");
+                ResultSet generatedKeys = prepararSentencia2.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    evaluacion.setIdEvaluacionPresentacion(generatedKeys.getInt(1)); // Asigna el ID a tu objeto
+                }
                 
                 // Actualizar expediente
                 String actualizarExpediente = "UPDATE expediente SET evaluacionpresentacion = 'evaluado' WHERE idExpediente = ?;";
                 PreparedStatement prepararSentencia3 = conexionBD.prepareStatement(actualizarExpediente);
                 prepararSentencia3.setInt(1, evaluacion.getIdExpediente());
                 int filasActualizadas = prepararSentencia3.executeUpdate();
-                
-                System.out.println("d");
                 
                 if (filasInsertadas == 1 && filasActualizadas == 1) {
                     conexionBD.commit();
@@ -85,8 +84,6 @@ public class EvaluacionPresentacionDAO {
                     resultado.setError(true);
                     resultado.setMensaje("No se pudo registrar la evaluación.");
                 }
-                
-                System.out.println("e");
                 
                 rs.close();
                 prepararSentencia1.close();
@@ -101,5 +98,22 @@ public class EvaluacionPresentacionDAO {
             throw new SQLException("Sin conexion con la base de datos");
         }
         return resultado;
+    }
+    
+    public static void registrarDetallesEvaluacion(int idEvaluacionPresentacion, List<CriterioEvaluacionFila> criterios) throws SQLException {
+        Connection conexionBD = Conexion.abrirConexion();
+        String consulta = "INSERT INTO detalleevaluacionpresentacion (idEvaluacionPresentacion, idCriterio, puntajeObtenido) VALUES (?, ?, ?)";
+        PreparedStatement ps = conexionBD.prepareStatement(consulta);
+
+        for (CriterioEvaluacionFila fila : criterios) {
+            ps.setInt(1, idEvaluacionPresentacion);
+            ps.setInt(2, fila.getIdCriterio());
+            ps.setDouble(3, fila.getCalificacionSeleccionada());
+            ps.addBatch();
+        }
+
+        ps.executeBatch();
+        ps.close();
+        conexionBD.close();
     }
 }

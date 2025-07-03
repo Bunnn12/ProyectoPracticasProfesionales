@@ -447,6 +447,17 @@ public class ExpedienteDAO {
             return ps.executeUpdate() > 0;
         }
     }
+    
+    public static boolean actualizarEstadoExpediente(int idExpediente, String estado) throws SQLException {
+    String sql = "UPDATE expediente SET estado = ? WHERE idExpediente = ?";
+    try (Connection conn = Conexion.abrirConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, estado);
+        ps.setInt(2, idExpediente);
+        return ps.executeUpdate() > 0;
+    }
+}
+
     /**
      * Obtiene un objeto ExpedienteCompleto a partir del id del expediente.
      * Realiza una consulta SQL para obtener los datos del expediente junto con
@@ -602,6 +613,36 @@ public class ExpedienteDAO {
         } catch (SQLException e) {
             System.err.println("Error al actualizar estado de evaluación OV: " + e.getMessage());
         }
+    }
+    
+    public static ArrayList<DocumentoAnexo> obtenerDocumentosInicialesPorEstudiante(int idEstudiante) throws SQLException {
+        ArrayList<DocumentoAnexo> documentos = new ArrayList<>();
+        Connection conexionBD = Conexion.abrirConexion();
+
+        if (conexionBD != null) {
+            String consulta = "SELECT d.idDocumentoAnexo, d.fechaElaboracion, d.tipo, d.idExpediente, d.nombre, d.archivo, d.estado " +
+                              "FROM documento d " +
+                              "JOIN expediente e ON d.idExpediente = e.idExpediente " +
+                              "WHERE e.idEstudiante = ?";
+
+            PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+            sentencia.setInt(1, idEstudiante);
+
+            ResultSet resultado = sentencia.executeQuery();
+
+            while (resultado.next()) {
+                DocumentoAnexo documento = convertirRegistroDocumento(resultado);
+                documentos.add(documento);
+            }
+
+            resultado.close();
+            sentencia.close();
+            conexionBD.close();
+        } else {
+            throw new SQLException("Sin conexión con la base de datos");
+        }
+
+        return documentos;
     }
 
 

@@ -21,7 +21,7 @@
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>
       </Label>
-      <Button contentDisplay="TOP" layoutX="447.0" layoutY="169.0" mnemonicParsing="false" onAction="#clickBuscar" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #0c2f61;" text="Buscar" textFill="WHITE">
+      <Button contentDisplay="TOP" defaultButton="true" layoutX="447.0" layoutY="169.0" mnemonicParsing="false" onAction="#clickBuscar" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #0c2f61;" text="Buscar" textFill="WHITE">
          <font>
             <Font name="Arial Rounded MT Bold" size="13.0" />
          </font>

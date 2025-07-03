@@ -12,6 +12,7 @@ package sistemagestionpracticasprofesionales.controlador;
 import java.io.IOException;
 import sistemagestionpracticasprofesionales.modelo.pojo.Estudiante;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,8 @@ import sistemagestionpracticasprofesionales.SistemaGestionPracticasProfesionales
 import sistemagestionpracticasprofesionales.modelo.dao.EntregaDocumentoDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.EstudianteDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.EvaluacionOvDAO;
+import sistemagestionpracticasprofesionales.modelo.dao.ProyectoDAO;
+import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 /**
@@ -144,32 +147,47 @@ public class FXML_PrincipalEstudianteController implements Initializable {
     * 
     * @param event El evento de acción generado por el clic en el botón.
     */
+    
     @FXML
-    private void clickEvaluarOV(ActionEvent event) {
-        String estadoEvaluacion = EvaluacionOvDAO.obtenerEstadoEvaluacionOV(estudianteSesion.getIdEstudiante());
+private void clickEvaluarOV(ActionEvent event) {
+    String estadoEvaluacion = EvaluacionOvDAO.obtenerEstadoEvaluacionOV(estudianteSesion.getIdEstudiante());
 
-        if (estadoEvaluacion == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Si no tienes tu expediente creado, no puedes implementar esta opción, lo sentimos :(");
-            return;
-        }
-
-        if (!estadoEvaluacion.equalsIgnoreCase("sin realizar")) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Evaluación ya realizada",
-                "Ya has realizado la evaluación de la organización vinculada y no puedes volver a evaluarla");
-            return;
-        }
-        try {
-            Stage escenario = new Stage();
-            Parent vista = FXMLLoader.load(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_BusquedaOV.fxml"));
-            Scene escena = new Scene(vista);
-            escenario.setScene(escena);
-            escenario.setTitle("Evaluar ov- Busqueda OV");
-            escenario.initModality(Modality.APPLICATION_MODAL);
-            escenario.showAndWait();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    if (estadoEvaluacion == null) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Si no tienes tu expediente creado, no puedes implementar esta opción, lo sentimos :(");
+        return;
     }
+
+    if (!estadoEvaluacion.equalsIgnoreCase("sin realizar")) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Evaluación ya realizada",
+            "Ya has realizado la evaluación de la organización vinculada y no puedes volver a evaluarla");
+        return;
+    }
+
+    try {
+        Proyecto proyecto = ProyectoDAO.obtenerProyectoPorEstudiante(estudianteSesion.getIdEstudiante());
+
+        if (proyecto == null) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo obtener el proyecto asignado.");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(SistemaGestionPracticasProfesionales.class.getResource("vista/FXML_EvaluarOV.fxml"));
+        Parent vista = loader.load();
+
+        FXML_EvaluarOVController controlador = loader.getController();
+        controlador.inicializarDatos(proyecto); 
+
+        Stage escenario = new Stage();
+        escenario.setScene(new Scene(vista));
+        escenario.setTitle("Evaluar Organización Vinculada");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
+
+    } catch (IOException | SQLException e) {
+        e.printStackTrace();
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de evaluación.");
+    }
+}
 
     
 }

@@ -6,6 +6,7 @@
  * con detalles como fecha de entrega, horas trabajadas, archivo adjunto y estado.
  */
 package sistemagestionpracticasprofesionales.modelo.pojo;
+import sistemagestionpracticasprofesionales.interfaz.IArchivoPDF;
 
 import java.sql.Date;
 
@@ -13,7 +14,7 @@ import java.sql.Date;
  * Representa un reporte relacionado con un expediente dentro del sistema
  * de gestión de prácticas profesionales.
  */
-public class Reporte {
+public class Reporte implements IArchivoPDF {
     private int idReporte;
     private Date fechaEntrega;
     private int numeroHorasTrabajadas;
@@ -42,7 +43,6 @@ public class Reporte {
         this.archivo = archivo;
         this.estado = estado;
     }
-
 
     public Reporte() {
     }

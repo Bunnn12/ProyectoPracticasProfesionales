@@ -165,7 +165,7 @@ public class FXML_RegistrarResponsableController implements Initializable {
         lbErrorTelefono.setText("Teléfono obligatorio");
         esValido = false;
     } else if (!telefono.matches("\\d{1,10}")) {
-        lbErrorTelefono.setText("Teléfono inválido. Solo 1-10 dígitos.");
+        lbErrorTelefono.setText("Teléfono inválido, solo 10 .");
         esValido = false;
     }
 

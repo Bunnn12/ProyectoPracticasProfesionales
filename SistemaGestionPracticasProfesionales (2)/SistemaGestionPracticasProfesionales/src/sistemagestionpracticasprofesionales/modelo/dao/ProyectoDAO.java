@@ -297,6 +297,91 @@ public class ProyectoDAO {
 
         return pertenece;
     }
+    public static ArrayList<Proyecto> obtenerProyectosPorEstudiante(int idEstudiante) throws SQLException {
+    ArrayList<Proyecto> proyectos = new ArrayList<>();
+    Connection conexionBD = Conexion.abrirConexion();
+
+    if (conexionBD != null) {
+        String consulta = "SELECT p.idProyecto, p.nombre, p.descripcion, p.fechaInicio, p.fechaFin, " +
+                          "p.horaEntrada, p.horaSalida, p.idOrganizacionVinculada, p.idResponsableProyecto, " +
+                          "p.cantidadEstudiantesParticipantes, " +
+                          "rp.nombre AS nombreResponsable, ov.nombre AS nombreOrganizacion, " +
+                          "IFNULL(a.estudiantesAsignados, 0) AS estudiantesAsignados " +
+                          "FROM proyecto p " +
+                          "JOIN asignacion asi ON p.idProyecto = asi.idProyecto " +
+                          "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto " +
+                          "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                          "LEFT JOIN ( " +
+                          "    SELECT idProyecto, COUNT(*) AS estudiantesAsignados " +
+                          "    FROM asignacion " +
+                          "    GROUP BY idProyecto " +
+                          ") a ON p.idProyecto = a.idProyecto " +
+                          "WHERE asi.idEstudiante = ?";
+
+        PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+        sentencia.setInt(1, idEstudiante);
+        ResultSet resultado = sentencia.executeQuery();
+
+        while (resultado.next()) {
+            proyectos.add(convertirRegistroProyecto(resultado));
+        }
+
+        resultado.close();
+        sentencia.close();
+        conexionBD.close();
+    } else {
+        throw new SQLException("Sin conexión con la base de datos");
+    }
+
+    return proyectos;
+}
+/**
+ * Obtiene el proyecto asignado a un estudiante, incluyendo información 
+ * de la organización vinculada y el responsable.
+ * 
+ * @param idEstudiante ID del estudiante autenticado en sesión.
+ * @return Proyecto asignado al estudiante o {@code null} si no se encontró.
+ * @throws SQLException Si hay problemas al conectar o consultar la base de datos.
+ */
+public static Proyecto obtenerProyectoPorEstudiante(int idEstudiante) throws SQLException {
+    Proyecto proyecto = null;
+    Connection conexionBD = Conexion.abrirConexion();
+
+    if (conexionBD != null) {
+        String consulta = "SELECT p.idProyecto, p.nombre, p.descripcion, p.fechaInicio, p.fechaFin, " +
+                          "p.horaEntrada, p.horaSalida, p.idOrganizacionVinculada, p.idResponsableProyecto, " +
+                          "p.cantidadEstudiantesParticipantes, " +
+                          "ov.nombre AS nombreOrganizacion, rp.nombre AS nombreResponsable, " +
+                          "IFNULL(a.estudiantesAsignados, 0) AS estudiantesAsignados " +
+                          "FROM proyecto p " +
+                          "JOIN asignacion asi ON p.idProyecto = asi.idProyecto " +
+                          "JOIN organizacionVinculada ov ON p.idOrganizacionVinculada = ov.idOrganizacionVinculada " +
+                          "JOIN responsableProyecto rp ON p.idResponsableProyecto = rp.idResponsableProyecto " +
+                          "LEFT JOIN ( " +
+                          "    SELECT idProyecto, COUNT(*) AS estudiantesAsignados " +
+                          "    FROM asignacion " +
+                          "    GROUP BY idProyecto " +
+                          ") a ON p.idProyecto = a.idProyecto " +
+                          "WHERE asi.idEstudiante = ? LIMIT 1";
+
+        PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+        sentencia.setInt(1, idEstudiante);
+        ResultSet resultado = sentencia.executeQuery();
+
+        if (resultado.next()) {
+            proyecto = convertirRegistroProyecto(resultado);
+        }
+
+        resultado.close();
+        sentencia.close();
+        conexionBD.close();
+    } else {
+        throw new SQLException("Sin conexión con la base de datos");
+    }
+
+    return proyecto;
+}
+
 
 }
 

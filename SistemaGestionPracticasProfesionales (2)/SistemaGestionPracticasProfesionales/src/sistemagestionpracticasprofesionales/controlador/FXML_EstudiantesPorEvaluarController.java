@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -120,31 +121,42 @@ public class FXML_EstudiantesPorEvaluarController implements Initializable {
      * @param event Evento del botón aceptar.
      */
     @FXML
-    private void clickAceptar(ActionEvent event) {
-        Estudiante seleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
-    
-        if (seleccionado == null) {
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin selección", "Debes seleccionar un estudiante antes de continuar.");
-            return;
-        }
-        
-        try {
-            Utilidad.cerrarVentanaActual(tvEstudiantes);
-            Stage escenarioEvaluar = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_EvaluarPresentacion.fxml"));
-            Parent vista = loader.load();
-            FXML_EvaluarPresentacionController controlador = loader.getController();
-            controlador.inicializarDatos(seleccionado);
-            Scene escena = new Scene(vista);
-            escenarioEvaluar.setScene(escena);
-            escenarioEvaluar.setTitle("Evaluar presentación de estudiante");
-            escenarioEvaluar.initModality(Modality.APPLICATION_MODAL);
-            escenarioEvaluar.showAndWait();
-        } catch (IOException e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);
-            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana para evaluar estudiante");
-        }
+private void clickAceptar(ActionEvent event) {
+    Estudiante seleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
+
+    if (seleccionado == null) {
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.WARNING, "Sin selección", "Debes seleccionar un estudiante antes de continuar.");
+        return;
     }
+
+    try {
+        Utilidad.cerrarVentanaActual(tvEstudiantes);
+
+        Stage escenarioEvaluar = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_EvaluarPresentacion.fxml"));
+        Parent vista = loader.load();
+        FXML_EvaluarPresentacionController controlador = loader.getController();
+
+        Scene escena = new Scene(vista);
+        escenarioEvaluar.setScene(escena);
+        escenarioEvaluar.setTitle("Evaluar presentación de estudiante");
+        escenarioEvaluar.initModality(Modality.APPLICATION_MODAL);
+
+        // Mostrar la ventana primero
+        escenarioEvaluar.show();
+
+        // Cargar los datos después y forzar repintado
+        Platform.runLater(() -> {
+            controlador.inicializarDatos(seleccionado);
+            vista.requestLayout();
+        });
+
+    } catch (IOException e) {
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);
+        Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana para evaluar estudiante");
+    }
+}
+
 
     /**
      * Busca un estudiante en la tabla que coincida con la matricula especificada.

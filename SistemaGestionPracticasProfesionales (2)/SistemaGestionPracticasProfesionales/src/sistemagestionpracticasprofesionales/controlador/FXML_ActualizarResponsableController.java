@@ -1,54 +1,33 @@
-/**
- * Nombre del archivo: FXML_ActualizarResponsableController.java
- * Autor: Juan Pablo Silva Miranda
- * Fecha: 17/06/2025
- * Descripción: Controlador JavaFX encargado de gestionar la informacion del responsable y modificarla 
- */
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import sistemagestionpracticasprofesionales.modelo.dao.OrganizacionVinculadaDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;
-import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResponsableProyecto;
 import sistemagestionpracticasprofesionales.modelo.pojo.ResultadoOperacion;
 import sistemagestionpracticasprofesionales.utilidades.Utilidad;
 
 public class FXML_ActualizarResponsableController implements Initializable {
 
-    @FXML
-    private TextField tfCorreoResponsable;
-    @FXML
-    private TextField tfTelefonoResponsable;
-    @FXML
-    private Label Nombre;
-    @FXML
-    private Label lbErrorNombre;
-    @FXML
-    private Label lbErrorCorreo;
-    @FXML
-    private Label lbErrorTelefono;
-    @FXML
-    private Label lbErrorOV;
-    @FXML
-    private ComboBox<OrganizacionVinculada> cbOrganizacionVinculada;
+    @FXML private TextField tfCorreoResponsable;
+    @FXML private TextField tfTelefonoResponsable;
+    @FXML private Label Nombre;
+    @FXML private Label lbErrorNombre;
+    @FXML private Label lbErrorCorreo;
+    @FXML private Label lbErrorTelefono;
 
     private ResponsableProyecto responsable;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // No requiere carga de datos al inicio
     }
 
     public void inicializarCampos(ResponsableProyecto responsable) {
@@ -58,54 +37,41 @@ public class FXML_ActualizarResponsableController implements Initializable {
         tfTelefonoResponsable.setText(responsable.getTelefono());
     }
 
-    @FXML
-    private void clickAceptar(ActionEvent event) {
-        lbErrorCorreo.setText("");
-        lbErrorTelefono.setText("");
-        lbErrorOV.setText("");
+   @FXML
+private void clickAceptar(ActionEvent event) {
+    if (!validarCampos()) return;
 
-        String nuevoCorreo = tfCorreoResponsable.getText().trim();
-        String nuevoTelefono = tfTelefonoResponsable.getText().trim();
-        OrganizacionVinculada seleccionada = cbOrganizacionVinculada.getValue();
+    String nuevoCorreo = tfCorreoResponsable.getText().trim();
+    String nuevoTelefono = tfTelefonoResponsable.getText().trim();
 
-        boolean esValido = true;
-
-        if (!nuevoCorreo.isEmpty() && !esCorreoValido(nuevoCorreo)) {
-            lbErrorCorreo.setText("Correo no válido");
-            esValido = false;
-        }
-
-        if (!nuevoTelefono.isEmpty() && !nuevoTelefono.matches("\\d{1,10}")) {
-            lbErrorTelefono.setText("Teléfono inválido. Solo 1-10 dígitos");
-            esValido = false;
-        }
-
-        if (!esValido) return;
-
-        // Solo se actualizan los campos modificados
-        if (!nuevoCorreo.isEmpty()) {
-            responsable.setCorreo(nuevoCorreo);
-        }
-        if (!nuevoTelefono.isEmpty()) {
-            responsable.setTelefono(nuevoTelefono);
-        }
-
-        try {
-            ResultadoOperacion resultado = ResponsableProyectoDAO.actualizarResponsableProyecto(responsable);
-            if (!resultado.isError()) {
-                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
-                        "Actualización exitosa", "Responsable actualizado correctamente");
-                Utilidad.cerrarVentanaActual(tfCorreoResponsable);
-            } else {
-                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                        "Error", resultado.getMensaje());
-            }
-        } catch (SQLException e) {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Error de BD", "No se pudo actualizar el responsable");
-            e.printStackTrace();
-        }
+    // Verifica si no hay cambios
+    if (nuevoCorreo.equals(responsable.getCorreo()) &&
+        nuevoTelefono.equals(responsable.getTelefono())) {
+        Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.WARNING,
+                "Sin cambios", "No has realizado ningún cambio.");
+        return;
     }
+
+    // Aplica cambios solo si son distintos
+    responsable.setCorreo(nuevoCorreo);
+    responsable.setTelefono(nuevoTelefono);
+
+    try {
+        ResultadoOperacion resultado = ResponsableProyectoDAO.actualizarResponsableProyecto(responsable);
+        if (!resultado.isError()) {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
+                    "Actualización exitosa", "Responsable actualizado correctamente");
+            Utilidad.cerrarVentanaActual(tfCorreoResponsable);
+        } else {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                    "Error", resultado.getMensaje());
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                "Error de BD", "No se pudo actualizar el responsable.");
+    }
+}
 
     @FXML
     private void clickCancelar(ActionEvent event) {
@@ -114,6 +80,38 @@ public class FXML_ActualizarResponsableController implements Initializable {
             Utilidad.cerrarVentanaActual(tfCorreoResponsable);
         }
     }
+
+    private boolean validarCampos() {
+    String correo = tfCorreoResponsable.getText().trim();
+    String telefono = tfTelefonoResponsable.getText().trim();
+
+    lbErrorCorreo.setText("");
+    lbErrorTelefono.setText("");
+
+    // Color rojo en los labels de error
+    lbErrorCorreo.setStyle("-fx-text-fill: red;");
+    lbErrorTelefono.setStyle("-fx-text-fill: red;");
+
+    boolean esValido = true;
+
+    if (correo.isEmpty()) {
+        lbErrorCorreo.setText("Correo obligatorio");
+        esValido = false;
+    } else if (!esCorreoValido(correo)) {
+        lbErrorCorreo.setText("Correo no válido");
+        esValido = false;
+    }
+
+    if (telefono.isEmpty()) {
+        lbErrorTelefono.setText("Teléfono obligatorio");
+        esValido = false;
+    } else if (!telefono.matches("\\d{10}")) {
+        lbErrorTelefono.setText("Teléfono inválido.");
+        esValido = false;
+    }
+
+    return esValido;
+}
 
     private boolean esCorreoValido(String correo) {
         String patronCorreo = "^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$";

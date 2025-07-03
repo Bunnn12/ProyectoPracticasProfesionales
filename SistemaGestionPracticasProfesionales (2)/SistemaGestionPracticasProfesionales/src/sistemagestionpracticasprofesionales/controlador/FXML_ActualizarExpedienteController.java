@@ -42,8 +42,6 @@ public class FXML_ActualizarExpedienteController implements Initializable {
     @FXML private Label lbEvaluacionPresentacion;
     @FXML private Label lbEvaluacionOV;
     @FXML private Label lbEstado;
-    @FXML private ComboBox<String> cbEvaluacionPresentacion;
-    @FXML private ComboBox<String> cbEvaluacionOV;
     @FXML private ComboBox<String> cbEstado;
 
     private Expediente expedienteActual;
@@ -66,13 +64,7 @@ public class FXML_ActualizarExpedienteController implements Initializable {
         lbProyecto.setText("Proyecto:");
         lbHoras.setText("Horas:");
         lbHorasAgregar.setText("Agregar Horas:");
-
-        cbEvaluacionPresentacion.getItems().addAll("Evaluado", "Sin evaluar");
-        cbEvaluacionOV.getItems().addAll("Realizada", "Sin realizar");
-        cbEstado.getItems().addAll("En progreso", "Concluido", "Baja");
-
-        cbEvaluacionPresentacion.setValue("Sin evaluar");
-        cbEvaluacionOV.setValue("Sin realizar");
+        cbEstado.getItems().addAll("En progreso", "Concluido");
         cbEstado.setValue("En progreso");
 
         dpFechaInicio.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
@@ -124,9 +116,6 @@ public class FXML_ActualizarExpedienteController implements Initializable {
                 }
 
                 lbHoras.setText("Horas: " + expedienteActual.getHorasAcumuladas());
-
-                cbEvaluacionPresentacion.setValue(expedienteCompletoActual.getEvaluacionPresentacion());
-                cbEvaluacionOV.setValue(expedienteCompletoActual.getEvaluacionOV());
                 cbEstado.setValue(expedienteActual.getEstado());
 
             } else {
@@ -176,18 +165,16 @@ public class FXML_ActualizarExpedienteController implements Initializable {
                     "No puedes exceder las 420 horas acumuladas. Actualmente tienes " + horasActuales + " horas.");
                 return;
             }
-
-            String evaluacionPresentacion = cbEvaluacionPresentacion.getValue();
-            String evaluacionOV = cbEvaluacionOV.getValue();
             String estado = cbEstado.getValue();
 
             boolean horasActualizadas = ExpedienteDAO.actualizarHorasExpediente(
                 expedienteActual.getIdExpediente(), nuevasHoras);
 
-            boolean datosActualizados = ExpedienteDAO.actualizarEvaluacionesYEstado(
-                expedienteActual.getIdExpediente(), evaluacionPresentacion, evaluacionOV, estado);
+            boolean estadoActualizado = ExpedienteDAO.actualizarEstadoExpediente(
+            expedienteActual.getIdExpediente(), estado);
 
-            if (horasActualizadas && datosActualizados) {
+
+            if (horasActualizadas && estadoActualizado) {
                 Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Éxito", "Expediente actualizado correctamente.");
                 cerrarVentana();
             } else {
