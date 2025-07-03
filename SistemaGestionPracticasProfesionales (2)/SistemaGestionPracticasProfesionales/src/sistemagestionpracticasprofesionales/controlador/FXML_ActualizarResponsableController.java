@@ -1,3 +1,9 @@
+/**
+ * Nombre del archivo: FXML_ActualizarResponsableController.java
+ * Autor: Juan Pablo Silva Miranda
+ * Fecha: 17/06/2025
+ * Descripción: Controlador JavaFX encargado de gestionar la informacion del responsable y modificarla 
+ */
 package sistemagestionpracticasprofesionales.controlador;
 
 import java.net.URL;
