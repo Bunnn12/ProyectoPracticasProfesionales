@@ -69,16 +69,13 @@ public class Proyecto {
     }
 
     // Constructor alterno para la creación de objetos de tipo Proyecto
-    public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, String diasTrabajo, String horaEntrada, String horaSalida, int cantidadEstudiantesParticipantes, String descripcion) {
+    public Proyecto(int idProyecto, String nombre, int idOrganizacionVinculada, int idResponsableProyecto, String fechaInicio, String fechaFin, int cantidadEstudiantesParticipantes, String descripcion) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;
         this.idOrganizacionVinculada = idOrganizacionVinculada;
         this.idResponsableProyecto = idResponsableProyecto;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.diasTrabajo = diasTrabajo;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
         this.cantidadEstudiantesParticipantes = cantidadEstudiantesParticipantes;
         this.descripcion = descripcion;
     }

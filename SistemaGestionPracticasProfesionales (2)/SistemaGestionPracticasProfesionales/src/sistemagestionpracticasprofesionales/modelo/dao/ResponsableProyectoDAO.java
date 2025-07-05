@@ -185,5 +185,63 @@ public static ResultadoOperacion actualizarResponsableProyecto(ResponsableProyec
     }
     return resultado;
 }
+public static boolean existeResponsablePorCorreoOTelefono(String correo, String telefono) throws SQLException {
+    boolean existe = false;
+    Connection conexionBD = Conexion.abrirConexion();
+    if (conexionBD != null) {
+        String consulta = "SELECT COUNT(*) AS total FROM responsableProyecto WHERE correo = ? OR telefono = ?";
+        PreparedStatement sentencia = conexionBD.prepareStatement(consulta);
+        sentencia.setString(1, correo);
+        sentencia.setString(2, telefono);
+        ResultSet resultado = sentencia.executeQuery();
+
+        if (resultado.next()) {
+            existe = resultado.getInt("total") > 0;
+        }
+
+        resultado.close();
+        sentencia.close();
+        conexionBD.close();
+    } else {
+        throw new SQLException("Sin conexión con la base de datos.");
+    }
+    return existe;
+}
+public static boolean existeResponsablePorCorreo(String correo) throws SQLException {
+    Connection conexion = Conexion.abrirConexion();
+    boolean existe = false;
+    if (conexion != null) {
+        String query = "SELECT COUNT(*) FROM responsableProyecto WHERE correo = ?";
+        PreparedStatement ps = conexion.prepareStatement(query);
+        ps.setString(1, correo);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            existe = rs.getInt(1) > 0;
+        }
+        rs.close();
+        ps.close();
+        conexion.close();
+    }
+    return existe;
+}
+
+public static boolean existeResponsablePorTelefono(String telefono) throws SQLException {
+    Connection conexion = Conexion.abrirConexion();
+    boolean existe = false;
+    if (conexion != null) {
+        String query = "SELECT COUNT(*) FROM responsableProyecto WHERE telefono = ?";
+        PreparedStatement ps = conexion.prepareStatement(query);
+        ps.setString(1, telefono);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            existe = rs.getInt(1) > 0;
+        }
+        rs.close();
+        ps.close();
+        conexion.close();
+    }
+    return existe;
+}
+
 
 }

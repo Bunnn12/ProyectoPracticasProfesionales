@@ -7,6 +7,7 @@
  */
 package sistemagestionpracticasprofesionales.controlador;
 
+import java.io.IOException;
 import sistemagestionpracticasprofesionales.modelo.dao.ProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
 import sistemagestionpracticasprofesionales.modelo.dao.OrganizacionVinculadaDAO;
@@ -21,13 +22,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Duration;
-import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.util.StringConverter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.CheckBox;
@@ -35,8 +38,9 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -57,20 +61,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
     @FXML
     private DatePicker dpFechaFin;
     @FXML
-    private CheckBox chLunes;
-    @FXML
-    private CheckBox chMartes;
-    @FXML
-    private CheckBox chMiercoles;
-    @FXML
-    private CheckBox chJueves;
-    @FXML
-    private CheckBox chViernes;
-    @FXML
-    private TextField tfHoraEntrada;
-    @FXML
-    private TextField tfHoraSalida;
-    @FXML
     private TextField tfParticipantes;
     @FXML
     private TextField tfDescripcion;
@@ -84,12 +74,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
     private Label lbErrorFechaInicio;
     @FXML
     private Label lbErrorFechaFin;
-    @FXML
-    private Label lbErrorDias;
-    @FXML
-    private Label lbErrorHoraEntrada;
-    @FXML
-    private Label lbErrorHoraSalida;
     @FXML
     private Label lbErrorParticipantes;
     @FXML
@@ -119,28 +103,9 @@ public class FXML_RegistrarProyectoController implements Initializable {
             }
         });
         
-        tfHoraEntrada.setTextFormatter(filtroHora());
-        tfHoraSalida.setTextFormatter(filtroHora());
-        
         tfParticipantes.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 tfParticipantes.setText(oldValue); // Revierte el cambio si no es un número entero
-            }
-        });
-    }
-
-    /**
-     * Aplica una restricción de formato para permitir solo horas válidas
-     * @return 
-     */
-    private TextFormatter<String> filtroHora() {
-        return new TextFormatter<>(cambio -> {
-            String nuevoTexto = cambio.getControlNewText();
-            
-            if (nuevoTexto.matches("[0-9:]*") && nuevoTexto.length() <= 5) {
-                return cambio;
-            } else {
-                return null;
             }
         });
     }
@@ -240,9 +205,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
                 cbListaResponsables.getValue().getIdResponsable(),
                 dpFechaInicio.getValue().toString().trim(),
                 dpFechaFin.getValue().toString().trim(),
-                diasTrabajo(),
-                tfHoraEntrada.getText().trim(),
-                tfHoraSalida.getText().trim(),
                 Integer.parseInt(tfParticipantes.getText().trim()),
                 tfDescripcion.getText().trim()
         );
@@ -251,8 +213,26 @@ public class FXML_RegistrarProyectoController implements Initializable {
             ResultadoOperacion resultado = ProyectoDAO.registrarProyecto(nuevoProyecto);
             
             if (!resultado.isError()) {
-                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION, "Proyecto insertado", resultado.getMensaje());
-                Utilidad.cerrarVentanaActual(cbListaOVs);
+               
+                try {
+                    Stage ventanaActual = (Stage) tfNombreProyecto.getScene().getWindow(); // ← guarda la ventana actual
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistemagestionpracticasprofesionales/vista/FXML_HorarioProyecto.fxml"));
+                    Parent vista = loader.load();
+
+                    FXML_HorarioProyectoController controlador = loader.getController();
+                    controlador.inicializarDatos(nuevoProyecto, ventanaActual); // ← pásale el Stage actual
+
+                    Stage nuevaVentana = new Stage();
+                    nuevaVentana.setScene(new Scene(vista));
+                    nuevaVentana.setTitle("Horario proyecto");
+                    nuevaVentana.initModality(Modality.APPLICATION_MODAL); // o NONE si quieres permitir interacción con otras
+                    nuevaVentana.show();
+                } catch (IOException e) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);
+                    Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana para evaluar estudiante");
+                }
+                
                 if (observador != null) {
                     observador.operacionExitosa("Insertar", nuevoProyecto.getNombre());
                 }
@@ -274,8 +254,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
         ResponsableProyecto responsableSeleccionado = cbListaResponsables.getValue();
         LocalDate fechaInicio = dpFechaInicio.getValue();
         LocalDate fechaFin = dpFechaFin.getValue();
-        String horaEntrada = tfHoraEntrada.getText().trim();
-        String horaSalida = tfHoraSalida.getText().trim();
         String participantes = tfParticipantes.getText().trim();
         String descripcion = tfDescripcion.getText().trim();
 
@@ -284,9 +262,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
         lbErrorResponsable.setText("");
         lbErrorFechaInicio.setText("");
         lbErrorFechaFin.setText("");
-        lbErrorDias.setText("");
-        lbErrorHoraEntrada.setText("");
-        lbErrorHoraSalida.setText("");
         lbErrorParticipantes.setText("");
         lbErrorDescripcion.setText("");
 
@@ -322,79 +297,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
             camposValidos = false;
         }
         
-        boolean ningunDiaSeleccionado = 
-            !chLunes.isSelected() &&
-            !chMartes.isSelected() &&
-            !chMiercoles.isSelected() &&
-            !chJueves.isSelected() &&
-            !chViernes.isSelected();
-        
-        if (ningunDiaSeleccionado) {
-            lbErrorDias.setText("Debe seleccionar al menos un día");
-            camposValidos = false;
-        }
-        
-        int numeroDias = 0;
-        if (chLunes.isSelected()) {
-            numeroDias++;
-        }
-        if (chMartes.isSelected()) {
-            numeroDias++;
-        }
-        if (chMiercoles.isSelected()) {
-            numeroDias++;
-        }
-        if (chJueves.isSelected()) {
-            numeroDias++;
-        }
-        if (chViernes.isSelected()) {
-            numeroDias++;
-        }
-        
-        if (numeroDias > 3) {
-            lbErrorDias.setText("Debe seleccionar máximo tres día");
-        }
-        
-        String patronHora = "(0\\d|1\\d|2[0-3]):[0-5]\\d";
-        
-        if (horaEntrada.isEmpty()) {
-            lbErrorHoraEntrada.setText("Hora obligatoria");
-            camposValidos = false;
-        } else if (!horaEntrada.matches(patronHora)) {
-            lbErrorHoraEntrada.setText("Formato inválido (HH:MM)");
-            camposValidos = false;
-        }
-        
-        if (horaSalida.isEmpty()) {
-            lbErrorHoraSalida.setText("Hora obligatoria");
-            camposValidos = false;
-        } else if (!horaSalida.matches(patronHora)) {
-            lbErrorHoraSalida.setText("Formato inválido (HH:MM)");
-            camposValidos = false;
-        }
-        
-        if (horaEntrada.matches(patronHora) && horaSalida.matches(patronHora)) {
-            try {
-                LocalTime entrada = LocalTime.parse(horaEntrada);
-                LocalTime salida = LocalTime.parse(horaSalida);
-                if (!salida.isAfter(entrada)) {
-                    lbErrorHoraSalida.setText("Hora de salida debe ser posterior a hora de entrada");
-                    camposValidos = false;
-                } else {
-                    Duration duracionDiaria = Duration.between(entrada, salida);
-                    long horasTotales = duracionDiaria.toHours() * numeroDias;
-                    if (horasTotales != 6) {
-                        lbErrorHoraSalida.setText("Deben ser exactamente 6 horas por semana");
-                        camposValidos = false;
-                    }
-                }
-            } catch (DateTimeParseException e) {
-                lbErrorHoraEntrada.setText("Formato de hora inválido");
-                lbErrorHoraSalida.setText("Formato de hora inválido");
-                camposValidos = false;
-            }
-        }
-        
         if (participantes.isEmpty()) {
             lbErrorParticipantes.setText("Número de participantes obligatorio");
             camposValidos = false;
@@ -426,38 +328,6 @@ public class FXML_RegistrarProyectoController implements Initializable {
         }
 
         return camposValidos;
-    }
-
-    private String diasTrabajo() {
-        String diasTrabajo = "";
-        
-        String[] dias = new String[5];
-        if (chLunes.isSelected()) {
-            dias[0] = "lunes";
-        }
-        if (chMartes.isSelected()) {
-            dias[1] = "martes";
-        }
-        if (chMiercoles.isSelected()) {
-            dias[2] = "miercoles";
-        }
-        if (chJueves.isSelected()) {
-            dias[3] = "jueves";
-        }
-        if (chViernes.isSelected()) {
-            dias[4] = "viernes";
-        }
-        
-        for (int i = 0; i < dias.length; i++) {
-            if (dias[i] != null) {
-                if (diasTrabajo == "")
-                    diasTrabajo += dias[i];
-                else
-                    diasTrabajo += ", " + dias[i];
-            }
-        }
-        
-        return diasTrabajo;
     }
     
     /**

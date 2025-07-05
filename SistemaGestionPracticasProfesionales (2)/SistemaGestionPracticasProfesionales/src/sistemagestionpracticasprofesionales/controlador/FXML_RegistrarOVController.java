@@ -170,9 +170,9 @@ public class FXML_RegistrarOVController implements Initializable {
         if (correo.isEmpty()) {
             lbErrorCorreo.setText("Correo obligatorio");
             camposValidos = false;
-        } else if (!correo.matches("^[\\w.-]+@(hotmail|gmail|outlook|yahoo)\\.com$")) {
+        } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.com$")) {
             lbErrorCorreo.setText("Formato de correo inválido");
-            lbErrorCorreoDominio.setText("Solo se permiten correos @hotmail.com, @gmail.com, @outlook.com o @yahoo.com");
+            lbErrorCorreoDominio.setText("Debe terminar en .com");
             camposValidos = false;
         } else {
             try {

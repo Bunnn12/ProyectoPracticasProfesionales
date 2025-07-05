@@ -27,7 +27,7 @@ public class FXML_ActualizarResponsableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // No requiere carga de datos al inicio
+        // No requiere carga inicial
     }
 
     public void inicializarCampos(ResponsableProyecto responsable) {
@@ -37,41 +37,39 @@ public class FXML_ActualizarResponsableController implements Initializable {
         tfTelefonoResponsable.setText(responsable.getTelefono());
     }
 
-   @FXML
-private void clickAceptar(ActionEvent event) {
-    if (!validarCampos()) return;
+    @FXML
+    private void clickAceptar(ActionEvent event) {
+        if (!validarCampos()) return;
 
-    String nuevoCorreo = tfCorreoResponsable.getText().trim();
-    String nuevoTelefono = tfTelefonoResponsable.getText().trim();
+        String nuevoCorreo = tfCorreoResponsable.getText().trim();
+        String nuevoTelefono = tfTelefonoResponsable.getText().trim();
 
-    // Verifica si no hay cambios
-    if (nuevoCorreo.equals(responsable.getCorreo()) &&
-        nuevoTelefono.equals(responsable.getTelefono())) {
-        Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.WARNING,
-                "Sin cambios", "No has realizado ningún cambio.");
-        return;
-    }
-
-    // Aplica cambios solo si son distintos
-    responsable.setCorreo(nuevoCorreo);
-    responsable.setTelefono(nuevoTelefono);
-
-    try {
-        ResultadoOperacion resultado = ResponsableProyectoDAO.actualizarResponsableProyecto(responsable);
-        if (!resultado.isError()) {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
-                    "Actualización exitosa", "Responsable actualizado correctamente");
-            Utilidad.cerrarVentanaActual(tfCorreoResponsable);
-        } else {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Error", resultado.getMensaje());
+        if (nuevoCorreo.equals(responsable.getCorreo()) &&
+            nuevoTelefono.equals(responsable.getTelefono())) {
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.WARNING,
+                    "Sin cambios", "No has realizado ningún cambio.");
+            return;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                "Error de BD", "No se pudo actualizar el responsable.");
+
+        responsable.setCorreo(nuevoCorreo);
+        responsable.setTelefono(nuevoTelefono);
+
+        try {
+            ResultadoOperacion resultado = ResponsableProyectoDAO.actualizarResponsableProyecto(responsable);
+            if (!resultado.isError()) {
+                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
+                        "Actualización exitosa", "Responsable actualizado correctamente");
+                Utilidad.cerrarVentanaActual(tfCorreoResponsable);
+            } else {
+                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                        "Error", resultado.getMensaje());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                    "Error de BD", "No se pudo actualizar el responsable.");
+        }
     }
-}
 
     @FXML
     private void clickCancelar(ActionEvent event) {
@@ -82,36 +80,59 @@ private void clickAceptar(ActionEvent event) {
     }
 
     private boolean validarCampos() {
-    String correo = tfCorreoResponsable.getText().trim();
-    String telefono = tfTelefonoResponsable.getText().trim();
+        String correo = tfCorreoResponsable.getText().trim();
+        String telefono = tfTelefonoResponsable.getText().trim();
 
-    lbErrorCorreo.setText("");
-    lbErrorTelefono.setText("");
+        lbErrorCorreo.setText("");
+        lbErrorTelefono.setText("");
 
-    // Color rojo en los labels de error
-    lbErrorCorreo.setStyle("-fx-text-fill: red;");
-    lbErrorTelefono.setStyle("-fx-text-fill: red;");
+        lbErrorCorreo.setStyle("-fx-text-fill: red;");
+        lbErrorTelefono.setStyle("-fx-text-fill: red;");
 
-    boolean esValido = true;
+        boolean esValido = true;
 
-    if (correo.isEmpty()) {
-        lbErrorCorreo.setText("Correo obligatorio");
-        esValido = false;
-    } else if (!esCorreoValido(correo)) {
-        lbErrorCorreo.setText("Correo no válido");
-        esValido = false;
+        // Validación de correo
+        if (correo.isEmpty()) {
+            lbErrorCorreo.setText("Correo obligatorio");
+            esValido = false;
+        } else if (!esCorreoValido(correo)) {
+            lbErrorCorreo.setText("Correo no válido");
+            esValido = false;
+        } else if (!correo.equals(responsable.getCorreo())) {
+            try {
+                if (ResponsableProyectoDAO.existeResponsablePorCorreo(correo)) {
+                    lbErrorCorreo.setText("Este correo ya está registrado");
+                    esValido = false;
+                }
+            } catch (SQLException e) {
+                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                        "Error", "No se pudo verificar correo duplicado");
+                esValido = false;
+            }
+        }
+
+        // Validación de teléfono
+        if (telefono.isEmpty()) {
+            lbErrorTelefono.setText("Teléfono obligatorio");
+            esValido = false;
+        } else if (!telefono.matches("\\d{10}")) {
+            lbErrorTelefono.setText("Teléfono inválido, deben ser 10 dígitos");
+            esValido = false;
+        } else if (!telefono.equals(responsable.getTelefono())) {
+            try {
+                if (ResponsableProyectoDAO.existeResponsablePorTelefono(telefono)) {
+                    lbErrorTelefono.setText("Este teléfono ya está registrado");
+                    esValido = false;
+                }
+            } catch (SQLException e) {
+                Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
+                        "Error", "No se pudo verificar teléfono duplicado");
+                esValido = false;
+            }
+        }
+
+        return esValido;
     }
-
-    if (telefono.isEmpty()) {
-        lbErrorTelefono.setText("Teléfono obligatorio");
-        esValido = false;
-    } else if (!telefono.matches("\\d{10}")) {
-        lbErrorTelefono.setText("Teléfono inválido.");
-        esValido = false;
-    }
-
-    return esValido;
-}
 
     private boolean esCorreoValido(String correo) {
         String patronCorreo = "^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$";

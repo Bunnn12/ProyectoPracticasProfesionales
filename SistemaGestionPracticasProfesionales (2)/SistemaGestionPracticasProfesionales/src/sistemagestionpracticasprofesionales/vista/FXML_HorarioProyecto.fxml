@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="861.0" prefWidth="1142.0" style="-fx-background-color: #bcdff1;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemagestionpracticasprofesionales.controlador.FXML_HorarioProyectoController">
+   <children>
+      <Label layoutX="419.0" layoutY="17.0" text="Universidad Veracruzana" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="336.0" layoutY="54.0" text="Sistema de Prácticas Profesionales" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="266.0" layoutY="94.0" text="Registrar Horarios del Proyecto" textFill="#0c2f61">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="39.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="675.0" fitWidth="586.0" layoutX="295.0" layoutY="161.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/Logo%20Universidad%20Veracruzana.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="209.0" layoutY="171.0" text="Lunes">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button contentDisplay="TOP" layoutX="241.0" layoutY="722.0" mnemonicParsing="false" onAction="#clickAceptar" prefHeight="77.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/aceptar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="717.0" layoutY="723.0" mnemonicParsing="false" onAction="#clickCancelar" prefHeight="45.0" prefWidth="190.0" style="-fx-background-color: #0c2f61;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="21.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="33.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/cancelar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="280.0" layoutY="208.0" text="Entrada:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfEntradaLunes" layoutX="382.0" layoutY="209.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <TextField fx:id="tfSalidaLunes" layoutX="749.0" layoutY="210.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <Label fx:id="lbErrorEntradaLunes" layoutX="382.0" layoutY="244.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorSalidaLunes" layoutX="749.0" layoutY="244.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="664.0" layoutY="208.0" text="Salida:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="664.0" layoutY="311.0" text="Salida:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorSalidaMartes" layoutX="749.0" layoutY="347.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorEntradaMartes" layoutX="382.0" layoutY="347.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfSalidaMartes" layoutX="749.0" layoutY="313.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <TextField fx:id="tfEntradaMartes" layoutX="382.0" layoutY="312.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <Label layoutX="280.0" layoutY="311.0" text="Entrada:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="209.0" layoutY="274.0" text="Martes">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="208.0" layoutY="384.0" text="Miércoles">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="279.0" layoutY="421.0" text="Entrada:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfEntradaMiercoles" layoutX="381.0" layoutY="422.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <TextField fx:id="tfSalidaMiercoles" layoutX="748.0" layoutY="423.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <Label fx:id="lbErrorEntradaMiercoles" layoutX="381.0" layoutY="457.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorSalidaMiercoles" layoutX="748.0" layoutY="457.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="663.0" layoutY="421.0" text="Salida:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="662.0" layoutY="528.0" text="Salida:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorSalidaJueves" layoutX="747.0" layoutY="564.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorEntradaJueves" layoutX="380.0" layoutY="564.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfSalidaJueves" layoutX="747.0" layoutY="530.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <TextField fx:id="tfEntradaJueves" layoutX="380.0" layoutY="529.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <Label layoutX="278.0" layoutY="528.0" text="Entrada:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="207.0" layoutY="491.0" text="Jueves">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="206.0" layoutY="606.0" text="Viernes">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="277.0" layoutY="643.0" text="Entrada:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfEntradaViernes" layoutX="379.0" layoutY="644.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <TextField fx:id="tfSalidaViernes" layoutX="746.0" layoutY="645.0" prefHeight="32.0" prefWidth="120.0" promptText="HH:MM" />
+      <Label fx:id="lbErrorEntradaViernes" layoutX="379.0" layoutY="679.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbErrorSalidaViernes" layoutX="746.0" layoutY="679.0" textFill="#c33535">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="661.0" layoutY="643.0" text="Salida:">
+         <font>
+            <Font name="Arial Unicode MS" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 import sistemagestionpracticasprofesionales.modelo.dao.OrganizacionVinculadaDAO;
 import sistemagestionpracticasprofesionales.modelo.dao.ResponsableProyectoDAO;
 import sistemagestionpracticasprofesionales.modelo.pojo.OrganizacionVinculada;
@@ -47,46 +48,25 @@ public class FXML_RegistrarResponsableController implements Initializable {
     @FXML
     private ComboBox<OrganizacionVinculada> cbOrganizacionVinculada;
 
-    /**
-     * Método llamado al inicializar el controlador.
-     * Se encarga de cargar las organizaciones vinculadas para mostrar en el ComboBox.
-     * 
-     * @param url URL de localización (no utilizado).
-     * @param rb  Recursos internacionalizados (no utilizado).
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarOrganizaciones();
     }
 
-    /**
-     * Carga las organizaciones vinculadas desde la base de datos
-     * y las establece como ítems en el ComboBox.
-     * Muestra un mensaje de error si la carga falla.
-     */
     private void cargarOrganizaciones() {
         try {
             ArrayList<OrganizacionVinculada> lista = OrganizacionVinculadaDAO.obtenerOrganizacionesVinculadas();
             ObservableList<OrganizacionVinculada> observableList = FXCollections.observableArrayList(lista);
             cbOrganizacionVinculada.setItems(observableList);
-            System.out.println("Total organizaciones cargadas: " + lista.size()); 
         } catch (Exception e) {
             e.printStackTrace();
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Error", "No se pudieron cargar las organizaciones.\nConsulta la consola para más detalles.");
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR,
+                    "Error", "No se pudieron cargar las organizaciones.");
         }
     }
 
-    /**
-     * Evento disparado al dar clic en el botón aceptar para registrar el responsable.
-     * Valida los campos, crea el objeto responsable y lo registra mediante el DAO.
-     * Muestra alertas con el resultado de la operación.
-     * 
-     * @param event Evento de acción.
-     * @throws SQLException Si hay error en la consulta a la base de datos.
-     */
     @FXML
-    private void clickAceptar(ActionEvent event) throws SQLException {
+    private void clickAceptar(ActionEvent event) {
         if (!validarCampos()) {
             return;
         }
@@ -96,87 +76,100 @@ public class FXML_RegistrarResponsableController implements Initializable {
         String telefono = tfTelefonoResponsable.getText().trim();
         OrganizacionVinculada organizacion = cbOrganizacionVinculada.getValue();
 
-        if (organizacion == null) {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Error", "Debe seleccionar una organización vinculada");
-            return;
-        }
-
-        // Construcción del objeto responsable con los datos capturados
         ResponsableProyecto responsable = new ResponsableProyecto();
         responsable.setNombre(nombre);
         responsable.setCorreo(correo);
         responsable.setTelefono(telefono);
         responsable.setIdOrganizacionVinculada(organizacion.getIdOrganizacionVinculada());
 
-        // Registro en base de datos
-        ResultadoOperacion resultado = ResponsableProyectoDAO.registrarResponsableProyecto(responsable);
-
-        if (!resultado.isError()) {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.INFORMATION,
-                    "Éxito", "Responsable registrado correctamente");
-            Utilidad.cerrarVentanaActual(tfNombreResponsable);
-        } else {
-            Utilidad.mostrarAlertaSimple(javafx.scene.control.Alert.AlertType.ERROR,
-                    "Error", resultado.getMensaje());
+        try {
+            ResultadoOperacion resultado = ResponsableProyectoDAO.registrarResponsableProyecto(responsable);
+            if (!resultado.isError()) {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.INFORMATION,
+                        "Éxito", "Responsable registrado correctamente");
+                Utilidad.cerrarVentanaActual(tfNombreResponsable);
+            } else {
+                Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR,
+                        "Error", resultado.getMensaje());
+            }
+        } catch (SQLException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR,
+                    "Error de conexión", "No fue posible registrar el responsable.");
+            e.printStackTrace();
         }
     }
 
-    private void clickRegresar(ActionEvent event) {
-        Utilidad.cerrarVentanaActual(tfNombreResponsable);
-    }
-
-    /**
-     * Evento disparado al dar clic en el botón cancelar.
-     * Cierra la ventana actual sin guardar cambios.
-     * 
-     * @param event Evento de acción.
-     */
     @FXML
     private void clickCancelar(ActionEvent event) {
         Utilidad.cerrarVentanaActual(tfNombreResponsable);
     }
 
-    /**
-    * Valida los campos de texto para nombre, correo, teléfono y la selección de una organización vinculada.
-    * Muestra mensajes de error tanto en etiquetas como en alertas.
-    *
-    * @return true si todos los campos son válidos; false en caso contrario.
-    */
-   private boolean validarCampos() {
+    @FXML
+    private void clickRegresar(ActionEvent event) {
+        Utilidad.cerrarVentanaActual(tfNombreResponsable);
+    }
+
+    private boolean validarCampos() {
     String nombre = tfNombreResponsable.getText().trim();
-    String telefono = tfTelefonoResponsable.getText().trim();
     String correo = tfCorreoResponsable.getText().trim();
+    String telefono = tfTelefonoResponsable.getText().trim();
     OrganizacionVinculada organizacion = cbOrganizacionVinculada.getValue();
 
     boolean esValido = true;
 
     lbErrorNombre.setText("");
-    lbErrorTelefono.setText("");
     lbErrorCorreo.setText("");
+    lbErrorTelefono.setText("");
     lbErrorOV.setText("");
 
+    // Validar nombre
     if (nombre.isEmpty()) {
         lbErrorNombre.setText("Nombre obligatorio");
         esValido = false;
-    }
-
-    if (telefono.isEmpty()) {
-        lbErrorTelefono.setText("Teléfono obligatorio");
-        esValido = false;
-    } else if (!telefono.matches("\\d{1,10}")) {
-        lbErrorTelefono.setText("Teléfono inválido, solo 10 .");
+    } else if (nombre.contains("@")) {
+        lbErrorNombre.setText("El nombre no debe contener '@'");
         esValido = false;
     }
 
+    // Validar correo
     if (correo.isEmpty()) {
         lbErrorCorreo.setText("Correo obligatorio");
         esValido = false;
     } else if (!esCorreoValido(correo)) {
         lbErrorCorreo.setText("Correo no válido");
         esValido = false;
+    } else {
+        try {
+            if (ResponsableProyectoDAO.existeResponsablePorCorreo(correo)) {
+                lbErrorCorreo.setText("Este correo ya está registrado");
+                esValido = false;
+            }
+        } catch (SQLException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Error al verificar correo duplicado.");
+            esValido = false;
+        }
     }
 
+    // Validar teléfono
+    if (telefono.isEmpty()) {
+        lbErrorTelefono.setText("Teléfono obligatorio");
+        esValido = false;
+    } else if (!telefono.matches("\\d{10}")) {
+        lbErrorTelefono.setText("Teléfono inválido, deben ser 10 dígitos");
+        esValido = false;
+    } else {
+        try {
+            if (ResponsableProyectoDAO.existeResponsablePorTelefono(telefono)) {
+                lbErrorTelefono.setText("Este teléfono ya está registrado");
+                esValido = false;
+            }
+        } catch (SQLException e) {
+            Utilidad.mostrarAlertaSimple(Alert.AlertType.ERROR, "Error", "Error al verificar teléfono duplicado.");
+            esValido = false;
+        }
+    }
+
+    // Validar organización
     if (organizacion == null) {
         lbErrorOV.setText("Debe seleccionar una organización");
         esValido = false;
@@ -185,14 +178,6 @@ public class FXML_RegistrarResponsableController implements Initializable {
     return esValido;
 }
 
-
-
-    /**
-     * Verifica si el formato del correo electrónico es válido.
-     * 
-     * @param correo Cadena con el correo a validar.
-     * @return true si el correo cumple con el patrón, false si no.
-     */
     private boolean esCorreoValido(String correo) {
         String patronCorreo = "^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$";
         return Pattern.matches(patronCorreo, correo);

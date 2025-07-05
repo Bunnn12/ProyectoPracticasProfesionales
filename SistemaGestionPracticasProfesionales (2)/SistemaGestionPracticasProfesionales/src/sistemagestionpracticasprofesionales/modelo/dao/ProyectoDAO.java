@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import sistemagestionpracticasprofesionales.modelo.Conexion;
 import sistemagestionpracticasprofesionales.modelo.pojo.Proyecto;
@@ -33,18 +34,58 @@ public class ProyectoDAO {
         ResultadoOperacion resultado = new ResultadoOperacion();
         Connection conexionBD = Conexion.abrirConexion();
         if (conexionBD != null) {
-            String consulta = "INSERT INTO proyecto (nombre, idOrganizacionVinculada, idResponsableProyecto, fechaInicio, fechaFin, diasTrabajo, horaEntrada, horaSalida, cantidadEstudiantesParticipantes, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            String consulta = "INSERT INTO proyecto (nombre, idOrganizacionVinculada, idResponsableProyecto, fechaInicio, fechaFin, cantidadEstudiantesParticipantes, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta, Statement.RETURN_GENERATED_KEYS);
             prepararSentencia.setString(1, proyecto.getNombre());
             prepararSentencia.setInt(2, proyecto.getIdOrganizacionVinculada());
             prepararSentencia.setInt(3, proyecto.getIdResponsableProyecto());
             prepararSentencia.setString(4, proyecto.getFechaInicio());
             prepararSentencia.setString(5, proyecto.getFechaFin());
-            prepararSentencia.setString(6, proyecto.getDiasTrabajo());
-            prepararSentencia.setString(7, proyecto.getHoraEntrada());
-            prepararSentencia.setString(8, proyecto.getHoraSalida());
-            prepararSentencia.setInt(9, proyecto.getCantidadEstudiantesParticipantes());
-            prepararSentencia.setString(10, proyecto.getDescripcion());
+            prepararSentencia.setInt(6, proyecto.getCantidadEstudiantesParticipantes());
+            prepararSentencia.setString(7, proyecto.getDescripcion());
+            
+            int filasAfectadas = prepararSentencia.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                ResultSet generatedKeys = prepararSentencia.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int idGenerado = generatedKeys.getInt(1);
+                    proyecto.setIdProyecto(idGenerado); // ← ¡Importante!
+                    return new ResultadoOperacion(false, "Proyecto registrado con ID " + idGenerado);
+                }
+            }
+        }
+        return new ResultadoOperacion(true, "No se pudo obtener el ID generado");
+    }
+    
+    public static ResultadoOperacion eliminarProyecto(int idProyecto) throws SQLException {
+        String consulta = "DELETE FROM proyecto WHERE idProyecto = ?";
+    
+        try (Connection conexionBD = Conexion.abrirConexion();
+             PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta)) {
+
+            prepararSentencia.setInt(1, idProyecto);
+            int filas = prepararSentencia.executeUpdate();
+
+            if (filas > 0) {
+                return new ResultadoOperacion(false, "Proyecto eliminado correctamente");
+            } else {
+                return new ResultadoOperacion(true, "No se encontró el proyecto para eliminar");
+            }
+        }
+    }
+    
+    
+    public static ResultadoOperacion registrarHorario(Proyecto proyecto, String dia, String entrada, String salida) throws SQLException {
+        ResultadoOperacion resultado = new ResultadoOperacion();
+        Connection conexionBD = Conexion.abrirConexion();
+        if (conexionBD != null) {
+            String consulta = "INSERT INTO horario (dia, entrada, salida, idProyecto) VALUES (?, ?, ?, ?);";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            prepararSentencia.setString(1, dia);
+            prepararSentencia.setString(2, entrada);
+            prepararSentencia.setString(3, salida);
+            prepararSentencia.setInt(4, proyecto.getIdProyecto());
             
             int filasAfectadas = prepararSentencia.executeUpdate();
             if (filasAfectadas == 1){
@@ -62,6 +103,9 @@ public class ProyectoDAO {
         }
         return resultado;
     }
+    
+    
+    
     
     /**
      * Busca proyectos cuyo nombre contenga un filtro dado (búsqueda parcial).
